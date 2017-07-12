@@ -26,6 +26,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . "/config.php");
 require_once($CFG->dirroot."/local/deportes/locallib.php");
+require_once ($CFG->libdir . '/tablelib.php');
 global $CFG, $DB, $OUTPUT, $PAGE;
 
 // User must be logged in.
@@ -45,7 +46,90 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
+
+$table = new flexible_table("Sports");
+$table->define_baseurl($url);
+$table->define_headers(array(
+		"Hora",
+		"Lunes",
+		"Martes",
+		"Miercoles",
+		"Jueves",
+		"Viernes"
+));
+$table->define_columns(array(
+		"module",
+		"lunes",
+		"martes",
+		"miercoles",
+		"jueves",
+		"viernes"
+));
+$table->sortable(true, "module");
+$table->no_sorting("lunes");
+$table->no_sorting("martes");
+$table->no_sorting("miercoles");
+$table->no_sorting("jueves");
+$table->no_sorting("viernes");
+$table->pageable(true);
+$table->setup();
+$orderby = "ORDER BY module";
+if ($table->get_sql_sort()){
+	$orderby = 'ORDER BY '. $table->get_sql_sort();
+	echo $table->get_sql_sort();
+}
+$query = "SELECT id,
+name,
+day,
+module
+FROM {sports}
+$orderby";
+$nofsports = count($DB->get_records_sql($query, array("")));
+$getschedule = $DB->get_records_sql($query, array(""));
+$i=0;
+$module;
+$array = array();
+$modulearray = array("","","","","","");
+for ($i = 0; $i < $nofsports; $i++){
+	$module = array_values($getschedule)[$i]->module;
+	$modulearray[0] = $module;
+	if ($modulearray[array_values($getschedule)[$i]->day] != ""){
+		$temporaryarray = array();
+		$temporaryarray[] = $modulearray[array_values($getschedule)[$i]->day];
+		$temporaryarray[count($modulearray[array_values($getschedule)[$i]->day])] = array_values($getschedule)[$i]->name;
+		$modulearray[array_values($getschedule)[$i]->day] = $temporaryarray;
+	}
+	else {
+		$modulearray[array_values($getschedule)[$i]->day] = array_values($getschedule)[$i]->name;
+	}
+	if ($i+1 == $nofsports){
+		$array[count($array)] = $modulearray;
+	}
+	else if (array_values($getschedule)[$i+1]->module != $module){
+		$array[count($array)] = $modulearray;
+		$modulearray = array("","","","","","");
+	}
+}
+foreach($array as $modulararray){
+	$table->add_data(array(
+			$modulararray[0],
+			$modulararray[1],
+			$modulararray[2],
+			$modulararray[3],
+			$modulararray[4],
+			$modulararray[5]
+	));
+}
+if ($nofsports>0){
+	$table->finish_html();
+}
+else{
+	print "Table is empty";
+}
+
+
 echo $OUTPUT->footer();
