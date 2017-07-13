@@ -55,9 +55,9 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 
-$table = new flexible_table("Sports");
-$table->define_baseurl($url);
-$table->define_headers(array(
+$tablefitness = new flexible_table("Sports");
+$tablefitness->define_baseurl($url);
+$tablefitness->define_headers(array(
 		"Hora",
 		"Lunes",
 		"Martes",
@@ -65,7 +65,7 @@ $table->define_headers(array(
 		"Jueves",
 		"Viernes"
 ));
-$table->define_columns(array(
+$tablefitness->define_columns(array(
 		"module",
 		"lunes",
 		"martes",
@@ -73,20 +73,22 @@ $table->define_columns(array(
 		"jueves",
 		"viernes"
 ));
-$table->sortable(true, "module");
-$table->no_sorting("lunes");
-$table->no_sorting("martes");
-$table->no_sorting("miercoles");
-$table->no_sorting("jueves");
-$table->no_sorting("viernes");
-$table->pageable(true);
-$table->setup();
-$orderby = "ORDER BY module";
-if ($table->get_sql_sort()){
-	$orderby = 'ORDER BY '. $table->get_sql_sort();
+$tablefitness->sortable(true, "module");
+$tablefitness->no_sorting("lunes");
+$tablefitness->no_sorting("martes");
+$tablefitness->no_sorting("miercoles");
+$tablefitness->no_sorting("jueves");
+$tablefitness->no_sorting("viernes");
+$tablefitness->pageable(true);
+$tablefitness->setup();
+$orderbyfit = "ORDER BY module";
+if ($tablefitness->get_sql_sort()){
+	$orderbyfit = 'ORDER BY '. $tablefitness->get_sql_sort();
 }
 
-$getschedulefitness = deportes_get_schedule($orderby, 1);
+$getschedulefitness = deportes_get_schedule($orderbyfit, 1);
+
+/*
 $nofsports = count($getschedulefitness);
 $counterofsports=0;
 $module;
@@ -100,7 +102,7 @@ for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
 		$temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
 		$temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
 		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
-		*/
+	
 		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day]."<br>".array_values($getschedulefitness)[$counterofsports]->name;
 	}
 	else {
@@ -114,9 +116,12 @@ for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
 		$modulearray = array("","","","","","");
 	}
 }
+*/
+$nofsports = count($getschedulefitness);
+$array = deportes_arrayforschedule($getschedulefitness, $nofsports);
 $array = deportes_get_modules_fitness($array);
 foreach($array as $modulararray){
-	$table->add_data(array(
+	$tablefitness->add_data(array(
 			"<span>".$modulararray[0]."</span>",
 			"<span class='fitness'>".$modulararray[1]."</span>",
 			"<span class='fitness'>".$modulararray[2]."</span>",
@@ -130,7 +135,7 @@ echo "<head><B>Horario Fitness</B></head>";
 echo "<body>";
 echo "<div id='fitnesstable'>";
 if ($nofsports>0){
-	$table->finish_html();
+	$tablefitness->finish_html();
 }
 else{
 	print "Table is empty";
@@ -151,10 +156,80 @@ echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Balance'>Body
 echo "</form>";
 echo "</body>";
 
+
+$tableoutdoors= new flexible_table("Outdoors");
+$tableoutdoors->define_baseurl($url);
+$tableoutdoors->define_headers(array(
+		"Hora",
+		"Lunes",
+		"Martes",
+		"Miercoles",
+		"Jueves",
+		"Viernes"
+));
+$tableoutdoors->define_columns(array(
+		"module",
+		"lunes",
+		"martes",
+		"miercoles",
+		"jueves",
+		"viernes"
+));
+$tableoutdoors->sortable(true, "module");
+$tableoutdoors->no_sorting("lunes");
+$tableoutdoors->no_sorting("martes");
+$tableoutdoors->no_sorting("miercoles");
+$tableoutdoors->no_sorting("jueves");
+$tableoutdoors->no_sorting("viernes");
+$tableoutdoors->pageable(true);
+$tableoutdoors->setup();
+$orderbyout = "ORDER BY module";
+if ($tableoutdoors->get_sql_sort()){
+	$orderbyout = 'ORDER BY '. $tablefitness->get_sql_sort();
+}
+
+$getscheduleoutdoors = deportes_get_schedule($orderbyout, 0);
+$nofsports = count($getscheduleoutdoors);
+$array = deportes_arrayforschedule($getscheduleoutdoors, $nofsports);
+$array = deportes_get_modules_outdoors($array);
+foreach($array as $modulararray){
+	$tableoutdoors->add_data(array(
+			"<span>".$modulararray[0]."</span>",
+			"<span class='outdoors'>".$modulararray[1]."</span>",
+			"<span class='outdoors'>".$modulararray[2]."</span>",
+			"<span class='outdoors'>".$modulararray[3]."</span>",
+			"<span class='outdoors'>".$modulararray[4]."</span>",
+			"<span class='outdoors'>".$modulararray[5]."</span>"
+	));
+}
+echo "<html>";
+echo "<head><B><br><br>Horario Outdoors</B></head>";
+echo "<body>";
+echo "<div id='outdoorstable'>";
+if ($nofsports>0){
+	$tableoutdoors->finish_html();
+}
+else{
+	print "Table is empty";
+}
+echo "</div>";
+echo "<form action='' id='out'>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbolito'>Futbolito<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Cross Training'>Cross Training<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Padel'>Padel<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Almuerzo'>Almuerzo<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbol Tennis'>Futbol Tennis <br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Treking'>Treking<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbolito Mujeres'>Futbolito Mujeres<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Campeonato UAI'>Campeonato UAI<br>";
+echo "</form>";
+echo "</body>";
+
+
+
+
+
 echo $OUTPUT->footer();
-
-
-
 ?>
 
 <script>
@@ -219,7 +294,59 @@ $(document).ready(function(){
 				}
 			
         
-	});	
+	});
+
+	var td =$("span[class='outdoors']");
+	$.each(td, function( index, value ) {
+			
+			if ($(this).text() === 'Futbolito'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'black',
+					'background-color':'yellow'});
+				}
+			if ($(this).text() === 'Padel'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'white',
+					'background-color':'SteelBlue'});
+				}
+			if ($(this).text() === 'Cross Training'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'Turqoise'});
+				}
+			if ($(this).text() === 'Basquetbol'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Blakc',
+					'background-color':'green'});
+				}
+			if ($(this).text() === 'Futbol Tennis'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'DarkOrange'});
+				}
+			if ($(this).text() === 'Almuerzo'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'MediumAquamarine'});
+				}
+			if ($(this).text() === 'Campeonato UAI'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Black',
+					'background-color':'Grey'});
+				}
+			if ($(this).text() === 'Treking'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'SaddleBrown'});
+				}
+			if ($(this).text() === 'Futbolito Mujeres'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Black',
+					'background-color':'LightCoral'});
+				}
+        
+	});
+		
 });
 
 
@@ -236,7 +363,22 @@ $(':checkbox').change(function() {
                 } 
 			});	
         }
-	});
+	});	
+});
+$(':checkbox').change(function() {
+	var td =$("span[class='outdoors']");
+	td.hide();
+	$.each($(':checkbox'), function( index, value ) {
+		var valor = $(this).val();
+        if (this.checked) {
+			$.each(td, function( index, value ) {
+  				if($(this).text() === valor ){
+					$(this).show();
+					$(this).parent().show();
+                } 
+			});	
+        }
+	});	
 });
 
 

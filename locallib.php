@@ -94,3 +94,67 @@ function deportes_get_modules_fitness($array){
 	}
 	return $array;
 }
+function deportes_arrayforschedule($getschedule, $nofsports){
+	$counterofsports=0;
+	$module;
+	$array = array();
+	$modulearray = array("","","","","","");
+	for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
+		$module = array_values($getschedule)[$counterofsports]->module;
+		$modulearray[0] = $module;
+		if ($modulearray[array_values($getschedule)[$counterofsports]->day] != ""){
+			/*		$temporaryarray = array();
+			 $temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
+			 $temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
+			 $modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
+			 */
+			$modulearray[array_values($getschedule)[$counterofsports]->day] = $modulearray[array_values($getschedule)[$counterofsports]->day]."<br>".array_values($getschedule)[$counterofsports]->name;
+		}
+		else {
+			$modulearray[array_values($getschedule)[$counterofsports]->day] = array_values($getschedule)[$counterofsports]->name;
+		}
+		if ($counterofsports+1 == $nofsports){
+			$array[count($array)] = $modulearray;
+		}
+		else if (array_values($getschedule)[$counterofsports+1]->module != $module){
+			$array[count($array)] = $modulearray;
+			$modulearray = array("","","","","","");
+		}
+	}
+	return $array;
+}
+function deportes_get_modules_outdoors($array){
+	$nofmodules = count($array);
+	$keys = array_keys($array);
+	for ($counterofmodules=0;$counterofmodules<$nofmodules;$counterofmodules++){
+		if (array_values($array)[$counterofmodules][0] == '1'){
+			$hora = '10:00 - 11:00';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '2'){
+			$hora = '11:30 - 12:30';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '3'){
+			$hora = '12:30 - 13:30';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '4'){
+			$hora = '13:30 - 14:30';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '5'){
+			$hora = '15:00 - 16:00';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '6'){
+			$hora = '16:40 - 17:40';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+		if (array_values($array)[$counterofmodules][0] == '1'){
+			$hora = '17:40 - 20:40';
+			$array[$keys[$counterofmodules]][0] = $hora;
+		}
+	}
+	return $array;
+}
