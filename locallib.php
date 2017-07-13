@@ -53,7 +53,7 @@ function deportes_get_schedule($orderby, $type){
 	name,
 	day,
 	module
-	FROM {sports}
+	FROM {deportes}
 	WHERE type = ?
 	$orderby";
 	$getschedule = $DB->get_records_sql($query, array($type)); 

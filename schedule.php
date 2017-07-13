@@ -96,10 +96,12 @@ for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
 	$module = array_values($getschedulefitness)[$counterofsports]->module;
 	$modulearray[0] = $module;
 	if ($modulearray[array_values($getschedulefitness)[$counterofsports]->day] != ""){
-		$temporaryarray = array();
+/*		$temporaryarray = array();
 		$temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
 		$temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
 		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
+		*/
+		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day]."<br>".array_values($getschedulefitness)[$counterofsports]->name;
 	}
 	else {
 		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = array_values($getschedulefitness)[$counterofsports]->name;
@@ -116,17 +118,17 @@ $array = deportes_get_modules_fitness($array);
 foreach($array as $modulararray){
 	$table->add_data(array(
 			"<span>".$modulararray[0]."</span>",
-			"<span class='deporte'>".$modulararray[1]."</span>",
-			"<span class='deporte'>".$modulararray[2]."</span>",
-			"<span class='deporte'>".$modulararray[3]."</span>",
-			"<span class='deporte'>".$modulararray[4]."</span>",
-			"<span class='deporte'>".$modulararray[5]."</span>"
+			"<span class='fitness'>".$modulararray[1]."</span>",
+			"<span class='fitness'>".$modulararray[2]."</span>",
+			"<span class='fitness'>".$modulararray[3]."</span>",
+			"<span class='fitness'>".$modulararray[4]."</span>",
+			"<span class='fitness'>".$modulararray[5]."</span>"
 	));
 }
 echo "<html>";
 echo "<head><B>Horario Fitness</B></head>";
 echo "<body>";
-echo "<div id='fitness'>";
+echo "<div id='fitnesstable'>";
 if ($nofsports>0){
 	$table->finish_html();
 }
@@ -135,19 +137,18 @@ else{
 }
 echo "</div>";
 echo "<form action='' id='papa'>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Body Pump'>Body Pump <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Body Attack'>Body Attack <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Fitball'>Fitball <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Baile Entretenido'>Baile Entretenido <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'RPM'>RPM <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Yoga'>Yoga <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Dance Pad'>Dance Pad <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Body Combat'>Body Combat <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Body Step'>Body Step <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Power Jump'>Power Jump <br>";
-echo "<input type = 'checkbox' name = 'fitness' value = 'Body Balance'>Body Balance <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Pump'>Body Pump <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Attack'>Body Attack <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Fitball'>Fitball <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Baile Entretenido'>Baile Entretenido <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'RPM'>RPM <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Yoga'>Yoga <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Dance Pad'>Dance Pad <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Combat'>Body Combat <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Step'>Body Step <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Power Jump'>Power Jump <br>";
+echo "<input type = 'checkbox' name = 'checkfitness' value = 'Body Balance'>Body Balance <br>";
 echo "</form>";
-echo "<button type = 'submit' form = 'fitness' value = 'Submit'>Submit</button>";
 echo "</body>";
 
 echo $OUTPUT->footer();
@@ -158,19 +159,80 @@ echo $OUTPUT->footer();
 
 <script>
 
+$(document).ready(function(){
+	 var td =$("span[class='fitness']");
+	$.each(td, function( index, value ) {
+			
+			if ($(this).text() === 'Yoga'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'white',
+					'background-color':'green'});
+				}
+			if ($(this).text() === 'Body Pump'){
+				$(this).parent().css({'font-weight':'bold',
+					'background-color':'DeepSkyBlue'});
+				}
+			if ($(this).text() === 'RPM'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'OrangeRed'});
+				}
+			if ($(this).text() === 'Body Attack'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'HotPink'});
+				}
+			if ($(this).text() === 'Fitball'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Black',
+					'background-color':'LimeGreen'});
+				}
+			if ($(this).text() === 'Baile Entretenido'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'DarkOrange'});
+				}
+			if ($(this).text() === 'Body Combat'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Black',
+					'background-color':'DarkSalmon'});
+				}
+			if ($(this).text() === 'Dance Pad'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'Teal'});
+				}
+			if ($(this).text() === 'Body Step'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'Black',
+					'background-color':'Yellow'});
+				}
+			if ($(this).text() === 'Body Balance'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'Magenta'});
+				}
+			if ($(this).text() === 'Power Jump'){
+				$(this).parent().css({'font-weight':'bold',
+					'color':'White',
+					'background-color':'DarkViolet'});
+				}
+			
+        
+	});	
+});
 
 
 $(':checkbox').change(function() {
-
-    var td =$("span[class='deporte']");
+	var td =$("span[class='fitness']");
 	td.hide();
-	
 	$.each($(':checkbox'), function( index, value ) {
 		var valor = $(this).val();
         if (this.checked) {
 			$.each(td, function( index, value ) {
   				if($(this).text() === valor ){
 					$(this).show();
+					$(this).parent().show();
                 } 
 			});	
         }
@@ -179,4 +241,3 @@ $(':checkbox').change(function() {
 
 
 </script>
-
