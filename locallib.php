@@ -46,3 +46,38 @@ function deportes_tabs() {
 			);
 	return $tabs;
 }
+function deportes_get_modules_fitness($array){
+	$nofmodules = count($array);
+	$keys = array_keys($array);
+	for ($i=0;$i<$nofmodules;$i++){
+		if (array_values($array)[$i][0] == '1'){
+			$hora = '8:15 - 9:15';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '2'){
+			$hora = '10:10 - 11:10';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '3'){
+			$hora = '11:40 - 12:40';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '4'){
+			$hora = '13:10 - 14:10';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '5'){
+			$hora = '15:10 - 16:10';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '6'){
+			$hora = '16:40 - 17:40';
+			$array[$keys[$i]][0] = $hora;
+		}
+		if (array_values($array)[$i][0] == '1'){
+			$hora = '18:10 - 19:10';
+			$array[$keys[$i]][0] = $hora;
+		}
+	}
+	return $array;
+}

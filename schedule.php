@@ -103,10 +103,10 @@ for ($i = 0; $i < $nofsports; $i++){
 	$modulearray[0] = $module;
 	if ($modulearray[array_values($getschedule)[$i]->day] != ""){
 		$temporaryarray = array();
-		var_dump($temporaryarray);
+		// var_dump($temporaryarray);
 		$temporaryarray[] = $modulearray[array_values($getschedule)[$i]->day];
 		$temporaryarray[count($modulearray[array_values($getschedule)[$i]->day])] = array_values($getschedule)[$i]->name;
-		var_dump($temporaryarray);
+//		var_dump($temporaryarray);
 		$modulearray[array_values($getschedule)[$i]->day] = $temporaryarray;
 	}
 	else {
@@ -120,7 +120,7 @@ for ($i = 0; $i < $nofsports; $i++){
 		$modulearray = array("","","","","","");
 	}
 }
-var_dump($array);
+$array = deportes_get_modules_fitness($array);
 foreach($array as $modulararray){
 	$table->add_data(array(
 			"<span>".$modulararray[0]."</span>",
@@ -132,7 +132,7 @@ foreach($array as $modulararray){
 	));
 }
 echo "<html>";
-echo "<head>Horario Fitness</head>";
+echo "<head><B>Horario Fitness</B></head>";
 echo "<body>";
 echo "<div id='fitness'>";
 if ($nofsports>0){
