@@ -21,6 +21,8 @@
 * @package    local
 * @subpackage deportes
 * @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)
+* @copyright  2017	Javier Gonzalez (javiergonzalez@alumnos.uai.cl)
+* @copyright  2017  Jorge Cabané (jcabane@alumnos.uai.cl) 
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
@@ -45,7 +47,9 @@ $PAGE->set_url($url);
 $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
-
+$PAGE->requires->jquery();
+$PAGE->requires->jquery_plugin ( 'ui' );
+$PAGE->requires->jquery_plugin ( 'ui-css' );
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
@@ -80,14 +84,14 @@ $table->setup();
 $orderby = "ORDER BY module";
 if ($table->get_sql_sort()){
 	$orderby = 'ORDER BY '. $table->get_sql_sort();
-	echo $table->get_sql_sort();
 }
-$query = "SELECT id,
-name,
-day,
-module
-FROM {sports}
-$orderby";
+$query = " SELECT id, 
+		name,
+		day,
+		module
+		FROM {sports}
+		WHERE type = 1
+		$orderby";
 $nofsports = count($DB->get_records_sql($query, array("")));
 $getschedule = $DB->get_records_sql($query, array(""));
 $i=0;
@@ -99,8 +103,10 @@ for ($i = 0; $i < $nofsports; $i++){
 	$modulearray[0] = $module;
 	if ($modulearray[array_values($getschedule)[$i]->day] != ""){
 		$temporaryarray = array();
+		var_dump($temporaryarray);
 		$temporaryarray[] = $modulearray[array_values($getschedule)[$i]->day];
 		$temporaryarray[count($modulearray[array_values($getschedule)[$i]->day])] = array_values($getschedule)[$i]->name;
+		var_dump($temporaryarray);
 		$modulearray[array_values($getschedule)[$i]->day] = $temporaryarray;
 	}
 	else {
@@ -114,22 +120,71 @@ for ($i = 0; $i < $nofsports; $i++){
 		$modulearray = array("","","","","","");
 	}
 }
+var_dump($array);
 foreach($array as $modulararray){
 	$table->add_data(array(
-			$modulararray[0],
-			$modulararray[1],
-			$modulararray[2],
-			$modulararray[3],
-			$modulararray[4],
-			$modulararray[5]
+			"<span>".$modulararray[0]."</span>",
+			"<span class='deporte'>".$modulararray[1]."</span>",
+			"<span class='deporte'>".$modulararray[2]."</span>",
+			"<span class='deporte'>".$modulararray[3]."</span>",
+			"<span class='deporte'>".$modulararray[4]."</span>",
+			"<span class='deporte'>".$modulararray[5]."</span>"
 	));
 }
+echo "<html>";
+echo "<head>Horario Fitness</head>";
+echo "<body>";
+echo "<div id='fitness'>";
 if ($nofsports>0){
 	$table->finish_html();
 }
 else{
 	print "Table is empty";
 }
-
+echo "</div>";
+echo "<form action='' id='papa'>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Body Pump'>Body Pump <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Body Attack'>Body Attack <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Fitball'>Fitball <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Baile Entretenido'>Baile Entretenido <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'RPM'>RPM <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Yoga'>Yoga <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Dance Pad'>Dance Pad <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Body Combat'>Body Combat <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Body Step'>Body Step <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Power Jump'>Power Jump <br>";
+echo "<input type = 'checkbox' name = 'fitness' value = 'Body Balance'>Body Balance <br>";
+echo "</form>";
+echo "<button type = 'submit' form = 'fitness' value = 'Submit'>Submit</button>";
+echo "</body>";
 
 echo $OUTPUT->footer();
+
+
+
+?>
+
+<script>
+
+
+
+$(':checkbox').change(function() {
+
+    var td =$("span[class='deporte']");
+	td.hide();
+	
+	$.each($(':checkbox'), function( index, value ) {
+		var valor = $(this).val();
+        if (this.checked) {
+			$.each(td, function( index, value ) {
+  				if($(this).text() === valor ){
+					$(this).show();
+                } 
+			});	
+        }
+	});
+});
+
+
+</script>
+

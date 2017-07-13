@@ -63,5 +63,20 @@ function xmldb_local_deportes_upgrade($oldversion) {
 		}
 		upgrade_plugin_savepoint(true, 2017071201, 'local', 'deportes');
 	}
+	if ($oldversion < 2017071302) {
+	
+		// Define field type to be added to sports.
+		$table = new xmldb_table('sports');
+		$field = new xmldb_field('type', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'lastmodified');
+	
+		// Conditionally launch add field type.
+		if (!$dbman->field_exists($table, $field)) {
+			$dbman->add_field($table, $field);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071302, 'local', 'deportes');
+	}
+	
 	return true;
 }
