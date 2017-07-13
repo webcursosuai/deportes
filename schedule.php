@@ -85,37 +85,29 @@ $orderby = "ORDER BY module";
 if ($table->get_sql_sort()){
 	$orderby = 'ORDER BY '. $table->get_sql_sort();
 }
-$query = " SELECT id, 
-		name,
-		day,
-		module
-		FROM {sports}
-		WHERE type = 1
-		$orderby";
-$nofsports = count($DB->get_records_sql($query, array("")));
-$getschedule = $DB->get_records_sql($query, array(""));
-$i=0;
+
+$getschedulefitness = deportes_get_schedule($orderby, 1);
+$nofsports = count($getschedulefitness);
+$counterofsports=0;
 $module;
 $array = array();
 $modulearray = array("","","","","","");
-for ($i = 0; $i < $nofsports; $i++){
-	$module = array_values($getschedule)[$i]->module;
+for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
+	$module = array_values($getschedulefitness)[$counterofsports]->module;
 	$modulearray[0] = $module;
-	if ($modulearray[array_values($getschedule)[$i]->day] != ""){
+	if ($modulearray[array_values($getschedulefitness)[$counterofsports]->day] != ""){
 		$temporaryarray = array();
-		// var_dump($temporaryarray);
-		$temporaryarray[] = $modulearray[array_values($getschedule)[$i]->day];
-		$temporaryarray[count($modulearray[array_values($getschedule)[$i]->day])] = array_values($getschedule)[$i]->name;
-//		var_dump($temporaryarray);
-		$modulearray[array_values($getschedule)[$i]->day] = $temporaryarray;
+		$temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
+		$temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
+		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
 	}
 	else {
-		$modulearray[array_values($getschedule)[$i]->day] = array_values($getschedule)[$i]->name;
+		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = array_values($getschedulefitness)[$counterofsports]->name;
 	}
-	if ($i+1 == $nofsports){
+	if ($counterofsports+1 == $nofsports){
 		$array[count($array)] = $modulearray;
 	}
-	else if (array_values($getschedule)[$i+1]->module != $module){
+	else if (array_values($getschedulefitness)[$counterofsports+1]->module != $module){
 		$array[count($array)] = $modulearray;
 		$modulearray = array("","","","","","");
 	}

@@ -77,6 +77,17 @@ function xmldb_local_deportes_upgrade($oldversion) {
 		// Deportes savepoint reached.
 		upgrade_plugin_savepoint(true, 2017071302, 'local', 'deportes');
 	}
+	if ($oldversion < 2017071303) {
+	
+		// Define table deportes to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('sports');
+	
+		// Launch rename table for deportes.
+		$dbman->rename_table($table, 'deportes');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071303, 'local', 'deportes');
+	}
 	
 	return true;
 }
