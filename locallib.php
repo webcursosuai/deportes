@@ -55,7 +55,8 @@ function deportes_get_schedule($orderby, $type){
 	module
 	FROM {deportes}
 	WHERE type = ?
-	$orderby";
+	$orderby, day
+	";
 	$getschedule = $DB->get_records_sql($query, array($type)); 
 	return $getschedule;
 }
@@ -94,35 +95,6 @@ function deportes_get_modules_fitness($array){
 	}
 	return $array;
 }
-function deportes_arrayforschedule($getschedule, $nofsports){
-	$counterofsports=0;
-	$module;
-	$array = array();
-	$modulearray = array("","","","","","");
-	for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
-		$module = array_values($getschedule)[$counterofsports]->module;
-		$modulearray[0] = $module;
-		if ($modulearray[array_values($getschedule)[$counterofsports]->day] != ""){
-			/*		$temporaryarray = array();
-			 $temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
-			 $temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
-			 $modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
-			 */
-			$modulearray[array_values($getschedule)[$counterofsports]->day] = $modulearray[array_values($getschedule)[$counterofsports]->day]."<br>".array_values($getschedule)[$counterofsports]->name;
-		}
-		else {
-			$modulearray[array_values($getschedule)[$counterofsports]->day] = array_values($getschedule)[$counterofsports]->name;
-		}
-		if ($counterofsports+1 == $nofsports){
-			$array[count($array)] = $modulearray;
-		}
-		else if (array_values($getschedule)[$counterofsports+1]->module != $module){
-			$array[count($array)] = $modulearray;
-			$modulearray = array("","","","","","");
-		}
-	}
-	return $array;
-}
 function deportes_get_modules_outdoors($array){
 	$nofmodules = count($array);
 	$keys = array_keys($array);
@@ -155,6 +127,56 @@ function deportes_get_modules_outdoors($array){
 			$hora = '17:40 - 20:40';
 			$array[$keys[$counterofmodules]][0] = $hora;
 		}
+	}
+	return $array;
+}
+function deportes_arrayforschedule($getschedule, $nofsports){
+	$counterofsports=0;
+	$array = array();
+	$modulearray = array("","","","","","");
+	$auxiliaryarray1 = array("","","","","","");
+	$auxiliaryarray2 = array("","","","","","");
+	$getschedule = array_values($getschedule);
+	for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
+		$module = $getschedule[$counterofsports]->module;
+		$modulearray[0] = $module;
+		if ($modulearray[$getschedule[$counterofsports]->day] != ""){
+			if($auxiliaryarray1[$getschedule[$counterofsports]->day] != ""){
+				$auxiliaryarray2[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
+			}
+			else{
+				$auxiliaryarray1[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
+			}
+			//$modulearray[$getschedule[$counterofsports]->day] = $modulearray[$getschedule[$counterofsports]->day]."<br>".$getschedule[$counterofsports]->name;
+		}
+		else {
+			$modulearray[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
+		}
+		if ($counterofsports == $nofsports){
+			$array[count($array)] = $modulearray;
+		}
+		else if ($getschedule[$counterofsports+1]->module != $module){
+			$array[count($array)] = $modulearray;
+			$modulearray = array("","","","","","");
+			$array = deportes_check_auxarray($array, $auxiliaryarray1);
+			$array = deportes_check_auxarray($array, $auxiliaryarray2);
+			$auxiliaryarray1 = array("","","","","","");
+			$auxiliaryarray2 = array("","","","","","");
+		}
+		echo $counterofsports;
+	}
+	var_dump($array);
+	return $array;
+}
+function deportes_check_auxarray($array, $auxarray){
+	$controlvariable = 0;
+	foreach ($auxarray as $aux){
+		if($aux != ""){
+			$controlvariable++;
+		}
+	}
+	if($controlvariable > 0){
+		$array[count($array)] = $auxarray;
 	}
 	return $array;
 }
