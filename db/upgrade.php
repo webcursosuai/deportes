@@ -88,6 +88,136 @@ function xmldb_local_deportes_upgrade($oldversion) {
 		// Deportes savepoint reached.
 		upgrade_plugin_savepoint(true, 2017071303, 'local', 'deportes');
 	}
+	if ($oldversion < 2017071401) {
 	
+		// Define field day to be dropped from deportes.
+		$table = new xmldb_table('deportes');
+		$field = new xmldb_field('day');
+	
+		// Conditionally launch drop field day.
+		if ($dbman->field_exists($table, $field)) {
+			$dbman->drop_field($table, $field);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071401, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071402) {
+	
+		// Define field module to be dropped from deportes.
+		$table = new xmldb_table('deportes');
+		$field = new xmldb_field('module');
+	
+		// Conditionally launch drop field module.
+		if ($dbman->field_exists($table, $field)) {
+			$dbman->drop_field($table, $field);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071402, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071403) {
+	
+		// Define table modules to be created.
+		$table = new xmldb_table('modules');
+	
+		// Adding fields to table modules.
+		$table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+		$table->add_field('name', XMLDB_TYPE_TEXT, null, null, null, null, null);
+		$table->add_field('starttime', XMLDB_TYPE_CHAR, '20', null, null, null, null);
+		$table->add_field('endtime', XMLDB_TYPE_CHAR, '20', null, null, null, null);
+		$table->add_field('modulesorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+		$table->add_field('type', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+	
+		// Adding keys to table modules.
+		$table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+	
+		// Conditionally launch create table for modules.
+		if (!$dbman->table_exists($table)) {
+			$dbman->create_table($table);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071403, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071404) {
+	
+		// Define table schedule to be created.
+		$table = new xmldb_table('schedule');
+	
+		// Adding fields to table schedule.
+		$table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+		$table->add_field('idsports', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+		$table->add_field('idmodules', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+	
+		// Adding keys to table schedule.
+		$table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+		$table->add_key('idmodules', XMLDB_KEY_FOREIGN, array('idmodules'), 'modules', array('id'));
+		$table->add_key('idsports', XMLDB_KEY_FOREIGN, array('idsports'), 'sports', array('id'));
+	
+		// Conditionally launch create table for schedule.
+		if (!$dbman->table_exists($table)) {
+			$dbman->create_table($table);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071404, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071405) {
+	
+		// Define table deportes to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('deportes');
+	
+		// Launch rename table for deportes.
+		$dbman->rename_table($table, 'NEWNAMEGOESHERE');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071405, 'local', 'deportes');
+	}
+	//ooops ajajja
+	if ($oldversion < 2017071407) {
+	
+		// Define table deportes to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('newnamegoeshere');
+	
+		// Launch rename table for deportes.
+		$dbman->rename_table($table, 'sports');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071407, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071701) {
+	
+		// Define table deportes to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('deportes');
+	
+		// Launch rename table for deportes.
+		$dbman->rename_table($table, 'sports_class');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071701, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071702) {
+	
+		// Define table modules to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('modules');
+	
+		// Launch rename table for modules.
+		$dbman->rename_table($table, 'sports_modules');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071702, 'local', 'deportes');
+	}
+	if ($oldversion < 2017071703) {
+	
+		// Define table schedule to be renamed to NEWNAMEGOESHERE.
+		$table = new xmldb_table('schedule');
+	
+		// Launch rename table for schedule.
+		$dbman->rename_table($table, 'sports_schedule');
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071703, 'local', 'deportes');
+	}
 	return true;
 }
