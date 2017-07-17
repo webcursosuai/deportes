@@ -45,7 +45,41 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
+$table = new html_table("p");
+
+$table->head = array(
+		get_string("sport", "local_deportes"),
+		get_string("teacher", "local_deportes"),
+		get_string("t_start", "local_deportes"),
+		get_string("t_end", "local_deportes"),
+		get_string("reserved", "local_deportes"),
+		get_string("quota", "local_deportes"),
+		""
+);
+
+$table->size = array(
+		"15%",
+		"20%",
+		"15%",
+		"15%",
+		"15%",
+		"10%",
+		"10%"
+);
+
+// Ejemplo
+$table->data[] = array(
+		"RPM",
+		"Javiera Constanza Ruiz Ganga",
+		"15-03-2017 13:10",
+		"15-03-2017 14:10",
+		"31",
+		"45",
+		get_string("reserve", "local_deportes")
+);
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "reserve");
+echo html_writer::table($table);
 echo $OUTPUT->footer();
