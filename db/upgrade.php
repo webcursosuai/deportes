@@ -19,7 +19,7 @@
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
-function xmldb_local_sync_upgrade($oldversion) {
+function xmldb_local_deportes_upgrade($oldversion) {
 	global $CFG, $DB;
 	$dbman = $DB->get_manager();
 	if ($oldversion < 2017071801) {
