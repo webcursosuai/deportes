@@ -74,3 +74,56 @@ class deportes_add_form_sports extends moodleform {
 		return $errors;
 	}
 }
+class deportes_edit_sportsform extends moodleform{
+	function definition(){
+
+		$mform = $this->_form;
+		$instance = $this->_customdata;
+		$edition = $instance["edition"];
+		$mform->setType("edition", PARAM_TEXT);
+		$arraysportstype = array(
+				3 => "Seleccione un tipo de deporte",
+				0 => "Outdoors",
+				1 => "Fitness"
+		);
+		$mform->addElement("text", "name", "Name");
+		$mform->setType( "name", PARAM_TEXT);
+		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
+		$mform->setType("type", PARAM_INT);
+		$mform->addElement("hidden", "lastmodified", "Fecha");
+		$mform->setType( "date", PARAM_INT);
+
+
+		$mform->addElement("hidden", "action", "edit");
+		$mform->addElement("hidden", "edition", $edition);
+		$mform->setType("action", PARAM_TEXT);
+
+		$this->add_action_buttons(true, "Save");
+	}
+
+	public function validation($data, $files){
+		$errors = array();
+
+		$name = $data["name"];
+		$type = $data["type"];
+		$date = $data["date"];
+
+		$query = "Select id
+				FROM {sports_classes}
+				WHERE name = ?";
+
+		if(empty($name)){
+			$errors["name"] = "Qué deporte desea editar?";//lang
+		}
+		else if(is_numeric($name)){
+			$errors["name"] = "Ese nombre no es valido";//lang
+		}
+		else if($DB->get_record_sql($query, array($name))){
+			$errors["name"] = "Ese deporte ya existe";//lang
+		}
+		if($type != 0 && $type != 1){
+			$errors["type"] = "Qué tipo de deporte es?";
+		}
+		return $errors;
+	}
+}

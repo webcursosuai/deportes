@@ -21,7 +21,6 @@
 */
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once ($CFG->dirroot . "/local/deportes/form/sports_form.php");
-require_once ($CFG->dirroot . "/local/deportes/form/sports_editsportsform.php");
 global $PAGE, $CFG, $OUTPUT, $DB, $USER;
 
 $action = optional_param("action", "view", PARAM_TEXT);
@@ -149,22 +148,22 @@ if ($action == "view"){
 	if($sportcounter>0){
 		//If there are sports in the DB which have not been deleted...
 		$table->head = array("Name", "Tipo de deporte", "Editar", "Borrar");
-		foreach($getsports as $ev){
+		foreach($getsports as $currentsport){
 			//Add a button for each sport for editing or deleting
 			$urlsport = new moodle_url("/local/deportes/addsports.php", array(
 					"action" => "edit",
-					"edition" => $ev->id,
+					"edition" => $currentsport->id,
 			));
 			$editsporticon = new pix_icon("i/edit", "Editar");
 			$urldelete = new moodle_url("/local/deportes/addsports.php", array(
 					"action" => "delete",
-					"edition" => $ev->id,
+					"edition" => $currentsport->id,
 			));
 			$deletesporticon = new pix_icon("t/delete", "Borrar");
-			$ev->type = ($ev->type == 0) ? 'Outdoor' : 'Fitness';				
+			$currentsport->type = ($currentsport->type == 0) ? 'Outdoor' : 'Fitness';				
 			$table->data[] = array(
-					$ev->name,
-					$ev->type,
+					$currentsport->name,
+					$currentsport->type,
 					$OUTPUT->action_icon($urlsport, $editsporticon),
 					$OUTPUT->action_icon($urldelete, $deletesporticon,
 							new confirm_action("Esta completamente seguro de que quiere borrar este deporte?"))//lang
