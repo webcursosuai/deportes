@@ -43,7 +43,7 @@ $context = context_system::instance();
 
 $url = new moodle_url("/local/deportes/modules.php");
 $PAGE->navbar->add(get_string("nav_title", "local_deportes"));
-$PAGE->navbar->add(get_string("attendance", "local_deportes"), $url);
+$PAGE->navbar->add(get_string("modules", "local_deportes"), $url);
 $PAGE->set_context($context);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout("standard");
