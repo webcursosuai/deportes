@@ -20,7 +20,7 @@
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once ($CFG->dirroot . "/local/deportes/form/sports_form.php");
+require_once ($CFG->dirroot . "/local/deportes/forms/sports_form.php");
 global $PAGE, $CFG, $OUTPUT, $DB, $USER;
 
 $action = optional_param("action", "view", PARAM_TEXT);
@@ -132,7 +132,6 @@ if ($action == "delete"){
 
 //View sports
 if ($action == "view"){
-	$table = new html_table();
 
 	$query = "SELECT * FROM {sports_classes}
 			WHERE lastmodified != 0
@@ -147,6 +146,7 @@ if ($action == "view"){
 	}
 	if($sportcounter>0){
 		//If there are sports in the DB which have not been deleted...
+		$table = new html_table();
 		$table->head = array("Name", "Tipo de deporte", "Editar", "Borrar");
 		foreach($getsports as $currentsport){
 			//Add a button for each sport for editing or deleting
