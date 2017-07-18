@@ -13,20 +13,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-
-/**
- *
-*
+/*
 * @package    local
 * @subpackage deportes
-* @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)					
+* @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->pluginname = "local_deportes";
-$plugin->component = "local_deportes";
-$plugin->version   = '2017071801';
-$plugin->requires = 2015111600;
+function xmldb_local_deportes_upgrade($oldversion) {
+	global $CFG, $DB;
+	$dbman = $DB->get_manager();
+	if ($oldversion < 2017071801) {
+	
+		// Define field day to be added to sports_schedule.
+		$table = new xmldb_table('sports_schedule');
+		$field = new xmldb_field('day', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'idmodules');
+	
+		// Conditionally launch add field day.
+		if (!$dbman->field_exists($table, $field)) {
+			$dbman->add_field($table, $field);
+		}
+	
+		// Deportes savepoint reached.
+		upgrade_plugin_savepoint(true, 2017071801, 'local', 'deportes');
+	}
+	
+}
