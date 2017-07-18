@@ -120,9 +120,7 @@ if ($action == "delete"){
 		$deleter->id = $edition;
 		$deleter->lastmodified = 0;
 
-		$DB->update_record("sports_classes", $deleter);
-		//Update selected sport, if lastmodified is 0, then it won't be shown anymore
-		//But it will remain in the DB
+		$DB->delete_records("sports_classes", array("id" => $deleter->id));
 		$action = "view";
 		$status = "Deporte borrado satisfactoriamente"; //lang
 		redirect($url);
