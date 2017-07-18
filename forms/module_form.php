@@ -25,10 +25,9 @@ require_once(dirname(dirname(dirname(dirname(__FILE__))))."/config.php");
 require_once ($CFG->libdir . "/formslib.php");
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
-class sports_module_form extends moodleform {
+class sports_addmodule_form extends moodleform {
 
 	public function definition(){
-		global $DB;
 		
 		$mform = $this->_form;
 		
@@ -36,12 +35,12 @@ class sports_module_form extends moodleform {
 		$mform->addElement('text', 'name', get_string('module_name','local_deportes'));
 		$mform->setType( 'name', PARAM_TEXT);
 		$mform->addHelpButton('name', 'module_name', 'local_deportes');
-		$mform->addElement('text', 'initialhour', get_string('module_initialhour', 'local_deportes'));
-		$mform->setType( 'initialhour', PARAM_TEXT);
-		$mform->addHelpButton('initialhour', 'module_initialhour', 'local_deportes');
-		$mform->addElement('text', 'endhour', get_string('module_endhour', 'local_deportes'));
-		$mform->setType( 'endhour', PARAM_TEXT);
-		$mform->addHelpButton('endhour', 'module_endhour', 'local_deportes');
+		$mform->addElement('text', 'starttime', get_string('module_initialhour', 'local_deportes'));
+		$mform->setType( 'starttime', PARAM_TEXT);
+		$mform->addHelpButton('starttime', 'module_initialhour', 'local_deportes');
+		$mform->addElement('text', 'endtime', get_string('module_endhour', 'local_deportes'));
+		$mform->setType( 'endtime', PARAM_TEXT);
+		$mform->addHelpButton('endtime', 'module_endhour', 'local_deportes');
 		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), array(get_string('fitness','local_deportes'),get_string('outdoor','local_deportes')));
 		$mform->setType( 'type', PARAM_TEXT);
 		$mform->addHelpButton('type', 'module_type', 'local_deportes');
@@ -51,8 +50,91 @@ class sports_module_form extends moodleform {
 		$this->add_action_buttons(true);
 	}
 	public function validation($data, $files){
+		global $DB;
 		
 		$errors = array();
+		
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if (! $DB->get_record_select("sports_modules", "name = ?", array(trim($data ["name"])))) {
+				if (! ctype_alnum($data['name'])) {
+					$errors ['name'] = get_string('alphanumericplease', 'local_deportes');
+				}
+			}else{
+				$errors ['name'] = get_string('alreadyexist', 'local_deportes');
+			}
+		}else{
+			$errors ['name'] = get_string('required','local_deportes');
+		}
+		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
+			$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+		}
+		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
+			$errors ['endtime'] = get_string('hourformatplease','local_deportes');
+		}
+		if(! (strtotime($data['starttime']) < strtotime($data['endtime']))){
+			if(! isset($errors ['endtime']) && ! isset($errors ['starttime'])){
+				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
+			}
+		}
+		
+		return $errors;
+		
+	}
+}
+class sports_editmodule_form extends moodleform {
+	public function definition(){
+		global $DB;
+		
+		$mform = $this->_form;
+		$instance = $this->_customdata;
+		$editid = $instance["id"];
+		
+		$mform->addElement('header', 'module_form', get_string('module_form', 'local_deportes'));
+		$mform->addElement('text', 'name', get_string('module_name','local_deportes'));
+		$mform->setType( 'name', PARAM_TEXT);
+		$mform->addHelpButton('name', 'module_name', 'local_deportes');
+		$mform->addElement('text', 'starttime', get_string('module_initialhour', 'local_deportes'));
+		$mform->setType( 'starttime', PARAM_TEXT);
+		$mform->addHelpButton('starttime', 'module_initialhour', 'local_deportes');
+		$mform->addElement('text', 'endtime', get_string('module_endhour', 'local_deportes'));
+		$mform->setType( 'endtime', PARAM_TEXT);
+		$mform->addHelpButton('endtime', 'module_endhour', 'local_deportes');
+		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), array(get_string('fitness','local_deportes'),get_string('outdoor','local_deportes')));
+		$mform->setType( 'type', PARAM_TEXT);
+		$mform->addHelpButton('type', 'module_type', 'local_deportes');
+		$mform->addElement("hidden", "action", "edit");
+		$mform->setType("action", PARAM_TEXT);
+		$mform->addElement("hidden", "editid", $editid);
+		$mform->setType("editid", PARAM_TEXT);
+		$this->add_action_buttons(true);
+	}
+	public function validation($data, $files){
+		global $DB;
+		
+		$errors = array();
+		
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if (! $DB->get_record_select("sports_modules", "name = ? AND id != ".$data['editid'], array(trim($data ["name"])))) {
+				if (! ctype_alnum($data['name'])) {
+					$errors ['name'] = get_string('alphanumericplease', 'local_deportes');
+				}
+			}else{
+				$errors ['name'] = get_string('alreadyexist', 'local_deportes');
+			}
+		}else{
+			$errors ['name'] = get_string('required','local_deportes');
+		}
+		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
+			$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+		}
+		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
+				$errors ['endtime'] = get_string('hourformatplease','local_deportes');
+		}
+		if(! (strtotime($data['starttime']) < strtotime($data['endtime']))){
+			if(! isset($errors ['endtime']) && ! isset($errors ['starttime'])){
+			$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
+			}
+		}
 		
 		return $errors;
 		

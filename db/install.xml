@@ -22,6 +22,8 @@
         <FIELD NAME="starttime" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Time at which the module starts"/>
         <FIELD NAME="endtime" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Time at which the module ends"/>
         <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="0 for outdoors 1 for fitness"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
