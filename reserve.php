@@ -20,7 +20,7 @@
 *
 * @package    local
 * @subpackage deportes
-* @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)
+* @copyright  2017	Mihail Pozarski (mpozarski944@gmail.com)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
@@ -45,6 +45,27 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
+$email = $USER->email;
+if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+	print_error(get_string("notvalidemail", "local_deportes"));
+}
+
+$curl = curl_init();
+$url = $CFG->deportes_urldeportesalumno;
+$token = $CFG->sync_token;
+$fields = array(
+		"token" => $token,
+		"email" => $email
+);
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($curl, CURLOPT_POST, TRUE);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
+curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+$result = json_decode(curl_exec($curl));
+curl_close($curl);
+
+
 $table = new html_table("p");
 
 $table->head = array(
@@ -67,16 +88,19 @@ $table->size = array(
 		"10%"
 );
 
-// Ejemplo
-$table->data[] = array(
-		"RPM",
-		"Javiera Constanza Ruiz Ganga",
-		"15-03-2017 13:10",
-		"15-03-2017 14:10",
-		"31",
-		"45",
-		get_string("reserve", "local_deportes")
-);
+foreach($result as $sport){
+	$sportinfo = array(
+			$sport->name,
+			$sport->led_by,
+			$sport->whenHHMM,
+			$sport->endHHMM,
+			$sport->reservados,
+			$sport->capacity,
+			$OUTPUT->single_button('https://intranet.uai.cl/WebPages/Deporte/Reservas.aspx',get_string('reserve','local_deportes'))
+	);
+	
+	$table->data[] = $sportinfo	;
+}
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
