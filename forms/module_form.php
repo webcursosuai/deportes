@@ -65,11 +65,19 @@ class sports_addmodule_form extends moodleform {
 		}else{
 			$errors ['name'] = get_string('required','local_deportes');
 		}
-		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
-			$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
+				$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+			}
+		}else{
+			$errors ['starttime'] = get_string('required','local_deportes');
 		}
-		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
-			$errors ['endtime'] = get_string('hourformatplease','local_deportes');
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
+				$errors ['endtime'] = get_string('hourformatplease','local_deportes');
+			}
+		}else{
+			$errors ['endtime'] = get_string('required','local_deportes');
 		}
 		if(! (strtotime($data['starttime']) < strtotime($data['endtime']))){
 			if(! isset($errors ['endtime']) && ! isset($errors ['starttime'])){
@@ -124,15 +132,23 @@ class sports_editmodule_form extends moodleform {
 		}else{
 			$errors ['name'] = get_string('required','local_deportes');
 		}
-		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
-			$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['starttime'])){
+				$errors ['starttime'] = get_string('hourformatplease','local_deportes');
+			}
+		}else{
+			$errors ['starttime'] = get_string('required','local_deportes');
 		}
-		if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
+		if (isset($data ["name"]) && ! empty($data ["name"]) && $data ["name"] != "" && $data ["name"] != null) {
+			if(! preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $data['endtime'])){
 				$errors ['endtime'] = get_string('hourformatplease','local_deportes');
+			}
+		}else{
+			$errors ['endtime'] = get_string('required','local_deportes');
 		}
 		if(! (strtotime($data['starttime']) < strtotime($data['endtime']))){
 			if(! isset($errors ['endtime']) && ! isset($errors ['starttime'])){
-			$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
+				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
 			}
 		}
 		

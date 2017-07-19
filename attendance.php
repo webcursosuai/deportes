@@ -21,6 +21,7 @@
 * @package    local
 * @subpackage deportes
 * @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)
+* @copyright  2017	Mihail Pozarski (mpozarski944@gmail.com)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
@@ -46,12 +47,17 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
+$email = $USER->email;
+if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+	print_error(get_string("notvalidemail", "local_deportes"));
+}
+
 $curl = curl_init();
-$url = "http://webapi.uai.cl/webcursos/asistenciasAlumno";
-$token = "0e5f3b2d4b974aa0b1835b6dc756a696dQoQ01";
+$url = $CFG->deportes_urlasistenciasalumno;
+$token = $CFG->sync_token;
 $fields = array(
 		"token" => $token,
-		"email" => "mscalvini@alumnos.uai.cl"
+		"email" => $email
 );
 curl_setopt($curl, CURLOPT_URL, $url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -91,8 +97,8 @@ foreach($data as $attendance) {
 			$attendance->Semana,
 			$attendance->Dia."-".$attendance->Mes,
 			$attendance->Deporte,
-			substr($attendance->HoraInicio, -8, 5),
-			substr($attendance->HoraTermino, -8, 5),
+			date("H:i",strtotime($attendance->HoraInicio)),
+			date("H:i",strtotime($attendance->HoraTermino)),
 			$attendance->Asistencia
 	);
 	
