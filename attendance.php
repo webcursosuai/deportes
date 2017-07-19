@@ -90,8 +90,14 @@ $table->size = array(
 );
 
 $data = $result->asistencias->asistencias;
-
+$attendancechart = array();
 foreach($data as $attendance) {
+	$attendancechartinfo = array(
+			date('Y-m-d',strtotime($attendance->HoraInicio)),
+			$attendance->Asistencia
+			
+	);
+	$attendancechart[] = $attendancechartinfo;
 	$attendanceinfo = array(
 			date('F', mktime(0, 0, 0, $attendance->Mes, 10)),
 			$attendance->Semana,
@@ -105,10 +111,47 @@ foreach($data as $attendance) {
 	$table->data[] = $attendanceinfo;
 }
 
-
-
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
+?>
+<html>
+<head>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load("current", {packages:["calendar"]});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+	var dataarray = <?php echo  json_encode($attendancechart)?>;
+	var arraylength = dataarray.length;
+	var startdate = 0;
+	
+	for (var i = 0; i < arraylength; i++) {
+		startdate = dataarray[i][0]
+		dataarray[i][0] = new Date(startdate);
+	}
+	
+	var dataTable = new google.visualization.DataTable();
+	dataTable.addColumn({ type: 'date', id: 'Date' });
+	dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+	dataTable.addRows(dataarray);
+	
+	var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+	
+	var options = {
+		title: "attendance"
+	};
+	
+	chart.draw(dataTable, options);
+}
+</script>
+</head>
+<body>
+<div id="calendar_basic" style="width: 1000px; height: 200px;"></div>
+</body>
+</html>
+<?php
 echo html_writer::table($table);
 echo $OUTPUT->footer();
