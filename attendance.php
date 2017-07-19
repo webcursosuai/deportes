@@ -149,7 +149,11 @@ function drawChart() {
 	var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 	
 	var options = {
-		title: "attendance"
+		title: "attendance",
+		colorAxis:{
+			minValue:-1,
+			maxValue:1
+		}
 	};
 	
 	chart.draw(dataTable, options);
