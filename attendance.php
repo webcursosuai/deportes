@@ -96,13 +96,21 @@ $table->size = array(
 
 $data = $result->asistencias->asistencias;
 $attendancechart = array();
+$repeated = 0;
 foreach($data as $attendance) {
-	$attendancechartinfo = array(
-			date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')),
-			$attendance->Asistencia
-			
-	);
+	if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date){
+			$repeated = 1;
+	}
+	if($repeated != 1){
+		$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
+		$attendancechartinfo = array(
+				$date,
+				$attendance->Asistencia
+		);
+	}
 	$attendancechart[] = $attendancechartinfo;
+	$repeated = 0;
+	
 	$attendanceinfo = array(
 			date('F', mktime(0, 0, 0, $attendance->Mes, 10)),
 			$attendance->Semana,
