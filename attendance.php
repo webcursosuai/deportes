@@ -48,6 +48,7 @@ $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
 $email = $USER->email;
+
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 	print_error(get_string("notvalidemail", "local_deportes"));
 }
@@ -66,6 +67,10 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
 curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 $result = json_decode(curl_exec($curl));
 curl_close($curl);
+
+//if(!(count($result->asistencias->asistencias)>0)){
+	//print_error(get_string("noattendance", "local_deportes"));
+//}
 
 $table = new html_table("p");
 
@@ -93,7 +98,7 @@ $data = $result->asistencias->asistencias;
 $attendancechart = array();
 foreach($data as $attendance) {
 	$attendancechartinfo = array(
-			date('Y-m-d',strtotime($attendance->HoraInicio)),
+			date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')),
 			$attendance->Asistencia
 			
 	);
@@ -114,9 +119,12 @@ foreach($data as $attendance) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
+
+echo html_writer::tag('div','', array('id' => 'calendar_basic'));
+echo html_writer::table($table);
+
+echo $OUTPUT->footer();
 ?>
-<html>
-<head>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 google.charts.load("current", {packages:["calendar"]});
@@ -147,11 +155,3 @@ function drawChart() {
 	chart.draw(dataTable, options);
 }
 </script>
-</head>
-<body>
-<div id="calendar_basic" style="width: 1000px; height: 200px;"></div>
-</body>
-</html>
-<?php
-echo html_writer::table($table);
-echo $OUTPUT->footer();
