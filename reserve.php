@@ -65,7 +65,6 @@ curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 $result = json_decode(curl_exec($curl));
 curl_close($curl);
 
-
 $table = new html_table("p");
 
 $table->head = array(
@@ -105,5 +104,9 @@ foreach($result as $sport){
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "reserve");
-echo html_writer::table($table);
+if(empty($result)){
+	echo html_writer::div(get_string("unavailable","local_deportes"),"alert alert-info", array("role"=>"alert"));
+}else{
+	echo html_writer::table($table);
+}
 echo $OUTPUT->footer();

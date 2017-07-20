@@ -7,6 +7,7 @@
 
 defined("MOODLE_INTERNAL") || die();
 
+$string["pluginname"] = "deportes";
 $string["view"] = "View";
 $string["attendance"] = "Attendance";
 $string["schedule"] = "Schedule";
