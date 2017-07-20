@@ -31,6 +31,10 @@ class sports_addmodule_form extends moodleform {
 		
 		$mform = $this->_form;
 		
+		$options['option'] =  get_string('selectoption','local_deportes');
+		$options[0] = get_string('outdoor','local_deportes');
+		$options[1] = get_string('fitness','local_deportes');
+		
 		$mform->addElement('header', 'module_form', get_string('module_form', 'local_deportes'));
 		$mform->addElement('text', 'name', get_string('module_name','local_deportes'));
 		$mform->setType( 'name', PARAM_TEXT);
@@ -41,7 +45,7 @@ class sports_addmodule_form extends moodleform {
 		$mform->addElement('text', 'endtime', get_string('module_endhour', 'local_deportes'));
 		$mform->setType( 'endtime', PARAM_TEXT);
 		$mform->addHelpButton('endtime', 'module_endhour', 'local_deportes');
-		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), array(get_string('outdoor','local_deportes'),get_string('fitness','local_deportes')));
+		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), $options);
 		$mform->setType( 'type', PARAM_TEXT);
 		$mform->addHelpButton('type', 'module_type', 'local_deportes');
 		$mform->addElement("hidden", "action", "add");
@@ -84,6 +88,9 @@ class sports_addmodule_form extends moodleform {
 				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
 			}
 		}
+		if(! $data['type'] != 'option'){
+			$errors ['type'] = get_string('selectoption','local_deportes');
+		}
 		
 		return $errors;
 		
@@ -97,6 +104,10 @@ class sports_editmodule_form extends moodleform {
 		$instance = $this->_customdata;
 		$editid = $instance["id"];
 		
+		$options['option'] =  get_string('selectoption','local_deportes');
+		$options[0] = get_string('outdoor','local_deportes');
+		$options[1] = get_string('fitness','local_deportes');
+		
 		$mform->addElement('header', 'module_form', get_string('module_form', 'local_deportes'));
 		$mform->addElement('text', 'name', get_string('module_name','local_deportes'));
 		$mform->setType( 'name', PARAM_TEXT);
@@ -107,7 +118,7 @@ class sports_editmodule_form extends moodleform {
 		$mform->addElement('text', 'endtime', get_string('module_endhour', 'local_deportes'));
 		$mform->setType( 'endtime', PARAM_TEXT);
 		$mform->addHelpButton('endtime', 'module_endhour', 'local_deportes');
-		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), array(get_string('fitness','local_deportes'),get_string('outdoor','local_deportes')));
+		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), $options);
 		$mform->setType( 'type', PARAM_TEXT);
 		$mform->addHelpButton('type', 'module_type', 'local_deportes');
 		$mform->addElement("hidden", "action", "edit");
@@ -150,6 +161,9 @@ class sports_editmodule_form extends moodleform {
 			if(! isset($errors ['endtime']) && ! isset($errors ['starttime'])){
 				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
 			}
+		}
+		if(! $data['type'] != 'option'){
+			$errors ['type'] = get_string('selectoption','local_deportes');
 		}
 		
 		return $errors;
