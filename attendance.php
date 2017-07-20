@@ -103,6 +103,7 @@ if(count($result->asistencias->asistencias)>0){
 	$monthattendance = 0;
 	$today = date("m",strtotime(time()));
 	$counter = $page * $perpage + 1;
+	$date = 0;
 	foreach($data as $attendance) {
 		if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date){
 				$repeated = 1;
@@ -145,8 +146,11 @@ if(!(count($result->asistencias->asistencias)>0)){
 	echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 }else{
 	echo html_writer::tag('div','', array('id' => 'calendar_basic'));
-	echo html_writer::tag('h3',get_string('totalattendance','local_deportes').": ".$totalattendance, array("style"=>"display:inline; float:left;"));
-	echo html_writer::tag('h3',get_string('monthattendance','local_deportes').": ".$monthattendance, array("style"=>"display:inline; float:right;"));
+	echo html_writer::start_tag('div', array('class' => 'row'));
+	echo html_writer::tag('div',get_string('totalattendance','local_deportes').": ".$totalattendance, array("class"=>"col-md-4"));
+	echo html_writer::tag('div',get_string('totalattendance','local_deportes').": ".$totalattendance, array("class"=>"col-md-4"));
+	echo html_writer::tag('div',get_string('monthattendance','local_deportes').": ".$monthattendance, array("class"=>"col-md-4"));
+	echo html_writer::end_tag('div');
 	echo html_writer::table($table);
 }
 echo $OUTPUT->footer();
@@ -175,30 +179,13 @@ function drawChart() {
 	var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 	
 	var options = {
-		title: "attendance",
+		title: "<?php echo get_string('charttittle','local_deportes')?>",
 		width: '920',
 		colorAxis:{
 			minValue:-1,
 			maxValue:1
 		},
 		calendar: {
-		    dayOfWeekLabel: {
-		        fontName: 'Times-Roman',
-		        fontSize: 12,
-		        color: '#000000',
-		        bold: true,
-		        italic: true,
-		    },
-			yearLabel: {
-		        color: '#000000',
-		        bold: true,
-		        italic: true
-	      	},
-	      	monthLabel: {
-	            color: '#000000',
-	            bold: true,
-	            italic: true
-	        },
 		      dayOfWeekRightSpace: 10,
 		      daysOfWeek: '<?php echo get_string('calendarchartweek', 'local_deportes');?>',
 		    }
