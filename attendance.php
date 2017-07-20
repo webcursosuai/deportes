@@ -150,7 +150,7 @@ echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 if(!(count($result->asistencias->asistencias)>0)){
 	echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 }else{
-	echo html_writer::tag('div','', array('id' => 'calendar_basic'));
+	echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto;'));
 	
 	echo html_writer::table($headingtable);
 	echo html_writer::table($table);
