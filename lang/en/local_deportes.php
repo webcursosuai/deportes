@@ -27,6 +27,7 @@ $string["t_end"] = "End time";
 $string["fitness"] = "Fitness";
 $string["outdoor"] = "Outdoor";
 
+$string["calendarchartweek"] = "SMTWTFS";
 //module_form langs
 $string["module_form"] = "Modules From";
 $string["module_name"] = "Module name";
