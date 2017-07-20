@@ -86,10 +86,10 @@ if(count($result->asistencias->asistencias)>0){
 	);
 	
 	$table->size = array(
+			"5%",
 			"7%",
 			"7%",
-			"7%",
-			"13%",
+			"15%",
 			"20%",
 			"15%",
 			"15%",
@@ -134,9 +134,14 @@ if(count($result->asistencias->asistencias)>0){
 		);
 		$counter++;
 		
-		$table->data[] = $attendanceinfo;
-		
+		$table->data[] = $attendanceinfo;		
 	}
+	$headingtable = new html_table("p");
+	$headingtable->data[] = array(
+			html_writer::tag('h4',get_string('totalattendance','local_deportes').": ".$totalattendance),
+			html_writer::tag('h4',get_string('minimumattendance','local_deportes').": ".$totalattendance),
+			html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthattendance)
+	);
 }
 
 echo $OUTPUT->header();
@@ -146,11 +151,8 @@ if(!(count($result->asistencias->asistencias)>0)){
 	echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 }else{
 	echo html_writer::tag('div','', array('id' => 'calendar_basic'));
-	echo html_writer::start_tag('div', array('class' => 'row'));
-	echo html_writer::tag('div',get_string('totalattendance','local_deportes').": ".$totalattendance, array("class"=>"col-md-4"));
-	echo html_writer::tag('div',get_string('totalattendance','local_deportes').": ".$totalattendance, array("class"=>"col-md-4"));
-	echo html_writer::tag('div',get_string('monthattendance','local_deportes').": ".$monthattendance, array("class"=>"col-md-4"));
-	echo html_writer::end_tag('div');
+	
+	echo html_writer::table($headingtable);
 	echo html_writer::table($table);
 }
 echo $OUTPUT->footer();
@@ -179,7 +181,7 @@ function drawChart() {
 	var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 	
 	var options = {
-		title: "<?php echo get_string('charttittle','local_deportes')?>",
+		title: "<?php echo get_string('attendance','local_deportes')?>",
 		width: '920',
 		colorAxis:{
 			minValue:-1,

@@ -28,6 +28,10 @@ $string["fitness"] = "Fitness";
 $string["outdoor"] = "Outdoor";
 
 $string["calendarchartweek"] = "DLMMJVS";
+$string["number"] = "#";
+$string["totalattendance"] = "Asistencias totales";
+$string["minimumattendance"] = "Minimo requerido";
+$string["monthattendance"] = "Este mes";
 
 //module_form langs
 $string["module_form"] = "Formulario Modulos";

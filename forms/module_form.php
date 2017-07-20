@@ -41,7 +41,7 @@ class sports_addmodule_form extends moodleform {
 		$mform->addElement('text', 'endtime', get_string('module_endhour', 'local_deportes'));
 		$mform->setType( 'endtime', PARAM_TEXT);
 		$mform->addHelpButton('endtime', 'module_endhour', 'local_deportes');
-		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), get_string('outdoor','local_deportes'),array(get_string('fitness','local_deportes')));
+		$mform->addElement('select', 'type', get_string('module_type', 'local_deportes'), array(get_string('outdoor','local_deportes'),get_string('fitness','local_deportes')));
 		$mform->setType( 'type', PARAM_TEXT);
 		$mform->addHelpButton('type', 'module_type', 'local_deportes');
 		$mform->addElement("hidden", "action", "add");
