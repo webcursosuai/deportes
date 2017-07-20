@@ -27,6 +27,8 @@ $string["t_end"] = "Hora término";
 $string["fitness"] = "Fitness";
 $string["outdoor"] = "Outdoor";
 
+$string["calendarchartweek"] = "DLMMJVS";
+
 //module_form langs
 $string["module_form"] = "Formulario Modulos";
 $string["module_name"] = "Nombre del modulo";
