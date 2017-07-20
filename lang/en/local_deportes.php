@@ -28,6 +28,11 @@ $string["fitness"] = "Fitness";
 $string["outdoor"] = "Outdoor";
 
 $string["calendarchartweek"] = "SMTWTFS";
+$string["number"] = "#";
+$string["totalattendance"] = "Total attendance";
+$string["minimumattendance"] = "Required minimum";
+$string["monthattendance"] = "This month";
+$string[""] = "";
 //module_form langs
 $string["module_form"] = "Modules From";
 $string["module_name"] = "Module name";
