@@ -90,7 +90,7 @@ if($action == 'view'){
 				get_string('delete','local_deportes')
 		);
 		foreach($modules as $module){
-			$type = ($module->type == 0) ? 'Fitness' : 'Outdoor';
+			$type = ($module->type == 0) ? 'Outdoor' : 'Fitness';
 			//Add a button for each sport for editing or deleting
 			$urledit = new moodle_url("/local/deportes/modules.php", array(
 					"action" => "edit",
