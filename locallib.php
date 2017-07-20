@@ -49,134 +49,99 @@ function deportes_tabs() {
 function deportes_get_schedule($orderby, $type){
 	global $DB;
 	
-	$query = " SELECT id,
-	name,
-	day,
-	module
-	FROM {deportes}
-	WHERE type = ?
-	$orderby, day
+	$query = "SELECT s.id,
+	c.name,
+	s.day,
+	CONCAT(m.starttime,' - ',m.endtime) AS starttime 
+	FROM {sports_classes} as c
+	INNER JOIN {sports_schedule} AS s ON (c.id = s.idsports)
+	INNER JOIN {sports_modules} AS m ON (s.idmodules = m.id)
+	WHERE m.type = ?
+	$orderby, s.day
 	";
-	$getschedule = $DB->get_records_sql($query, array($type)); 
+	$getschedule = $DB->get_records_sql($query, array($type));
 	return $getschedule;
 }
-function deportes_get_modules_fitness($array){
-	$nofmodules = count($array);
-	$keys = array_keys($array);
-	for ($counterofmodules=0;$counterofmodules<$nofmodules;$counterofmodules++){
-		if (array_values($array)[$counterofmodules][0] == '1'){
-			$hora = '8:15 - 9:15';
-			$array[$keys[$counterofmodules]][0] = $hora;
+function deportes_arraymakingiftherearestillsportsleft($auxiliaryarrayn1){
+	$newmodulearray = array("","","","","","");
+	$actualday = 1;
+	foreach ($auxiliaryarrayn1 as $key => $auxarray){
+		if ($auxarray->day == $actualday){
+			$newmodulearray[$actualday] = $auxarray->name;
+			unset($auxiliaryarrayn1[$key]);
+			$actualday++;
 		}
-		if (array_values($array)[$counterofmodules][0] == '2'){
-			$hora = '10:10 - 11:10';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '3'){
-			$hora = '11:40 - 12:40';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '4'){
-			$hora = '13:10 - 14:10';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '5'){
-			$hora = '15:10 - 16:10';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '6'){
-			$hora = '16:40 - 17:40';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '1'){
-			$hora = '18:10 - 19:10';
-			$array[$keys[$counterofmodules]][0] = $hora;
+		else if ($auxarray->day > $actualday){
+			$actualday = $auxarray->day;
+			$newmodulearray[$actualday] = $auxarray->name;
+			unset($auxiliaryarrayn1[$key]);
+			$actualday++;
 		}
 	}
-	return $array;
-}
-function deportes_get_modules_outdoors($array){
-	$nofmodules = count($array);
-	$keys = array_keys($array);
-	for ($counterofmodules=0;$counterofmodules<$nofmodules;$counterofmodules++){
-		if (array_values($array)[$counterofmodules][0] == '1'){
-			$hora = '10:00 - 11:00';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '2'){
-			$hora = '11:30 - 12:30';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '3'){
-			$hora = '12:30 - 13:30';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '4'){
-			$hora = '13:30 - 14:30';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '5'){
-			$hora = '15:00 - 16:00';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '6'){
-			$hora = '16:40 - 17:40';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-		if (array_values($array)[$counterofmodules][0] == '1'){
-			$hora = '17:40 - 20:40';
-			$array[$keys[$counterofmodules]][0] = $hora;
-		}
-	}
+	$array = array(
+			0 => $auxiliaryarrayn1,
+			1 => $newmodulearray
+	);
 	return $array;
 }
 function deportes_arrayforschedule($getschedule, $nofsports){
 	$counterofsports=0;
 	$array = array();
 	$modulearray = array("","","","","","");
-	$auxiliaryarray1 = array("","","","","","");
-	$auxiliaryarray2 = array("","","","","","");
 	$getschedule = array_values($getschedule);
-	for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
-		$module = $getschedule[$counterofsports]->module;
-		$modulearray[0] = $module;
-		if ($modulearray[$getschedule[$counterofsports]->day] != ""){
-			if($auxiliaryarray1[$getschedule[$counterofsports]->day] != ""){
-				$auxiliaryarray2[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
+	foreach ($getschedule as $currentsport){
+		//gets the module of the sport in the array. The algorithm will work with each module, one at a time
+		$module = $currentsport->starttime;
+		$auxiliaryarrayn1 = array();
+		$key=0;
+		foreach($getschedule as $schedulekey => $schedule){
+
+			if ($schedule->starttime == $module ){
+				$auxiliaryarrayn1[$key] = $schedule;
+				unset($getschedule[$schedulekey]);
+				$key++;
+				//it makes an array with all the sports in that module, and it erreases them from the array returned form the DB
 			}
-			else{
-				$auxiliaryarray1[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
+		}
+		if(!empty($auxiliaryarrayn1)){
+			//for some reason it still iterates for each element in the DB returned array, despite having elements erreased. However,
+			//they don't enter the previous foreach, so the $auxiliaryarrayn1 comes empty these times
+			$modulearrayn1 = array("","","","","",""); //this will later be a row in the schedule. First element is module, 
+			//the rest is each day. It will only have one sport per day. If there is more than one for the same module and day
+			//then a new array will be created
+			$actualday = 1; //since monday is the first day of the week despite the sorting of the schedule, we start with monday
+			$modulearrayn1[0] = $module;
+			foreach ($auxiliaryarrayn1 as $schedulekey => $auxarray){
+				if ($auxarray->day == $actualday){
+					//if the current day is the same as the one in the sport, then we add the sport to the array wich will later go into
+					//the schedule, and delete it from our auxiliary array for the current module
+					$modulearrayn1[$actualday] = $auxarray->name;
+					unset($auxiliaryarrayn1[$schedulekey]);
+					$actualday++; //we inmidiatly go to the next day, despite the possibility of having for sports for this same day. These
+					//sports will remain in the array
+				}
+				else if ($auxarray->day > $actualday){
+					//this condition would mean there is a day in the week with no sports, so we skip it. Other than that, it's the same as before
+					$actualday = $auxarray->day;
+					$modulearrayn1[$actualday] = $auxarray->name;
+					unset($auxiliaryarrayn1[$schedulekey]);
+					$actualday++;
+				}
 			}
-			//$modulearray[$getschedule[$counterofsports]->day] = $modulearray[$getschedule[$counterofsports]->day]."<br>".$getschedule[$counterofsports]->name;
+		
+			$array[count($array)] = $modulearrayn1; //the array created in the loop is added to the array 
+													//which will later be added to the schedule
 		}
-		else {
-			$modulearray[$getschedule[$counterofsports]->day] = $getschedule[$counterofsports]->name;
-		}
-		if ($counterofsports == $nofsports){
-			$array[count($array)] = $modulearray;
-		}
-		else if ($getschedule[$counterofsports+1]->module != $module){
-			$array[count($array)] = $modulearray;
-			$modulearray = array("","","","","","");
-			$array = deportes_check_auxarray($array, $auxiliaryarray1);
-			$array = deportes_check_auxarray($array, $auxiliaryarray2);
-			$auxiliaryarray1 = array("","","","","","");
-			$auxiliaryarray2 = array("","","","","","");
-		}
-		echo $counterofsports;
-	}
-	var_dump($array);
-	return $array;
-}
-function deportes_check_auxarray($array, $auxarray){
-	$controlvariable = 0;
-	foreach ($auxarray as $aux){
-		if($aux != ""){
-			$controlvariable++;
+		while(count($auxiliaryarrayn1) > 0){
+			//After adding the sport to the modulearray is deleted from the auxiliatyarrayn1 and the next day is checked. So, if the 
+			//is not empty then there still are some sports for that module, and they have to be worked
+			$newarray = deportes_arraymakingiftherearestillsportsleft($auxiliaryarrayn1);//this function does the same as before, with the difference it
+			//keeps the first element of the array empty, as we don't need to have the same module hours in the schedule several times
+			//it returns an array of arrays, the element 0 is what's left of auxiliaryarrayn1 and the element 1 is the equivalent of
+			//modulearray, which will later be added to the schedule
+			$array[count($array)] = $newarray[1];//the equivalent of modulearray is addded to the array wich will later be added to the schedule
+			$auxiliaryarrayn1 = $newarray[0];//uodates the auxiliaryarrayn1, so it's checked again and the process repeats if it's not empty yet
 		}
 	}
-	if($controlvariable > 0){
-		$array[count($array)] = $auxarray;
-	}
-	return $array;
+	return $array; //this is the array of arrays which will be added to the schedule. each array in the array is a row in the schedule
 }

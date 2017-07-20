@@ -34,12 +34,10 @@ class deportes_add_form_sports extends moodleform {
 		);
 		$mform->addElement("text", "name", "Name");
 		$mform->setType( "name", PARAM_TEXT);
-		$mform->addHelpButton( "name", get_string("sport_name", "local_deportes"));
+		$mform->addHelpButton('name', 'sports_name', 'local_deportes');
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
 		$mform->setType("type", PARAM_INT);
-		$mform->addHelpButton( "type", get_string("sport_type", "local_deportes"));
-		$mform->addElement("hidden", "lastmodified", "Fecha");
-		$mform->setType( "date", PARAM_INT);
+		$mform->addHelpButton( "type", "sport_type", "local_deportes");
 
 		$mform->addElement("hidden", "action", "add");
 		$mform->setType("action", PARAM_TEXT);
@@ -53,7 +51,6 @@ class deportes_add_form_sports extends moodleform {
 
 		$name = $data["name"];
 		$type = $data["type"];
-		$date = $data["date"];
 
 		$query = "Select id
 				FROM {sports_classes}

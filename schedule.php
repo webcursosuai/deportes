@@ -66,14 +66,14 @@ $tablefitness->define_headers(array(
 		"Viernes"
 ));
 $tablefitness->define_columns(array(
-		"module",
+		"starttime",
 		"lunes",
 		"martes",
 		"miercoles",
 		"jueves",
 		"viernes"
 ));
-$tablefitness->sortable(true, "module");
+$tablefitness->sortable(true, "starttime");
 $tablefitness->no_sorting("lunes");
 $tablefitness->no_sorting("martes");
 $tablefitness->no_sorting("miercoles");
@@ -81,45 +81,14 @@ $tablefitness->no_sorting("jueves");
 $tablefitness->no_sorting("viernes");
 $tablefitness->pageable(true);
 $tablefitness->setup();
-$orderbyfit = "ORDER BY module";
+$orderbyfit = "ORDER BY m.starttime";
 if ($tablefitness->get_sql_sort()){
-	$orderbyfit = 'ORDER BY '. $tablefitness->get_sql_sort();
+	$orderbyfit = 'ORDER BY m.'. $tablefitness->get_sql_sort();
 }
 
 $getschedulefitness = deportes_get_schedule($orderbyfit, 1);
-
-/*
-$nofsports = count($getschedulefitness);
-$counterofsports=0;
-$module;
-$array = array();
-$modulearray = array("","","","","","");
-for ($counterofsports = 0; $counterofsports < $nofsports; $counterofsports++){
-	$module = array_values($getschedulefitness)[$counterofsports]->module;
-	$modulearray[0] = $module;
-	if ($modulearray[array_values($getschedulefitness)[$counterofsports]->day] != ""){
-/*		$temporaryarray = array();
-		$temporaryarray[] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day];
-		$temporaryarray[count($modulearray[array_values($getschedulefitness)[$counterofsports]->day])] = array_values($getschedulefitness)[$counterofsports]->name;
-		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $temporaryarray;
-	
-		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = $modulearray[array_values($getschedulefitness)[$counterofsports]->day]."<br>".array_values($getschedulefitness)[$counterofsports]->name;
-	}
-	else {
-		$modulearray[array_values($getschedulefitness)[$counterofsports]->day] = array_values($getschedulefitness)[$counterofsports]->name;
-	}
-	if ($counterofsports+1 == $nofsports){
-		$array[count($array)] = $modulearray;
-	}
-	else if (array_values($getschedulefitness)[$counterofsports+1]->module != $module){
-		$array[count($array)] = $modulearray;
-		$modulearray = array("","","","","","");
-	}
-}
-*/
 $nofsports = count($getschedulefitness);
 $array = deportes_arrayforschedule($getschedulefitness, $nofsports);
-$array = deportes_get_modules_fitness($array);
 foreach($array as $modulararray){
 	$tablefitness->add_data(array(
 			"<span>".$modulararray[0]."</span>",
@@ -127,7 +96,7 @@ foreach($array as $modulararray){
 			"<span class='fitness'>".$modulararray[2]."</span>",
 			"<span class='fitness'>".$modulararray[3]."</span>",
 			"<span class='fitness'>".$modulararray[4]."</span>",
-			"<span class='fitness'>".$modulararray[5]."</span>"
+			"<span class='fitness'>".$modulararray[5]."</span>",
 	));
 }
 echo "<html>";
@@ -168,14 +137,14 @@ $tableoutdoors->define_headers(array(
 		"Viernes"
 ));
 $tableoutdoors->define_columns(array(
-		"module",
+		"starttime",
 		"lunes",
 		"martes",
 		"miercoles",
 		"jueves",
 		"viernes"
 ));
-$tableoutdoors->sortable(true, "module");
+$tableoutdoors->sortable(true, "starttime");
 $tableoutdoors->no_sorting("lunes");
 $tableoutdoors->no_sorting("martes");
 $tableoutdoors->no_sorting("miercoles");
@@ -183,15 +152,14 @@ $tableoutdoors->no_sorting("jueves");
 $tableoutdoors->no_sorting("viernes");
 $tableoutdoors->pageable(true);
 $tableoutdoors->setup();
-$orderbyout = "ORDER BY module";
+$orderbyout = "ORDER BY m.starttime";
 if ($tableoutdoors->get_sql_sort()){
-	$orderbyout = 'ORDER BY '. $tablefitness->get_sql_sort();
+	$orderbyout = 'ORDER BY m.'. $tableoutdoors->get_sql_sort();
 }
 
 $getscheduleoutdoors = deportes_get_schedule($orderbyout, 0);
 $nofsports = count($getscheduleoutdoors);
 $array = deportes_arrayforschedule($getscheduleoutdoors, $nofsports);
-$array = deportes_get_modules_outdoors($array);
 foreach($array as $modulararray){
 	$tableoutdoors->add_data(array(
 			"<span>".$modulararray[0]."</span>",
@@ -216,7 +184,7 @@ echo "</div>";
 echo "<form action='' id='out'>";
 echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbolito'>Futbolito<br>";
 echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Cross Training'>Cross Training<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Padel'>Padel<br>";
+echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Paddle'>Paddle<br>";
 echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Almuerzo'>Almuerzo<br>";
 echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbol Tennis'>Futbol Tennis <br>";
 echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Treking'>Treking<br>";
@@ -304,7 +272,7 @@ $(document).ready(function(){
 					'color':'black',
 					'background-color':'yellow'});
 				}
-			if ($(this).text() === 'Padel'){
+			if ($(this).text() === 'Paddle'){
 				$(this).parent().css({'font-weight':'bold',
 					'color':'white',
 					'background-color':'SteelBlue'});
@@ -312,7 +280,7 @@ $(document).ready(function(){
 			if ($(this).text() === 'Cross Training'){
 				$(this).parent().css({'font-weight':'bold',
 					'color':'White',
-					'background-color':'Turqoise'});
+					'background-color':'Turquoise'});
 				}
 			if ($(this).text() === 'Basquetbol'){
 				$(this).parent().css({'font-weight':'bold',
