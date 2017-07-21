@@ -105,7 +105,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "reserve");
 if(empty($result)){
-	echo html_writer::div(get_string("unavailable","local_deportes"),"alert alert-info", array("role"=>"alert"));
+	echo html_writer::div(get_string("nosportsleft","local_deportes"),"alert alert-info", array("role"=>"alert"));
 }else{
 	echo html_writer::table($table);
 }
