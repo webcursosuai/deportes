@@ -19,8 +19,8 @@
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
-defined('MOODLE_INTERNAL') || die();
-require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+defined("MOODLE_INTERNAL") || die();
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/config.php");
 require_once($CFG->libdir . "/formslib.php");
 
 
@@ -34,7 +34,7 @@ class deportes_add_form_sports extends moodleform {
 		);
 		$mform->addElement("text", "name", "Name");
 		$mform->setType( "name", PARAM_TEXT);
-		$mform->addHelpButton('name', 'sports_name', 'local_deportes');
+		$mform->addHelpButton("name", "sports_name", "local_deportes");
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
 		$mform->setType("type", PARAM_INT);
 		$mform->addHelpButton( "type", "sport_type", "local_deportes");
@@ -42,7 +42,7 @@ class deportes_add_form_sports extends moodleform {
 		$mform->addElement("hidden", "action", "add");
 		$mform->setType("action", PARAM_TEXT);
 
-		$this->add_action_buttons(true, 'Agregar Deporte');
+		$this->add_action_buttons(true, "Agregar Deporte");
 	}
 
 	public function validation($data, $files){
@@ -87,9 +87,6 @@ class deportes_edit_sportsform extends moodleform{
 		$mform->setType( "name", PARAM_TEXT);
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
 		$mform->setType("type", PARAM_INT);
-		$mform->addElement("hidden", "lastmodified", "Fecha");
-		$mform->setType( "date", PARAM_INT);
-
 
 		$mform->addElement("hidden", "action", "edit");
 		$mform->addElement("hidden", "edition", $edition);

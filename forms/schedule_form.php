@@ -40,15 +40,19 @@ class deportes_schedule_form extends moodleform {
 		}
 
 		$datamodules = array();
-		$getdatamodules = $DB->get_records("sports_modules", array("type" => $type));
+		$getmodulesquery = "SELECT id,
+				CONCAT (name, ' -> ', starttime, ' - ',endtime) as name
+				FROM {sports_modules}
+				WHERE type = ?";
+		$getdatamodules = $DB->get_records_sql($getmodulesquery, array("type" => $type));
 		foreach($getdatamodules as $getmodule){
 			$datamodules[$getmodule->id] = $getmodule->name;
 		}
 
-		$mform->addElement("select", "sportid", "Select a sport", $datasports);//lang
+		$mform->addElement("select", "idsports", "Select a sport", $datasports);//lang
 
 
-		$mform->addElement("select", "moduleid", "Select a module", $datamodules );//lang
+		$mform->addElement("select", "idmodules", "Select a module", $datamodules );//lang
 
 		$arraydaysform = array();
 		$arraydays = array(get_string('monday', 'local_deportes'), get_string('tuesday', 'local_deportes'), get_string('wednesday', 'local_deportes'), get_string('thursday', 'local_deportes'), get_string('friday', 'local_deportes'));
@@ -65,23 +69,23 @@ class deportes_schedule_form extends moodleform {
 		$mform->addElement("hidden", "action", "add");
 		$mform->setType("action", PARAM_TEXT);
 
-		$this->add_action_buttons(true, get_string('AddToSchedule', 'local_deportes'));
+		$this->add_action_buttons(true, get_string('addtoschedule', 'local_deportes'));
 	}
 
 	public function validation($data, $files){
 		global $DB;
 		$errors = array();
 
-		$sportid = $data["sportid"];
-		$moduleid = $data["moduleid"];
+		$idsports = $data["idsports"];
+		$idmodules = $data["idmodules"];
 		$day = $data["day"];
 		$auxiliaryvariableday = 0;
 
-		if(empty($sportid)){
-			$errors["sportid"] = get_string("MustSelectSport", "local_deportes");//Debe seleccionar un deporte
+		if(empty($idsports)){
+			$errors["idsports"] = get_string("mustselectsport", "local_deportes");//Debe seleccionar un deporte
 		}
-		if(empty($moduleid)){
-			$errors["moduleid"] = get_string("MustSelectModule", "local_deportes");//Debe seleccionar un modulo
+		if(empty($idmodules)){
+			$errors["idmodules"] = get_string("mustselectmodule", "local_deportes");//Debe seleccionar un modulo
 		}
 		foreach($day as $d){
 			if ($d == 1){
@@ -89,46 +93,46 @@ class deportes_schedule_form extends moodleform {
 			}
 		}
 		if ($auxiliaryvariableday == 0){
-			$errors["day"] = get_string("DayMustBeSelected", "local_deportes");//Se debe seleccionar al menos un dia
+			$errors["day"] = get_string("daymustbeselected", "local_deportes");//Se debe seleccionar al menos un dia
 		}
 		if ($auxiliaryvariableday > 0){
 			for ($counterofdays = 1; $counterofdays<6; $counterofdays++){
 				if ($day[$counterofdays] == 1){
-					if($DB->get_record("sports_schedule", array("idsports" => $sportid, "idmodules" => $moduleid, "day" => $counterofdays))){
+					if($DB->get_record("sports_schedule", array("idsports" => $idsports, "idmodules" => $idmodules, "day" => $counterofdays))){
 						if ($counterofdays == 1){
 							if (isset($errors["day"])){
-								$errors["day"].=get_string("DayAlreadyExistsMonday", "local_deportes");//Ya existe este deporte para el lunes en este horario
+								$errors["day"].=get_string("dayalreadyexistsmonday", "local_deportes");//Ya existe este deporte para el lunes en este horario
 							}
 							else{
-								$errors["day"] = get_string("DayAlreadyExistsMonday", "local_deportes");//Ya existe este deporte para el lunes en este horario
+								$errors["day"] = get_string("dayalreadyexistsmonday", "local_deportes");//Ya existe este deporte para el lunes en este horario
 							}
 						}if ($counterofdays == 2){
 							if (isset($errors["day"])){
-								$errors["day"].=get_string("DayAlreadyExistsTuesday", "local_deportes");//Ya existe este deporte para el martes en este horario
+								$errors["day"].=get_string("dayalreadyexiststuesday", "local_deportes");//Ya existe este deporte para el martes en este horario
 							}
 							else{
-								$errors["day"] = get_string("DayAlreadyExistsTuesday", "local_deportes");//Ya existe este deporte para el martes en este horario
+								$errors["day"] = get_string("dayalreadyexiststuesday", "local_deportes");//Ya existe este deporte para el martes en este horario
 							}
 						}if ($counterofdays == 3){
 							if (isset($errors["day"])){
-								$errors["day"].=get_string("DayAlreadyExistsWednesday", "local_deportes");//Ya existe este deporte para el miercoles en este horario
+								$errors["day"].=get_string("dayalreadyexistswednesday", "local_deportes");//Ya existe este deporte para el miercoles en este horario
 							}
 							else{
-								$errors["day"] = get_string("DayAlreadyExistsWednesday", "local_deportes");//Ya existe este deporte para el miercoles en este horario											}
+								$errors["day"] = get_string("dayalreadyexistswednesday", "local_deportes");//Ya existe este deporte para el miercoles en este horario											}
 							}
 						}if ($counterofdays == 4){
 							if (isset($errors["day"])){
-								$errors["day"].=get_string("DayAlreadyExistsThursday", "local_deportes");//Ya existe este deporte para el jueves en este horario
+								$errors["day"].=get_string("dayalreadyexiststhursday", "local_deportes");//Ya existe este deporte para el jueves en este horario
 							}
 							else{
-								$errors["day"] = get_string("DayAlreadyExistsThursday", "local_deportes");//Ya existe este deporte para el jueves en este horario
+								$errors["day"] = get_string("dayalreadyexiststhursday", "local_deportes");//Ya existe este deporte para el jueves en este horario
 							}
 						}if ($counterofdays == 5){
 							if (isset($errors["day"])){
-								$errors["day"].=get_string("DayAlreadyExistsFriday", "local_deportes");//Ya existe este deporte para el vierens en este horario
+								$errors["day"].=get_string("dayalreadyexistsfriday", "local_deportes");//Ya existe este deporte para el vierens en este horario
 							}
 							else{
-								$errors["day"] = get_string("DayAlreadyExistsFriday", "local_deportes");//Ya existe este deporte para el viernes en este horario					}
+								$errors["day"] = get_string("dayalreadyexistsfriday", "local_deportes");//Ya existe este deporte para el viernes en este horario					}
 							}
 						}
 					}
@@ -137,4 +141,95 @@ class deportes_schedule_form extends moodleform {
 		}
 		return $errors;
 	}
+}
+class deportes_edit_scheduleform extends moodleform {
+	public function definition() {
+		global $DB;
+		$mform = $this->_form;
+		
+		$instance = $this->_customdata;
+		$type = $instance["type"];
+		$mform->setType("type", PARAM_INT);
+	
+		$editinstance = $this->_customdata;
+		$editid = $editinstance["editid"];
+		$mform->setType("editid", PARAM_TEXT);
+		
+		$datasports = array();
+		$getdatasports = $DB->get_records("sports_classes", array("type" => $type));
+		foreach($getdatasports as $getsport){
+			$datasports[$getsport->id] = $getsport->name;
+		}
+	
+		$datamodules = array();
+		$getmodulesquery = "SELECT id, 
+				CONCAT (name, ' -> ', starttime, ' - ',endtime) as name 
+				FROM {sports_modules} 
+				WHERE type = ?";
+		$getdatamodules = $DB->get_records_sql($getmodulesquery, array("type" => $type));
+		foreach($getdatamodules as $getmodule){
+			$datamodules[$getmodule->id] = $getmodule->name;
+		}
+		
+		$arraydays = array(
+				1 => get_string('monday', 'local_deportes'),
+				2 => get_string('tuesday', 'local_deportes'),
+				3 => get_string('wednesday', 'local_deportes'),
+				4 => get_string('thursday', 'local_deportes'),
+				5 => get_string('friday', 'local_deportes'),
+		);
+		
+		$mform->addElement("select", "idsports", "Select a sport", $datasports);//lang
+	
+		$mform->addElement("select", "idmodules", "Select a module", $datamodules );//lang
+		
+		$mform->addElement("select", "day", "Select a day", $arraydays);//lang
+	
+//		$mform->addElement("hidden", "type", $type);
+//		$mform->setType("type", PARAM_INT);
+			
+		$mform->addElement("hidden", "action", "edit");
+		$mform->addElement("hidden", "editid", $editid);
+		$mform->setType("action", PARAM_TEXT);
+	
+		$this->add_action_buttons(true, get_string('addtoschedule', 'local_deportes'));
+	}
+	
+	public function validation($data, $files){
+		global $DB;
+		$errors = array();
+	
+		$idsports = $data["idsports"];
+		$idmodules = $data["idmodules"];
+		$day = $data["day"];
+		$auxiliaryvariableday = 0;
+	
+		if(empty($idsports)){
+			$errors["idsports"] = get_string("mustselectsport", "local_deportes");//Debe seleccionar un deporte
+		}
+		if(empty($idmodules)){
+			$errors["idmodules"] = get_string("mustselectmodule", "local_deportes");//Debe seleccionar un modulo
+		}
+		
+		if(empty($day)){
+			$errors["day"] = get_string("mustselectday", "local_deportes");//Debe seleccionar un modulo
+		}
+		$dayerrorsarray = array(
+				1 => get_string("dayalreadyexistsmonday", "local_deportes"),
+				2 => get_string("dayalreadyexiststuesday", "local_deportes"),
+				3 => get_string("dayalreadyexistswednesday", "local_deportes"),
+				4 => get_string("dayalreadyexiststhursday", "local_deportes"),
+				5 => get_string("dayalreadyexistsfriday", "local_deportes"),
+		);
+		for ($counterofdays = 1; $counterofdays<6; $counterofdays++){
+			if ($day == $counterofdays){
+				if($DB->get_record("sports_schedule", array("idsports" => $idsports, "idmodules" => $idmodules, "day" => $counterofdays))){
+					$errors["day"] = $dayerrorsarray[$counterofdays];//Ya existe este deporte para el lunes en este horario
+				}
+			}
+		}
+		
+	return $errors;
+	}
+	
 }
