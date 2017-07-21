@@ -88,7 +88,7 @@ class sports_addmodule_form extends moodleform {
 				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
 			}
 		}
-		if(! $data['type'] != 'option'){
+		if(! ($data['type'] != 'option')){
 			$errors ['type'] = get_string('selectoption','local_deportes');
 		}
 		
@@ -162,7 +162,7 @@ class sports_editmodule_form extends moodleform {
 				$errors ['endtime'] = get_string('biggerthanstartime','local_deportes');
 			}
 		}
-		if(! $data['type'] != 'option'){
+		if(! ($data['type'] != 'option')){
 			$errors ['type'] = get_string('selectoption','local_deportes');
 		}
 		
