@@ -47,6 +47,17 @@ $capabilities = array(
 						"student" => CAP_ALLOW,
 						"teacher" => CAP_PROHIBIT,
 						"editingteacher" => CAP_PROHIBIT,
-						"manager" => CAP_PROHIBIT
+						"manager" => CAP_PROHIBIT,
+						"deportes" => CAP_ALLOW
+				)),
+		"local/deportes:edit" => array(
+				"captype" =>  "write","read",
+				"contextlevel" => CONTEXT_SYSTEM,
+				"archetypes" => array(
+						"student" => CAP_PROHIBIT,
+						"teacher" => CAP_PROHIBIT,
+						"editingteacher" => CAP_PROHIBIT,
+						"manager" => CAP_PROHIBIT,
+						"deportes" => CAP_ALLOW
 				))
 );
