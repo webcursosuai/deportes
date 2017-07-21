@@ -53,4 +53,12 @@ if ($hassiteconfig) {
 					"",
 					PARAM_URL
 					));
+	$settings->add(
+			new admin_setting_configtext(
+					"deportes_emailextension",
+					get_string("emailextension", "local_deportes"),
+					get_string("emailextensiondesc", "local_deportes"),
+					"alumnos.uai.cl",
+					PARAM_TEXT
+					));
 }
