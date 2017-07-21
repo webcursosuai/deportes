@@ -39,10 +39,10 @@ if (isguestuser()) {
 
 $page = optional_param('page', 0, PARAM_INT);
 $perpage = 15;
-
+$email = $USER->email;
 $context = context_system::instance();
 
-if (! has_capability('local/deportes:view', $context)) {
+if(!($email[1] == $CFG->deportes_emailextension) || !is_siteadmin() || !has_capability("local/deportes:edit", $context)){
 	print_error(get_string("notallowed", "local_deportes"));
 }
 
@@ -55,7 +55,7 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
-$email = $USER->email;
+
 
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 	echo html_writer::div(get_string("notvalidemail","local_deportes"),"alert alert-info", array("role"=>"alert"));
