@@ -36,10 +36,15 @@ if (isguestuser()) {
 	die();
 }
 
+
 $page = optional_param('page', 0, PARAM_INT);
 $perpage = 15;
 
 $context = context_system::instance();
+
+if (! has_capability('local/deportes:view', $context)) {
+	print_error(get_string("notallowed", "local_deportes"));
+}
 
 $url = new moodle_url("/local/deportes/attendance.php");
 $PAGE->navbar->add(get_string("nav_title", "local_deportes"));
