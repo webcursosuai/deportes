@@ -7,6 +7,8 @@
 
 defined("MOODLE_INTERNAL") || die();
 
+//$string[""] = "";
+
 $string["pluginname"] = "deportes";
 $string["view"] = "View";
 $string["attendance"] = "Attendance";
@@ -18,6 +20,13 @@ $string["quota"] = "Quota";
 $string["nav_title"] = "Sports";
 $string["page_title"] = "Sports";
 $string["page_heading"] = "Sports";
+$string["token"] = "Token Omega";
+$string["tokendesc"] = "token given by Omega for Api usage";
+$string["urlasistenciasalumno"] = "URL AsistenciasAlumnos Service";
+$string["urlasistenciasalumnodesc"] = "URL Omega Webapi to check the students sports attendance";
+$string["urldeportesalumno"] = "URL DeportesAlumno Service";
+$string["urldeportesalumnodesc"] = "URL Omega Webapi to check students available sports";
+
 
 $string["month"] = "Month";
 $string["week"] = "Week";
@@ -33,6 +42,7 @@ $string["number"] = "#";
 $string["totalattendance"] = "Total attendance";
 $string["minimumattendance"] = "Required minimum";
 $string["monthattendance"] = "This month";
+
 $string[""] = "";
 //module_form langs
 $string["module_form"] = "Modules From";
