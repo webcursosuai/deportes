@@ -77,12 +77,11 @@ if ($action == "edit"){
 			//if there is an sport with such id
 			$editform = new deportes_edit_sportsform(null, array("edition"=>$edition,
 					"name"=>$editsport[$edition]->name,
-					"type"=>$editsport[$edition]->type,
-					"lastmodified"=>$editsport[$edition]->lastmodified));
+					"type"=>$editsport[$edition]->type));
 			$defaultdata = new stdClass();
 			$defaultdata->name = $editsport[$edition]->name;
 			$defaultdata->type = $editsport[$edition]->type;
-			$defaultdata->lastmodified = $editsport[$edition]->lastmodified;
+			$defaultdata->lastmodified = time();
 			$editform->set_data($defaultdata);
 			//Fills the form with the data from the DB
 			//NOTE: Fills the date with the current date, not the one from the sport
@@ -118,7 +117,6 @@ if ($action == "delete"){
 	else{
 		$deleter = new stdClass();
 		$deleter->id = $edition;
-		$deleter->lastmodified = 0;
 
 		$DB->delete_records("sports_classes", array("id" => $deleter->id));
 		$action = "view";
@@ -134,8 +132,6 @@ if ($action == "view"){
 	$query = "SELECT * FROM {sports_classes}
 			WHERE lastmodified != 0
 			ORDER BY type";
-	//lastmodified == 0 means it was "deleted"
-	//Get all sports which haven't been "deleted"
 	$getsports = $DB->get_records_sql($query, array (""));
 	$sportcounter = count($getsports);
 		$botonurl = new moodle_url("/local/deportes/addsports.php", array("action" => "add"));
