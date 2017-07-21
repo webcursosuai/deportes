@@ -28,5 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->pluginname = "local_deportes";
 $plugin->component = "local_deportes";
-$plugin->version   = "2017072102";
+$plugin->version   = "2017072103";
 $plugin->requires = 2015111600;
