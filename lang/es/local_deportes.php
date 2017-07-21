@@ -7,6 +7,8 @@
 
 defined("MOODLE_INTERNAL") || die();
 
+//$string[""] = "";
+
 $string["pluginname"] = "deportes";
 $string["view"] = "Ver";
 $string["attendance"] = "Asistencia";
@@ -18,6 +20,12 @@ $string["quota"] = "Cupo";
 $string["nav_title"] = "Deportes";
 $string["page_title"] = "Deportes";
 $string["page_heading"] = "Deportes";
+$string["token"] = "Token Omega";
+$string["tokendesc"] = "Token entregado por Omega para el uso de Webapi";
+$string["urlasistenciasalumno"] = "URL Servicio AsistenciaAlumno";
+$string["urlasistenciasalumnodesc"] = "URL de Webapi Omega para ver asistencias a deportes de los alumnos";
+$string["urldeportesalumno"] = "URL Servicio DeportesAlumno";
+$string["urldeportesalumnodesc"] = "URL de Webapi Omega para ver deportes disponibles para el alumno";
 
 $string["month"] = "Mes";
 $string["week"] = "Semana";
