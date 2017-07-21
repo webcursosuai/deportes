@@ -43,12 +43,11 @@ $capabilities = array(
 		"local/deportes:view" => array(
 				"captype" =>  "read",
 				"contextlevel" => CONTEXT_SYSTEM,
-				"archetypes" => array(
+				"legacy" => array(
 						"student" => CAP_ALLOW,
 						"teacher" => CAP_PROHIBIT,
 						"editingteacher" => CAP_PROHIBIT,
-						"manager" => CAP_PROHIBIT,
-						"deportes" => CAP_ALLOW
+						"manager" => CAP_PROHIBIT
 				)),
 		"local/deportes:edit" => array(
 				"captype" =>  "write","read",
