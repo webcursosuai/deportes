@@ -114,4 +114,3 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 }else{
 	print_error(get_string("notallowed", "local_deportes"));
 }
-}
