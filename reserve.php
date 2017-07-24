@@ -33,7 +33,7 @@ require_login();
 if (isguestuser()) {
 	die();
 }
-
+$email = $USER->email;
 $context = context_system::instance();
 
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
