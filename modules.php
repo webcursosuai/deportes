@@ -41,6 +41,8 @@ $editid = optional_param("editid", null, PARAM_INT);
 
 $context = context_system::instance();
 
+$email = $USER->email;
+
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
 	
 	$url = new moodle_url("/local/deportes/modules.php");
