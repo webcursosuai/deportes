@@ -18,9 +18,10 @@
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+
 defined("MOODLE_INTERNAL") || die();
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/config.php");
+require_once(dirname(dirname(__FILE__)) . "/locallib.php");
 require_once($CFG->libdir . "/formslib.php");
 
 
@@ -32,6 +33,7 @@ class deportes_add_form_sports extends moodleform {
 				0 => "Outdoors",
 				1 => "Fitness"
 		);
+		$arraycolors = deportes_getcolorsarray();
 		$mform->addElement("text", "name", "Name");
 		$mform->setType( "name", PARAM_TEXT);
 		$mform->addHelpButton("name", "sports_name", "local_deportes");
@@ -39,6 +41,10 @@ class deportes_add_form_sports extends moodleform {
 		$mform->setType("type", PARAM_INT);
 		$mform->addHelpButton( "type", "sport_type", "local_deportes");
 
+		$mform->addElement("select", "backgroundcolor", "Backgroundcolor", $arraycolors);
+		$mform->setType("backgroundcolor", PARAM_TEXT);
+		$mform->addHelpButton( "backgroundcolor", "sport_color", "local_deportes");
+		
 		$mform->addElement("hidden", "action", "add");
 		$mform->setType("action", PARAM_TEXT);
 
@@ -51,6 +57,7 @@ class deportes_add_form_sports extends moodleform {
 
 		$name = $data["name"];
 		$type = $data["type"];
+		$backgroundcolor = $data["backgroundcolor"];
 
 		$query = "Select id
 				FROM {sports_classes}
@@ -68,6 +75,9 @@ class deportes_add_form_sports extends moodleform {
 		if($type != 0 && $type != 1){
 			$errors["type"] = "Qué tipo de deporte es?";//lang
 		}
+		if($backgroundcolor == 0){
+			$errors["backgroundcolor"] = "Qué color desea?";//lang
+		}
 		return $errors;
 	}
 }
@@ -77,17 +87,23 @@ class deportes_edit_sportsform extends moodleform{
 		$mform = $this->_form;
 		$instance = $this->_customdata;
 		$edition = $instance["edition"];
-		$mform->setType("edition", PARAM_TEXT);
+		$mform->setType("edition", PARAM_INT);
 		$arraysportstype = array(
 				3 => "Seleccione un tipo de deporte",
 				0 => "Outdoors",
 				1 => "Fitness"
 		);
+		$arraycolors = deportes_getcolorsarray();
 		$mform->addElement("text", "name", "Name");
 		$mform->setType( "name", PARAM_TEXT);
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
 		$mform->setType("type", PARAM_INT);
 
+		$mform->addElement("select", "backgroundcolor", "Backgroundcolor", $arraycolors);
+		$mform->setType("backgroundcolor", PARAM_TEXT);
+		$mform->addHelpButton( "backgroundcolor", "sport_color", "local_deportes");
+		
+		
 		$mform->addElement("hidden", "action", "edit");
 		$mform->addElement("hidden", "edition", $edition);
 		$mform->setType("action", PARAM_TEXT);
@@ -96,11 +112,12 @@ class deportes_edit_sportsform extends moodleform{
 	}
 
 	public function validation($data, $files){
+		global $DB;
 		$errors = array();
-
+		$edition = $data["edition"];
 		$name = $data["name"];
 		$type = $data["type"];
-		$date = $data["date"];
+		$backgroundcolor = $data["backgroundcolor"];
 
 		$query = "Select id
 				FROM {sports_classes}
@@ -112,12 +129,15 @@ class deportes_edit_sportsform extends moodleform{
 		else if(is_numeric($name)){
 			$errors["name"] = "Ese nombre no es valido";//lang
 		}
-		else if($DB->get_record_sql($query, array($name))){
+		else if($DB->get_record_sql($query, array($name)) && $name != $DB->get_record("sports_classes", array("id" => $edition))->name){
 			$errors["name"] = "Ese deporte ya existe";//lang
 		}
 		if($type != 0 && $type != 1){
 			$errors["type"] = "Qué tipo de deporte es?";
 		}
+		if($backgroundcolor == "0"){
+			$errors["backgroundcolor"] = "Qué color desea?";//lang
+		}
 		return $errors;
 	}
-}
+}*/

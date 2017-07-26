@@ -46,18 +46,20 @@ function deportes_tabs() {
 			);
 	return $tabs;
 }
+/*
 function deportes_get_schedule($orderby, $type){
 	global $DB;
 	
 	$query = "SELECT s.id,
 	c.name,
+	c.backgroundcolor,
 	s.day,
 	CONCAT(m.starttime,' - ',m.endtime) AS starttime 
 	FROM {sports_classes} as c
 	INNER JOIN {sports_schedule} AS s ON (c.id = s.idsports)
 	INNER JOIN {sports_modules} AS m ON (s.idmodules = m.id)
 	WHERE m.type = ?
-	$orderby, s.day
+	$orderby, s.day, c.name
 	";
 	$getschedule = $DB->get_records_sql($query, array($type));
 	return $getschedule;
@@ -67,13 +69,13 @@ function deportes_arraymakingiftherearestillsportsleft($auxiliaryarrayn1){
 	$actualday = 1;
 	foreach ($auxiliaryarrayn1 as $key => $auxarray){
 		if ($auxarray->day == $actualday){
-			$newmodulearray[$actualday] = $auxarray->name;
+			$newmodulearray[$actualday] = "<span class = '$auxarray->name'>".$auxarray->name."</span>";
 			unset($auxiliaryarrayn1[$key]);
 			$actualday++;
 		}
 		else if ($auxarray->day > $actualday){
 			$actualday = $auxarray->day;
-			$newmodulearray[$actualday] = $auxarray->name;
+			$newmodulearray[$actualday] = "<span class = '$auxarray->name'>".$auxarray->name."</span>";
 			unset($auxiliaryarrayn1[$key]);
 			$actualday++;
 		}
@@ -115,7 +117,7 @@ function deportes_arrayforschedule($getschedule, $nofsports){
 				if ($auxarray->day == $actualday){
 					//if the current day is the same as the one in the sport, then we add the sport to the array wich will later go into
 					//the schedule, and delete it from our auxiliary array for the current module
-					$modulearrayn1[$actualday] = $auxarray->name;
+					$modulearrayn1[$actualday] = "<span class = '$auxarray->name'>".$auxarray->name."</span>";
 					unset($auxiliaryarrayn1[$schedulekey]);
 					$actualday++; //we inmidiatly go to the next day, despite the possibility of having for sports for this same day. These
 					//sports will remain in the array
@@ -123,7 +125,8 @@ function deportes_arrayforschedule($getschedule, $nofsports){
 				else if ($auxarray->day > $actualday){
 					//this condition would mean there is a day in the week with no sports, so we skip it. Other than that, it's the same as before
 					$actualday = $auxarray->day;
-					$modulearrayn1[$actualday] = $auxarray->name;
+					$modulearrayn1[$actualday] = "<span class = '$auxarray->name'>".$auxarray->name."</span>";
+					
 					unset($auxiliaryarrayn1[$schedulekey]);
 					$actualday++;
 				}
@@ -143,5 +146,60 @@ function deportes_arrayforschedule($getschedule, $nofsports){
 			$auxiliaryarrayn1 = $newarray[0];//uodates the auxiliaryarrayn1, so it's checked again and the process repeats if it's not empty yet
 		}
 	}
+	var_dump($array);
 	return $array; //this is the array of arrays which will be added to the schedule. each array in the array is a row in the schedule
 }
+function deportes_getsports($type){
+	global $DB;
+	$getsports = $DB->get_records('sports_classes', array ("type" => $type));
+	$arraywithsports = array();
+	$key = 0;
+	foreach($getsports as $sports){
+		$arraywithsports[$key] = $sports;
+		$key++;
+	}
+	return $arraywithsports;
+}
+function deportes_getcolorsarray(){
+	return array(
+				"0" => get_string("selectacolor", "local_deportes"),
+				"DC143C" => "Rojo Profundo",
+				"FF0000" => "Rojo",
+				"8B0000" => "Rojo Oscuro",
+				"FF69B4" => "Rosado Calido",
+				"FF1493" => "Rosado Profundo",
+				"C71585" => "Violeta Medio",
+				"DB7093" => "Violeta Rojizo Palido",
+				"FF4500" => "Rojo Anaranjado",
+				"FF8C00" => "Narajo Oscuro",
+				"BDB76B" => "Khaki Oscuro",
+				"EE82EE" => "Violeta",
+				"FF00FF" => "Magenta",
+				"9370DB" => "Purpura Medio",
+				"8A2BE2" => "Violeta Azulado",
+				"9400D3" => "Violeta Oscuro",
+				"8B008B" => "Magenta Oscuro",
+				"7B68EE" => "Azul Pizarra Medio",
+				"483D8B" => "Azul Pizarra Oscuro",
+				"3CB371" => "Verde Mar Medio",
+				"228B22" => "Verde Bosque",
+				"008000" => "Verde",
+				"006400" => "Verde Oscuro",
+				"9ACD32" => "Amarillo Verde",
+				"6B8E23" => "Oliva Monotono",
+				"808000" => "Oliva",
+				"556B2F" => "Oliva Oscuro",
+				"008B8B" => "Cian Oscuro",
+				"48D1CC" => "Turquesa Medio",
+				"4682B4" => "Azul Metalico",
+				"00BFFF" => "Azul Cielo Profundo",
+				"00008B" => "Azul Oscuro",
+				"F4A460" => "Cafe Arena",
+				"DAA520" => "Dorado",
+				"B8860B" => "Dorado Oscuro",
+				"696969" => "Gris Oscuro",
+				"778899" => "Gris Pizarra Claro",
+				"2F4F4F" => "Gris Pizarra Oscuro",
+				"000000" => "Negro"
+		);
+}*/
