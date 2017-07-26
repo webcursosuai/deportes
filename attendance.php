@@ -103,6 +103,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 		$data = $result->asistencias->asistencias;
 		$attendancechart = array();
+		$sports = array();
+		$sportschart = array();
 		$repeated = 0;
 		$totalattendance = 0;
 		$monthlyattendance = array(
@@ -141,6 +143,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$attendancechart[] = $attendancechartinfo;
 			$repeated = 0;
 			
+			if($attendance->Asistencia == 1) {
+				if(isset($sports[$attendance->Deporte])) {
+					$sports[$attendance->Deporte] += 1;
+				} else {
+					$sports[$attendance->Deporte] = 1;
+				}
+			}
+			
 			$attendanceinfo = array(
 					$counter,
 					date('F', mktime(0, 0, 0, $attendance->Mes, 10)),
@@ -156,9 +166,17 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$table->data[] = $attendanceinfo;		
 		}
 		
+		// Limit monthly attendance to a maximum of 8
 		foreach($monthlyattendance as $month => $monthattendance) {
 			$monthlyattendance[$month] = ($monthattendance > 8) ? 8 : $monthattendance;
 			$totalattendance += $monthlyattendance[$month];
+		}
+		
+		foreach($sports as $sportname => $quantity) {
+			$sportschart[] = array(
+					$sportname,
+					$quantity
+			);
 		}
 		
 		$headingtable = new html_table("p");
@@ -176,6 +194,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
 		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:30vh;'));
+		echo html_writer::tag('div','', array('id' => 'sports_chart', 'style' => 'overflow-x: auto; height:20vh;'));
 		
 		echo html_writer::table($headingtable);
 		echo html_writer::table($table);
@@ -184,8 +203,9 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	?>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
-	google.charts.load("current", {packages:["calendar"]});
+	google.charts.load("current", {packages:["calendar", "corechart", "bar"]});
 	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawMaterial);
 	
 	function drawChart() {
 	
@@ -221,6 +241,34 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 		chart.draw(dataTable, options);
 	}
+
+	function drawMaterial() {
+		var sportsData = <?php echo json_encode($sportschart); ?>
+		
+      	var data = new google.visualization.DataTable();
+      	data.addColumn('string', 'Deporte');
+      	data.addColumn('number', 'Asistencias');
+
+		data.addRows(sportsData);
+
+      	var options = {
+        	title: 'Motivation and Energy Level Throughout the Day',
+        	bar: {groupWidth: '20'},
+        	hAxis: {
+          		title: 'Time of Day',
+          		viewWindow: {
+            		min: [7, 30, 0],
+            		max: [17, 30, 0]
+          		}
+        	},
+        	vAxis: {
+          		title: 'Rating (scale of 1-10)'
+        	}
+      	};
+
+      var materialChart = new google.charts.Bar(document.getElementById('sports_chart'));
+      materialChart.draw(data, options);
+    }
 	</script>
 <?php 
 }else{
