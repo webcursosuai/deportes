@@ -105,25 +105,39 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$attendancechart = array();
 		$repeated = 0;
 		$totalattendance = 0;
-		$monthattendance = 0;
-		$today = date("m",strtotime(time()));
+		$monthlyattendance = array(
+				"01" => 0,
+				"02" => 0,
+				"03" => 0,
+				"04" => 0,
+				"05" => 0,
+				"06" => 0,
+				"07" => 0,
+				"08" => 0,
+				"09" => 0,
+				"10" => 0,
+				"11" => 0,
+				"12" => 0
+		);
+		$today = date("m", time());
 		$counter = $page * $perpage + 1;
 		$date = 0;
 		foreach($data as $attendance) {
 			if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date){
 					$repeated = 1;
 			}
+			
 			if($repeated != 1){
 				$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
 				$attendancechartinfo = array(
 						$date,
 						$attendance->Asistencia
 				);
-				if($today == date("m",strtotime($attendance->HoraInicio))){
-					$monthattendance = $monthattendance + $attendance->Asistencia;
-				}
-				$totalattendance = $totalattendance + $attendance->Asistencia;
+				
+				$month = date("m",strtotime($attendance->HoraInicio));
+				$monthlyattendance[$month] += $attendance->Asistencia;
 			}
+			
 			$attendancechart[] = $attendancechartinfo;
 			$repeated = 0;
 			
@@ -141,11 +155,17 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			
 			$table->data[] = $attendanceinfo;		
 		}
+		
+		foreach($monthlyattendance as $month => $monthattendance) {
+			$monthlyattendance[$month] = ($monthattendance > 8) ? 8 : $monthattendance;
+			$totalattendance += $monthlyattendance[$month];
+		}
+		
 		$headingtable = new html_table("p");
 		$headingtable->data[] = array(
 				html_writer::tag('h4',get_string('totalattendance','local_deportes').": ".$totalattendance),
 				html_writer::tag('h4',get_string('minimumattendance','local_deportes').": ".$totalattendance),
-				html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthattendance)
+				html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthlyattendance[$today])
 		);
 	}
 	

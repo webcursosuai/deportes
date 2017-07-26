@@ -40,15 +40,6 @@
  */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
-		"local/deportes:view" => array(
-				"captype" =>  "read",
-				"contextlevel" => CONTEXT_SYSTEM,
-				"legacy" => array(
-						"student" => CAP_ALLOW,
-						"teacher" => CAP_PROHIBIT,
-						"editingteacher" => CAP_PROHIBIT,
-						"manager" => CAP_PROHIBIT
-				)),
 		"local/deportes:edit" => array(
 				"captype" =>  "write","read",
 				"contextlevel" => CONTEXT_SYSTEM,

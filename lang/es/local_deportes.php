@@ -26,6 +26,28 @@ $string["urlasistenciasalumno"] = "URL Servicio AsistenciaAlumno";
 $string["urlasistenciasalumnodesc"] = "URL de Webapi Omega para ver asistencias a deportes de los alumnos";
 $string["urldeportesalumno"] = "URL Servicio DeportesAlumno";
 $string["urldeportesalumnodesc"] = "URL de Webapi Omega para ver deportes disponibles para el alumno";
+$string["startmonth"] = "Mes de inicio";
+$string["startmonthdesc"] = "Primer mes del período de deportes";
+$string["endmonth"] = "Mes final";
+$string["endmonthdesc"] = "Último mes del peíodo de deportes";
+$string["startday"] = "Día de inicio";
+$string["startdaydesc"] = "Primer día del peíodo de deportes. Los alumnos podrán registrar asistencias desde este día";
+$string["endday"] = "Día final";
+$string["enddaydesc"] = "Último día del período de deportes. Asistencias registradas después de este día no serán contadas hacia el total del período";
+
+$string["jan"] = "Enero";
+$string["feb"] = "Febrero";
+$string["mar"] = "Marzo";
+$string["apr"] = "Abril";
+$string["may"] = "Mayo";
+$string["jun"] = "Junio";
+$string["jul"] = "Julio";
+$string["aug"] = "Agosto";
+$string["sep"] = "Septiembre";
+$string["oct"] = "Octubre";
+$string["nov"] = "Noviembre";
+$string["dec"] = "Diciembre";
+
 
 $string["month"] = "Mes";
 $string["week"] = "Semana";
