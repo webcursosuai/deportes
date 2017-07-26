@@ -24,7 +24,7 @@
 * @copyright  2017	Javier Gonzalez (javiergonzalez@alumnos.uai.cl)
 * @copyright  2017  Jorge Cabané (jcabane@alumnos.uai.cl) 
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-
+*/
 
 require_once(dirname(dirname(dirname(__FILE__))) . "/config.php");
 require_once($CFG->dirroot."/local/deportes/locallib.php");
@@ -52,10 +52,23 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin ( 'ui' );
 $PAGE->requires->jquery_plugin ( 'ui-css' );
 
+$scheduleurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/outdoors/", "outdoors.pdf");
+var_dump($scheduleurl);
+$viewerpdf = html_writer::nonempty_tag("embed", " ", array(
+		"src" => $scheduleurl,
+		"style" => "height:75vh; width:60vw"
+));
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 
+
+echo $viewerpdf;
+echo $OUTPUT->footer();
+/*
+ * ************************************************************************************************************************
+ * 
 $tablefitness = new flexible_table("Sports");
 $tablefitness->define_baseurl($url);
 $tablefitness->define_headers(array(
