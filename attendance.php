@@ -66,7 +66,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->sync_token;
 	$fields = array(
 			"token" => $token,
-			"email" => "mscalvini@alumnos.uai.cl"
+			"email" => $email
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
