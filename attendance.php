@@ -124,13 +124,15 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$today = date("m", time());
 		$counter = $page * $perpage + 1;
 		$date = 0;
+		$lastattendance = 0;
 		foreach($data as $attendance) {
-			if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date){
+			if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date && $attendance->Asistencia == 1 && $lastattendance > 0){
 					$repeated = 1;
 			}
 			
 			if($repeated != 1){
 				$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
+				$lastattendance = $attendance->Asistencia;
 				$attendancechartinfo = array(
 						$date,
 						$attendance->Asistencia
@@ -190,6 +192,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$counter = 0;
 		$failed = false;
 		while(array_sum($minimumpermonth) < $total) {
+			if(array_sum($monthlyattendance) >= $total) {
+				break;
+			}
+			
 			if(count($minimumpermonth) > 4 || ($monthsremaining - 1) < $counter) {
 				$failed = true;
 				break;
