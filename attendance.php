@@ -66,7 +66,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->sync_token;
 	$fields = array(
 			"token" => $token,
-			"email" => $email
+			"email" => "mscalvini@alumnos.uai.cl"
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -108,18 +108,18 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$repeated = 0;
 		$totalattendance = 0;
 		$monthlyattendance = array(
-				"01" => 0,
-				"02" => 0,
-				"03" => 0,
-				"04" => 0,
-				"05" => 0,
-				"06" => 0,
-				"07" => 0,
-				"08" => 0,
-				"09" => 0,
-				"10" => 0,
-				"11" => 0,
-				"12" => 0
+				1 => 0,
+				2 => 0,
+				3 => 0,
+				4 => 0,
+				5 => 0,
+				6 => 0,
+				7 => 0,
+				8 => 0,
+				9 => 0,
+				10 => 0,
+				11 => 0,
+				12 => 0
 		);
 		$today = date("m", time());
 		$counter = $page * $perpage + 1;
@@ -137,7 +137,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 				);
 				
 				$month = date("m",strtotime($attendance->HoraInicio));
-				$monthlyattendance[$month] += $attendance->Asistencia;
+				$monthlyattendance[(int)$month] += $attendance->Asistencia;
 			}
 			
 			$attendancechart[] = $attendancechartinfo;
@@ -172,6 +172,43 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$totalattendance += $monthlyattendance[$month];
 		}
 		
+		$firstmonth = $CFG->deportes_startmonth;
+		$lastmonth = $CFG->deportes_endmonth;
+		$actualmonth = (int)$today;
+		$elapsedmonths = $actualmonth - $firstmonth;
+		$monthsremaining = ($lastmonth - $firstmonth + 1) - $elapsedmonths;
+		$minimumpermonth = array();
+		$total = 26;
+		
+		$completedmonth = 0;
+		while($elapsedmonths > 0) {
+			$minimumpermonth[$firstmonth + $completedmonth] = $monthlyattendance[$firstmonth + $completedmonth];
+			$elapsedmonths--;
+			$completedmonth++;
+		}
+		
+		$counter = 0;
+		$failed = false;
+		while(array_sum($minimumpermonth) < $total) {
+			if(count($minimumpermonth) > 4 || ($monthsremaining - 1) < $counter) {
+				$failed = true;
+				break;
+			} else {
+				if(!isset($minimumpermonth[$lastmonth - $counter])) {
+					$difference = max($total - array_sum($minimumpermonth), 0);
+					$minimumpermonth[$lastmonth - $counter] = ($difference > 8) ? 8 : $difference;
+				}
+				
+				$counter++;
+			}
+		}
+		
+		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
+		
+		var_dump($minimumpermonth);
+		var_dump($failed);
+		
+		
 		foreach($sports as $sportname => $quantity) {
 			$sportschart[] = array(
 					$sportname,
@@ -179,11 +216,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			);
 		}
 		
+		$situation = ($failed) ? get_string("failed", "local_deportes") : get_string("pending", "local_deportes");
+		
 		$headingtable = new html_table("p");
 		$headingtable->data[] = array(
 				html_writer::tag('h4',get_string('totalattendance','local_deportes').": ".$totalattendance),
-				html_writer::tag('h4',get_string('minimumattendance','local_deportes').": ".$totalattendance),
-				html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthlyattendance[$today])
+				html_writer::tag('h4',get_string('situation','local_deportes').": ".$situation),
+				html_writer::tag('h4',get_string('minimumattendance','local_deportes').": ".$minimumrequired),
+				html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth])
 		);
 	}
 	
@@ -194,7 +234,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
 		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:30vh;'));
-		echo html_writer::tag('div','', array('id' => 'sports_chart', 'style' => 'overflow-x: auto; height:20vh;'));
+		echo html_writer::tag('div','', array('id' => 'sports_chart', 'style' => 'height:30vh;'));
 		
 		echo html_writer::table($headingtable);
 		echo html_writer::table($table);

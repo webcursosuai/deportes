@@ -34,6 +34,9 @@ $string["startday"] = "Starting day";
 $string["startdaydesc"] = "First day of the sports period. Students can start attending to sport classes from this day";
 $string["endday"] = "Last day";
 $string["enddaydesc"] = "Last day of the sports period. Any attendance beyond this day won't be counted towards the period's total";
+$string["situation"] = "Situation";
+$string["pending"] = "Pending";
+$string["failed"] = "Failed";
 
 $string["jan"] = "January";
 $string["feb"] = "February";

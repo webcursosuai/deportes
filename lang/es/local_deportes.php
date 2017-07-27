@@ -34,6 +34,9 @@ $string["startday"] = "Día de inicio";
 $string["startdaydesc"] = "Primer día del peíodo de deportes. Los alumnos podrán registrar asistencias desde este día";
 $string["endday"] = "Día final";
 $string["enddaydesc"] = "Último día del período de deportes. Asistencias registradas después de este día no serán contadas hacia el total del período";
+$string["situation"] = "Situación";
+$string["pending"] = "Pendiente";
+$string["failed"] = "Reprobado";
 
 $string["jan"] = "Enero";
 $string["feb"] = "Febrero";
