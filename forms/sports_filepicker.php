@@ -38,6 +38,9 @@ class deportes_filepicker extends moodleform{
 				array("maxbytes" => 5000000, "accepted_types" => array("*.pdf")));
 		$mform->setType("userfile", PARAM_FILE);
 		
+		/*$mform->get_new_filename("userfile");
+		$mform->setType("filename", PARAM_TEXT);
+		*/
 		$mform->addHelpButton( "type", "sport_fileupload", "local_deportes");
 		
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
@@ -54,12 +57,13 @@ class deportes_filepicker extends moodleform{
 		
 		$userfile = $data["userfile"];
 		$type = $data["type"];
+		//$filename = $data["filename"];
 		
 		if (empty($userfile)){
 			$errors["userfile"] = get_string("mustuploadfile", "local_deportes"); //lang
-		}/*
-		$filename = $addform->get_new_filename("userfile");
-		$explodename = explode(".",$userfile->get_new_filename("userfile"););
+		}
+		/*
+		$explodename = explode(".",$filename);
 		$countnamefile= count($explodename);
 		$extension = $explodename[$countnamefile-1];
 		*/

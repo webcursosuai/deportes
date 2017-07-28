@@ -52,7 +52,11 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin ( 'ui' );
 $PAGE->requires->jquery_plugin ( 'ui-css' );
 
-$scheduleurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/outdoors/", "outdoors.pdf");
+$fs = get_file_storage();
+if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.pdf")) {
+	var_dump($fs);
+}
+$scheduleurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/", "fitness.pdf");
 var_dump($scheduleurl);
 $viewerpdf = html_writer::nonempty_tag("embed", " ", array(
 		"src" => $scheduleurl,
@@ -65,6 +69,7 @@ echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 
 
 echo $viewerpdf;
+var_dump($viewerpdf);
 echo $OUTPUT->footer();
 /*
  * ************************************************************************************************************************
