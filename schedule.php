@@ -29,6 +29,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . "/config.php");
 require_once($CFG->dirroot."/local/deportes/locallib.php");
 require_once ($CFG->libdir . '/tablelib.php');
+require_once($CFG->libdir . "/formslib.php");
 global $CFG, $DB, $OUTPUT, $PAGE;
 
 // User must be logged in.
@@ -51,10 +52,28 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin ( 'ui' );
 $PAGE->requires->jquery_plugin ( 'ui-css' );
 
+$fs = get_file_storage();
+if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.pdf")) {
+	var_dump($fs);
+}
+$scheduleurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/", "fitness.pdf");
+var_dump($scheduleurl);
+$viewerpdf = html_writer::nonempty_tag("embed", " ", array(
+		"src" => $scheduleurl,
+		"style" => "height:75vh; width:60vw"
+));
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 
+
+echo $viewerpdf;
+var_dump($viewerpdf);
+echo $OUTPUT->footer();
+/*
+ * ************************************************************************************************************************
+ * 
 $tablefitness = new flexible_table("Sports");
 $tablefitness->define_baseurl($url);
 $tablefitness->define_headers(array(
@@ -88,22 +107,20 @@ if ($tablefitness->get_sql_sort()){
 
 $getschedulefitness = deportes_get_schedule($orderbyfit, 1);
 $nofsports = count($getschedulefitness);
-$array = deportes_arrayforschedule($getschedulefitness, $nofsports);
-foreach($array as $modulararray){
-	$tablefitness->add_data(array(
-			"<span>".$modulararray[0]."</span>",
-			"<span class='fitness'>".$modulararray[1]."</span>",
-			"<span class='fitness'>".$modulararray[2]."</span>",
-			"<span class='fitness'>".$modulararray[3]."</span>",
-			"<span class='fitness'>".$modulararray[4]."</span>",
-			"<span class='fitness'>".$modulararray[5]."</span>",
-	));
-}
-echo "<html>";
-echo "<head><B>Horario Fitness</B></head>";
-echo "<body>";
-echo "<div id='fitnesstable'>";
 if ($nofsports>0){
+	$array = deportes_arrayforschedule($getschedulefitness, $nofsports);
+	foreach($array as $modulararray){
+		$tablefitness->add_data(array(
+				"<span>".$modulararray[0]."</span>",
+				"<span class='fitness'>".$modulararray[1]."</span>",
+				"<span class='fitness'>".$modulararray[2]."</span>",
+				"<span class='fitness'>".$modulararray[3]."</span>",
+				"<span class='fitness'>".$modulararray[4]."</span>",
+				"<span class='fitness'>".$modulararray[5]."</span>",
+		));
+	}
+	echo "<html>";
+	echo "<head><B>Horario Fitness</B></head>";
 	$tablefitness->finish_html();
 }
 else{
@@ -159,44 +176,40 @@ if ($tableoutdoors->get_sql_sort()){
 
 $getscheduleoutdoors = deportes_get_schedule($orderbyout, 0);
 $nofsports = count($getscheduleoutdoors);
-$array = deportes_arrayforschedule($getscheduleoutdoors, $nofsports);
-foreach($array as $modulararray){
-	$tableoutdoors->add_data(array(
-			"<span>".$modulararray[0]."</span>",
-			"<span class='outdoors'>".$modulararray[1]."</span>",
-			"<span class='outdoors'>".$modulararray[2]."</span>",
-			"<span class='outdoors'>".$modulararray[3]."</span>",
-			"<span class='outdoors'>".$modulararray[4]."</span>",
-			"<span class='outdoors'>".$modulararray[5]."</span>"
-	));
-}
-echo "<html>";
-echo "<head><B><br><br>Horario Outdoors</B></head>";
-echo "<body>";
-echo "<div id='outdoorstable'>";
 if ($nofsports>0){
+	$array = deportes_arrayforschedule($getscheduleoutdoors, $nofsports);
+	foreach($array as $modulararray){
+		$tableoutdoors->add_data(array(
+				"<span>".$modulararray[0]."</span>",
+				"<span class='outdoors'>".$modulararray[1]."</span>",
+				"<span class='outdoors'>".$modulararray[2]."</span>",
+				"<span class='outdoors'>".$modulararray[3]."</span>",
+				"<span class='outdoors'>".$modulararray[4]."</span>",
+				"<span class='outdoors'>".$modulararray[5]."</span>"
+		));
+	}
+	
+	
+	
+	echo "<html>";
+	echo "<head><B><br><br>Horario Outdoors</B></head>";
+	echo "<style>";
+	$arraysports = deportes_getsports(0);
+	$form ='';
+	foreach ($arraysports as $sports){
+		$form.= html_writer::empty_tag('input', array('type'=>'checkbox', 'name'=>'checkoutdoors', 'value'=>$sports->name)).$sports->name.'<br>';
+		echo ".$sports->name{
+			color : white;
+			font-weight:bold;
+			background-color:$sports->backgroundcolor}";
+	}
+	echo "</style>";
 	$tableoutdoors->finish_html();
+	echo $form;
 }
 else{
 	print "Table is empty";
 }
-echo "</div>";
-echo "<form action='' id='out'>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbolito'>Futbolito<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Cross Training'>Cross Training<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Paddle'>Paddle<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Almuerzo'>Almuerzo<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbol Tennis'>Futbol Tennis <br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Treking'>Treking<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Futbolito Mujeres'>Futbolito Mujeres<br>";
-echo "<input type = 'checkbox' name = 'checkoutdoors' value = 'Campeonato UAI'>Campeonato UAI<br>";
-echo "</form>";
-echo "</body>";
-
-
-
-
-
 echo $OUTPUT->footer();
 ?>
 
@@ -264,56 +277,6 @@ $(document).ready(function(){
         
 	});
 
-	var td =$("span[class='outdoors']");
-	$.each(td, function( index, value ) {
-			
-			if ($(this).text() === 'Futbolito'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'black',
-					'background-color':'yellow'});
-				}
-			if ($(this).text() === 'Paddle'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'white',
-					'background-color':'SteelBlue'});
-				}
-			if ($(this).text() === 'Cross Training'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'White',
-					'background-color':'Turquoise'});
-				}
-			if ($(this).text() === 'Basquetbol'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'Blakc',
-					'background-color':'green'});
-				}
-			if ($(this).text() === 'Futbol Tennis'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'White',
-					'background-color':'DarkOrange'});
-				}
-			if ($(this).text() === 'Almuerzo'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'White',
-					'background-color':'MediumAquamarine'});
-				}
-			if ($(this).text() === 'Campeonato UAI'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'Black',
-					'background-color':'Grey'});
-				}
-			if ($(this).text() === 'Treking'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'White',
-					'background-color':'SaddleBrown'});
-				}
-			if ($(this).text() === 'Futbolito Mujeres'){
-				$(this).parent().css({'font-weight':'bold',
-					'color':'Black',
-					'background-color':'LightCoral'});
-				}
-        
-	});
 		
 });
 
@@ -336,14 +299,14 @@ $(':checkbox').change(function() {
 $(':checkbox').change(function() {
 	var td =$("span[class='outdoors']");
 	td.hide();
+	td.parent().css({'background-color':'white'});
 	$.each($(':checkbox'), function( index, value ) {
 		var valor = $(this).val();
         if (this.checked) {
 			$.each(td, function( index, value ) {
   				if($(this).text() === valor ){
 					$(this).show();
-					$(this).parent().show();
-                } 
+                }
 			});	
         }
 	});	
@@ -351,3 +314,4 @@ $(':checkbox').change(function() {
 
 
 </script>
+*/

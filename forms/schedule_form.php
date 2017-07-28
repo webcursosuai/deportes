@@ -60,7 +60,6 @@ class deportes_schedule_form extends moodleform {
 			$arraydaysform[] = $mform->createElement('advcheckbox', $i,'',$arraydays[$i-1] );
 		}
 
-
 		$mform->addGroup($arraydaysform, 'day', "dia");
 
 		$mform->addElement("hidden", "type", $type);

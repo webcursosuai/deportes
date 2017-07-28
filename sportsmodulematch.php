@@ -18,7 +18,7 @@
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once ($CFG->dirroot . "/local/deportes/forms/schedule_form.php");
 require_once ($CFG->dirroot . "/local/deportes/forms/sports_form.php");
@@ -212,6 +212,8 @@ if ($action == "edit"){
 if ($action == 'view'){
 	echo $OUTPUT->single_button($urlbuttonout,"New Outdoors"); //lang
 	echo $OUTPUT->single_button($urlbuttonfit,"New Fitness"); //lang
-	echo html_writer::table($table);
+	if($schedulecounter>0){
+		echo html_writer::table($table);
+	}
 }
 echo $OUTPUT->footer();
