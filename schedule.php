@@ -51,7 +51,7 @@ $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin ( 'ui' );
 $PAGE->requires->jquery_plugin ( 'ui-css' );
-
+/*
 $fs = get_file_storage();
 if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.pdf")) {
 	var_dump($fs);
@@ -62,14 +62,16 @@ $viewerpdf = html_writer::nonempty_tag("embed", " ", array(
 		"src" => $scheduleurl,
 		"style" => "height:75vh; width:60vw"
 ));
+*/
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading("DeportesUAI");
 echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
+//echo $viewerpdf;
 
+echo "<img src='img/fitness.jpg'>";
+echo "<img src='img/outdoors.jpg'>";
 
-echo $viewerpdf;
-var_dump($viewerpdf);
 echo $OUTPUT->footer();
 /*
  * ************************************************************************************************************************
