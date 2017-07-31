@@ -236,7 +236,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
 		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:30vh;'));
-		echo html_writer::tag('div','', array('id' => 'sports_chart', 'style' => 'height:30vh;'));
+		echo html_writer::tag('div','', array('id' => 'sports_chart'));
 		
 		echo html_writer::table($headingtable);
 		echo html_writer::table($table);
@@ -293,20 +293,13 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 
 		data.addRows(sportsData);
 
-      	var options = {
-        	title: 'Motivation and Energy Level Throughout the Day',
-        	bar: {groupWidth: '20'},
-        	hAxis: {
-          		title: 'Time of Day',
-          		viewWindow: {
-            		min: [7, 30, 0],
-            		max: [17, 30, 0]
-          		}
-        	},
-        	vAxis: {
-          		title: 'Rating (scale of 1-10)'
-        	}
-      	};
+		var options = {
+		        chart: {
+		          title: 'Deportes realizados',
+		          subtitle: 'Asistencias validas'
+		        },
+		        backgroundColor: { fill:'transparent' },
+		      };
 
       var materialChart = new google.charts.Bar(document.getElementById('sports_chart'));
       materialChart.draw(data, options);
