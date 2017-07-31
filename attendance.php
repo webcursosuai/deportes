@@ -66,7 +66,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->sync_token;
 	$fields = array(
 			"token" => $token,
-			"email" => $email
+			"email" => 'bibanez@alumnos.uai.cl'
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -210,10 +210,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		}
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
-		
-		var_dump($minimumpermonth);
-		var_dump($failed);
-		
 		
 		foreach($sports as $sportname => $quantity) {
 			$sportschart[] = array(
