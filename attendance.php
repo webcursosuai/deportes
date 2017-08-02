@@ -316,6 +316,11 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
       materialChart.draw(data, options);
     }
 	</script>
+	<script type="text/javascript">
+	$(document).ready(function () {
+		$("rect").attr("fill", "transparent");
+	});
+</script>
 <?php 
 }else{
 	print_error(get_string("notallowed", "local_deportes"));
