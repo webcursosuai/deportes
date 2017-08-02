@@ -294,7 +294,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		data.addRows(sportsData);
 		
 		var options = {
-				backgroundColor: {fill: 'transparent'},
+				backgroundColor: 'transparent',
 		        chart: {
 		          title: 'Deportes realizados',
 		          subtitle: 'Asistencias validas'
