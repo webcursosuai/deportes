@@ -66,7 +66,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->sync_token;
 	$fields = array(
 			"token" => $token,
-			"email" => $email
+			"email" => 'bibanez@alumnos.uai.cl'
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -211,10 +211,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
 		
-		var_dump($minimumpermonth);
-		var_dump($failed);
-		
-		
 		foreach($sports as $sportname => $quantity) {
 			$sportschart[] = array(
 					$sportname,
@@ -240,7 +236,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
 		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:30vh;'));
-		echo html_writer::tag('div','', array('id' => 'sports_chart', 'style' => 'height:30vh;'));
+		echo html_writer::tag('div','', array('id' => 'sports_chart'));
 		
 		echo html_writer::table($headingtable);
 		echo html_writer::table($table);
@@ -296,22 +292,25 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
       	data.addColumn('number', 'Asistencias');
 
 		data.addRows(sportsData);
-
-      	var options = {
-        	title: 'Motivation and Energy Level Throughout the Day',
-        	backgroundColor: {fill: 'transparent'},
-        	bar: {groupWidth: '20'},
-        	hAxis: {
-          		title: 'Time of Day',
-          		viewWindow: {
-            		min: [7, 30, 0],
-            		max: [17, 30, 0]
-          		}
-        	},
-        	vAxis: {
-          		title: 'Rating (scale of 1-10)'
-        	}
-      	};
+		
+		var options = {
+				backgroundColor: {fill: 'transparent'},
+		        chart: {
+		          title: 'Deportes realizados',
+		          subtitle: 'Asistencias validas'
+		        },
+		        bar: {groupWidth: '20'},
+		        hAxis: {
+	          		title: 'Deporte',
+	          		viewWindow: {
+	            		min: [7, 30, 0],
+	            		max: [17, 30, 0]
+	          		}
+	        	},
+	        	vAxis: {
+	          		title: 'Asistencias'
+	        	}
+		      };
 
       var materialChart = new google.charts.Bar(document.getElementById('sports_chart'));
       materialChart.draw(data, options);
