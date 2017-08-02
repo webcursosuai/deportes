@@ -299,6 +299,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 
       	var options = {
         	title: 'Motivation and Energy Level Throughout the Day',
+        	backgroundColor: {fill: 'transparent'},
         	bar: {groupWidth: '20'},
         	hAxis: {
           		title: 'Time of Day',
