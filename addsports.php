@@ -18,9 +18,10 @@
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once ($CFG->dirroot . "/local/deportes/forms/sports_form.php");
+require_once(dirname(__FILE__) . "/locallib.php");
 global $PAGE, $CFG, $OUTPUT, $DB, $USER;
 
 $action = optional_param("action", "view", PARAM_TEXT);
@@ -50,6 +51,7 @@ if ($action == "add"){
 		$createdsport = new stdClass();
 		$createdsport->name = $fromform->name;
 		$createdsport->type = $fromform->type;
+		$createdsport->backgroundcolor= $fromform->backgroundcolor;
 		$createdsport->lastmodified = time();
 
 		$insertaction = $DB->insert_record("sports_classes", $createdsport, $returnid=true, $bulk=false);
@@ -77,10 +79,13 @@ if ($action == "edit"){
 			//if there is an sport with such id
 			$editform = new deportes_edit_sportsform(null, array("edition"=>$edition,
 					"name"=>$editsport[$edition]->name,
-					"type"=>$editsport[$edition]->type));
+					"type"=>$editsport[$edition]->type,
+					"backgroundcolor"=>$editsport[$edition]->backgroundcolor,
+			));
 			$defaultdata = new stdClass();
 			$defaultdata->name = $editsport[$edition]->name;
 			$defaultdata->type = $editsport[$edition]->type;
+			$defaultdata->backgroundcolor = $editsport[$edition]->backgroundcolor;
 			$defaultdata->lastmodified = time();
 			$editform->set_data($defaultdata);
 			//Fills the form with the data from the DB
@@ -95,6 +100,7 @@ if ($action == "edit"){
 				$edited->id = $edition;
 				$edited->name = $edit->name;
 				$edited->type = $edit->type;
+				$edited->backgroundcolor = $edit->backgroundcolor;
 				$edited->lastmodified = time();
 				//Takes the new data and updates it in the DB
 				$DB->update_record("sports_classes", $edited);
@@ -141,7 +147,7 @@ if ($action == "view"){
 	if($sportcounter>0){
 		//If there are sports in the DB which have not been deleted...
 		$table = new html_table();
-		$table->head = array("Name", "Tipo de deporte", "Editar", "Borrar");
+		$table->head = array("Name", "Tipo de deporte", "Color", "Editar", "Borrar");
 		foreach($getsports as $currentsport){
 			//Add a button for each sport for editing or deleting
 			$urlsport = new moodle_url("/local/deportes/addsports.php", array(
@@ -154,10 +160,13 @@ if ($action == "view"){
 					"edition" => $currentsport->id,
 			));
 			$deletesporticon = new pix_icon("t/delete", "Borrar");
-			$currentsport->type = ($currentsport->type == 0) ? 'Outdoor' : 'Fitness';				
+			$currentsport->type = ($currentsport->type == 0) ? 'Outdoor' : 'Fitness';
+			$colorarray = deportes_getcolorsarray();
+			$currentsport->backgroundcolor = $colorarray[$currentsport->backgroundcolor];
 			$table->data[] = array(
 					$currentsport->name,
 					$currentsport->type,
+					$currentsport->backgroundcolor,
 					$OUTPUT->action_icon($urlsport, $editsporticon),
 					$OUTPUT->action_icon($urldelete, $deletesporticon,
 							new confirm_action("Esta completamente seguro de que quiere borrar este deporte?"))//lang
@@ -183,6 +192,8 @@ if ($action == "view"){
 		$status = null;
 	}
 	echo $OUTPUT->single_button($botonurl,"Agregar Deporte"); //lang
-	echo html_writer::table($table);
+	if($sportcounter > 0){
+		echo html_writer::table($table);
+	}
 }
 echo $OUTPUT->footer();

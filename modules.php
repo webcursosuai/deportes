@@ -22,7 +22,7 @@
 * @subpackage deportes
 * @copyright  2017	Mihail Pozarski (mpozarski@gmail.com)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+
 
 require_once(dirname(dirname(dirname(__FILE__))) . "/config.php");
 require_once($CFG->dirroot."/local/deportes/locallib.php");
