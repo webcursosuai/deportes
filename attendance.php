@@ -30,6 +30,11 @@ require_once($CFG->dirroot."/local/deportes/locallib.php");
 require_once($CFG->libdir . "/tablelib.php");
 global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
+$PAGE->requires->jquery();
+$PAGE->requires->jquery_plugin ( 'ui' );
+$PAGE->requires->jquery_plugin ( 'ui-css' );
+$PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
+
 // User must be logged in.
 require_login();
 if (isguestuser()) {
@@ -54,16 +59,47 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_pagelayout("standard");
 	$PAGE->set_title(get_string("page_title", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
-	
-	
-	
+	$modal = '<div id="myModal" class="modal fade" role="dialog">
+  				<div class="modal-dialog">
+				    <div class="modal-content">
+      					<div class="modal-header">
+        					<button type="button" class="close" data-dismiss="modal">&times;</button>
+        					<h4 class="modal-title">Reglamento de Deportes</h4>
+      					</div>
+      					<div class="modal-body">
+        					<p>Estimados Alumnos/as <br>
+							Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
+							     * N° de asistencias: 26<br>
+							     * Inicio semestre: 01 de Agosto<br>
+							     * Termino semestre: 25 de Noviembre<br>
+							Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
+							     * Será válido 1 asistencia por día<br>
+							     * Máximo 8 asistencias validas por mes<br>
+							     * 26 asistencias validas por semestre<br>
+							     * Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>
+							     por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>
+							     25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>
+							     * Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
+							     * Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>
+							     asistencia<br>
+							     * Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>
+							     semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>
+							     física.</p>
+      					</div>
+      					<div class="modal-footer">
+	        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    	  				</div>
+    				</div>
+  				</div>
+			</div>';
+	$button = html_writer::nonempty_tag("button", get_string("rules","local_paperattendance"), array( "id"=>"button"));
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 		echo html_writer::div(get_string("notvalidemail","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}
 	
 	$curl = curl_init();
 	$url = $CFG->deportes_urlasistenciasalumno;
-	$token = $CFG->sync_token;
+	$token = $CFG->deportes_token;
 	$fields = array(
 			"token" => $token,
 			"email" => 'bibanez@alumnos.uai.cl'
@@ -232,6 +268,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
 	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
+	
+	echo html_writer::div($modal, "modaldiv");
+	echo html_writer::div($button, "topbarmenu");
+	
 	if(!(count($result->asistencias->asistencias)>0)){
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
@@ -316,6 +356,15 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
       materialChart.draw(data, options);
     }
 	</script>
+	<script type="text/javascript">
+	$( document ).on( "click", ".modal-backdrop", function() {
+		jQuery('#myModal').modal('hide');
+	});
+	$( document ).on( "click", "#button", function() {
+		jQuery('#myModal').modal('show');
+	});
+	</script>
+	
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$("rect").attr("fill", "transparent");
