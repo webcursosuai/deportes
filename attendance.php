@@ -67,24 +67,31 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
         					<h4 class="modal-title">Reglamento de Deportes</h4>
       					</div>
       					<div class="modal-body">
-        					<p>Estimados Alumnos/as <br>
-							Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
-							     * N° de asistencias: 26<br>
-							     * Inicio semestre: 01 de Agosto<br>
-							     * Termino semestre: 25 de Noviembre<br>
-							Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
-							     * Será válido 1 asistencia por día<br>
-							     * Máximo 8 asistencias validas por mes<br>
-							     * 26 asistencias validas por semestre<br>
-							     * Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>
-							     por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>
-							     25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>
-							     * Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
-							     * Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>
-							     asistencia<br>
-							     * Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>
-							     semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>
-							     física.</p>
+        					<p>
+								<?php
+			
+			
+							<!––––>
+							<!––Estimados Alumnos/as <br>––>
+							<!––Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>––>
+							    <!–– * N° de asistencias: 26<br>––>
+							     <!––* Inicio semestre: 01 de Agosto<br>––>
+							     <!––* Termino semestre: 25 de Noviembre<br>––>
+							<!––Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>––>
+							     <!––* Será válido 1 asistencia por día<br>––>
+							     <!––* Máximo 8 asistencias validas por mes<br>––>
+							     <!––* 26 asistencias validas por semestre<br>––>
+							     <!––* Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>––>
+							     <!––por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>––>
+							     <!––25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>––>
+							     <!––* Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>––>
+							     <!––* Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>––>
+							     <!––asistencia<br>––>
+							     <!––* Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>––>
+							     <!––semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>––>
+							     <!––física.––>
+								 <!––––>
+							</p>
       					</div>
       					<div class="modal-footer">
 	        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -93,6 +100,16 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
   				</div>
 			</div>';
 	$button = html_writer::nonempty_tag("button", get_string("rules","local_paperattendance"), array( "id"=>"button"));
+	//pdf reader
+	$fs = get_file_storage();
+	if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "rules.pdf")) {
+	}
+	$rulesurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/", "rules.pdf");
+	$viewerpdf = html_writer::nonempty_tag("embed", " ", array(
+			"src" => $rulesurl,
+			"style" => "height:75vh; width:60vw"
+	));
+	
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 		echo html_writer::div(get_string("notvalidemail","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}
