@@ -103,7 +103,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	//pdf reader
 	$fs = get_file_storage();
 	if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "rules.pdf")) {
-	}
+	} 
 	$rulesurl = moodle_url::make_pluginfile_url($context->id, "local_deportes", "draft", 0, "/", "rules.pdf");
 	$viewerpdf = html_writer::nonempty_tag("embed", " ", array(
 			"src" => $rulesurl,

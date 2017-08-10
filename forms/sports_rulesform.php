@@ -32,7 +32,7 @@ class deportes_filepicker extends moodleform{
 		$mform->addElement("filepicker", "rulesfile", "Subir", null,
 				array("maxbytes" => 5000000, "accepted_types" => array("*.pdf")));
 		$mform->setType("rulesfile", PARAM_FILE);
-
+ 
 		/*$mform->get_new_filename("userfile");
 		 $mform->setType("filename", PARAM_TEXT);
 		 */

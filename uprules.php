@@ -84,7 +84,7 @@ if ($action == "addfile"){
 				{
 					unlink($file);
 				}
-			}
+			} 
 			$file = $addform->save_file("rulesfile", $path."/rules/rules.".$extension,false);
 			$uploadfile = $path . "/rules/".$file_record["filename"];
 			$fileinfo = $fs->create_file_from_pathname($file_record, $uploadfile);
