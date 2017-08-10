@@ -68,29 +68,24 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
       					</div>
       					<div class="modal-body">
         					<p>
-								<?php
-			
-			
-							<!––––>
-							<!––Estimados Alumnos/as <br>––>
-							<!––Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>––>
-							    <!–– * N° de asistencias: 26<br>––>
-							     <!––* Inicio semestre: 01 de Agosto<br>––>
-							     <!––* Termino semestre: 25 de Noviembre<br>––>
-							<!––Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>––>
-							     <!––* Será válido 1 asistencia por día<br>––>
-							     <!––* Máximo 8 asistencias validas por mes<br>––>
-							     <!––* 26 asistencias validas por semestre<br>––>
-							     <!––* Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>––>
-							     <!––por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>––>
-							     <!––25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>––>
-							     <!––* Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>––>
-							     <!––* Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>––>
-							     <!––asistencia<br>––>
-							     <!––* Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>––>
-							     <!––semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>––>
-							     <!––física.––>
-								 <!––––>
+							Estimados Alumnos/as <br>
+							Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
+							     * N° de asistencias: 26<br>
+							     * Inicio semestre: 01 de Agosto<br>
+							     * Termino semestre: 25 de Noviembre<br>
+							Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
+							     * Será válido 1 asistencia por día<br>
+							     * Máximo 8 asistencias validas por mes<br>
+							     * 26 asistencias validas por semestre<br>
+							     * Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>
+							     por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>
+							     25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>
+							     * Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
+							     * Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>
+							     asistencia<br>
+							     * Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>
+							     semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>
+							     física.
 							</p>
       					</div>
       					<div class="modal-footer">
