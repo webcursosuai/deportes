@@ -37,19 +37,22 @@ $string["enddaydesc"] = "Last day of the sports period. Any attendance beyond th
 $string["situation"] = "Situation";
 $string["pending"] = "Pending";
 $string["failed"] = "Failed";
+$string["rules"] = "Rules";
+$string["recommended"] = "Recommended";
+$string["help"] = "Chart information";
 
-$string["jan"] = "January";
-$string["feb"] = "February";
-$string["mar"] = "March";
-$string["apr"] = "April";
-$string["may"] = "May";
-$string["jun"] = "June";
-$string["jul"] = "July";
-$string["aug"] = "August";
-$string["sep"] = "September";
-$string["oct"] = "October";
-$string["nov"] = "November";
-$string["dec"] = "December";
+$string["Jan"] = "January";
+$string["Feb"] = "February";
+$string["Mar"] = "March";
+$string["Apr"] = "April";
+$string["May"] = "May";
+$string["Jun"] = "June";
+$string["Jul"] = "July";
+$string["Aug"] = "August";
+$string["Sep"] = "September";
+$string["Oct"] = "October";
+$string["Nov"] = "November";
+$string["Dec"] = "December";
 
 
 $string["month"] = "Month";

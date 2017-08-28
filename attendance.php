@@ -30,9 +30,6 @@ require_once($CFG->dirroot."/local/deportes/locallib.php");
 require_once($CFG->libdir . "/tablelib.php");
 global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
-$PAGE->requires->jquery();
-$PAGE->requires->jquery_plugin ( 'ui' );
-$PAGE->requires->jquery_plugin ( 'ui-css' );
 $PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
 
 // User must be logged in.
@@ -49,8 +46,6 @@ $context = context_system::instance();
 
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
 	
-
-
 	$url = new moodle_url("/local/deportes/attendance.php");
 	$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
 	$PAGE->navbar->add(get_string("attendance", "local_deportes"), $url);
@@ -59,42 +54,12 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_pagelayout("standard");
 	$PAGE->set_title(get_string("page_title", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
-	$modal = '<div id="myModal" class="modal fade" role="dialog">
-  				<div class="modal-dialog">
-				    <div class="modal-content">
-      					<div class="modal-header">
-        					<button type="button" class="close" data-dismiss="modal">&times;</button>
-        					<h4 class="modal-title">Reglamento de Deportes</h4>
-      					</div>
-      					<div class="modal-body">
-        					<p>
-							Estimados Alumnos/as <br>
-							Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
-							     * N° de asistencias: 26<br>
-							     * Inicio semestre: 01 de Agosto<br>
-							     * Termino semestre: 25 de Noviembre<br>
-							Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
-							     * Será válido 1 asistencia por día<br>
-							     * Máximo 8 asistencias validas por mes<br>
-							     * 26 asistencias validas por semestre<br>
-							     * Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara<br>
-							     por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del<br>
-							     25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>
-							     * Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
-							     * Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5<br>
-							     asistencia<br>
-							     * Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por<br>
-							     semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad<br>
-							     física.
-							</p>
-      					</div>
-      					<div class="modal-footer">
-	        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-    	  				</div>
-    				</div>
-  				</div>
-			</div>';
-	$button = html_writer::nonempty_tag("button", get_string("rules","local_paperattendance"), array( "id"=>"button"));
+	
+	$modal = deportes_modal_rules();
+	$helpmodal = deportes_modal_help();
+	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-primary"));
+	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info"));
+	
 	//pdf reader
 	$fs = get_file_storage();
 	if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "rules.pdf")) {
@@ -203,7 +168,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			
 			$attendanceinfo = array(
 					$counter,
-					date('F', mktime(0, 0, 0, $attendance->Mes, 10)),
+					get_string(date('M', mktime(0, 0, 0, $attendance->Mes, 10)), "local_deportes"),
 					$attendance->Semana,
 					date("d-m-Y",strtotime($attendance->HoraInicio)),
 					$attendance->Deporte,
@@ -258,6 +223,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		}
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
+		$monthlycolor = ($monthlyattendance[$actualmonth] > $minimumrequired) ? "#00cc00" : "#e62e00";
 		
 		foreach($sports as $sportname => $quantity) {
 			$sportschart[] = array(
@@ -267,14 +233,45 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		}
 		
 		$situation = ($failed) ? get_string("failed", "local_deportes") : get_string("pending", "local_deportes");
+		$color = ($failed) ? "red" : "orange";
 		
 		$headingtable = new html_table("p");
-		$headingtable->data[] = array(
-				html_writer::tag('h4',get_string('totalattendance','local_deportes').": ".$totalattendance),
-				html_writer::tag('h4',get_string('situation','local_deportes').": ".$situation),
-				html_writer::tag('h4',get_string('minimumattendance','local_deportes').": ".$minimumrequired),
-				html_writer::tag('h4',get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth])
+		$headingtable->size = array(
+				"25%",
+				"25%",
+				"25%",
+				"25%"
 		);
+		$headingtable->data[] = array(
+				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance),
+				html_writer::tag('h3', get_string('situation','local_deportes').": ".$situation, array('style' => 'color:'.$color)),
+				html_writer::tag('h3', get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth], array('style' => 'color:'.$monthlycolor)),
+				html_writer::tag('h3', get_string('minimumattendance','local_deportes').": ".$minimumrequired)
+				
+		);
+		
+		$monthlytable = new html_table("p");
+		$monthlytable->size = array(
+				"25%",
+				"25%",
+				"25%",
+				"25%"
+		);
+		$monthlytablearray = array();
+		
+		
+		for($month = $firstmonth; $month <= $lastmonth; $month++) {
+			$recommended = ceil($total / ($lastmonth - $month + 1));
+			$total -= $recommended;
+			
+			$monthlycolor = ($monthlyattendance[$month] > $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
+			$monthlycolor = ($month > $actualmonth) ? "orange" : $monthlycolor ;
+			
+			$monthlytablearray[] = html_writer::tag('h3', get_string(date('M', mktime(0, 0, 0, $month, 10)), "local_deportes").": ".$monthlyattendance[$month], array('style' => 'color:'.$monthlycolor)).
+					html_writer::tag('b', get_string("recommended", "local_deportes").": ".$recommended);
+		}
+		$monthlytable->data[] = $monthlytablearray;
+		
 	}
 	
 	echo $OUTPUT->header();
@@ -282,15 +279,21 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 	
 	echo html_writer::div($modal, "modaldiv");
+	echo html_writer::div($helpmodal, "modaldiv");
 	echo html_writer::div($button, "topbarmenu");
 	
 	if(!(count($result->asistencias->asistencias)>0)){
 		echo html_writer::div(get_string("noattendance","local_deportes"),"alert alert-info", array("role"=>"alert"));
 	}else{
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:30vh;'));
+		echo html_writer::table($headingtable);
+		
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:20vh;'));
+		echo html_writer::div($helpbutton, "topbarmenu");
+		
+		echo html_writer::table($monthlytable);
+		
 		echo html_writer::tag('div','', array('id' => 'sports_chart'));
 		
-		echo html_writer::table($headingtable);
 		echo html_writer::table($table);
 	}
 	echo $OUTPUT->footer();
@@ -370,10 +373,13 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	</script>
 	<script type="text/javascript">
 	$( document ).on( "click", ".modal-backdrop", function() {
-		jQuery('#myModal').modal('hide');
+		jQuery('.modal').modal('hide');
 	});
 	$( document ).on( "click", "#button", function() {
 		jQuery('#myModal').modal('show');
+	});
+	$(document).on("click", "#helpButton", function() {
+		jQuery("#helpModal").modal("show");
 	});
 	</script>
 	
@@ -383,7 +389,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	});
 </script>
 <?php 
-}else{
+} else {
 	print_error(get_string("notallowed", "local_deportes"));
 }
-?>

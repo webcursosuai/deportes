@@ -37,19 +37,22 @@ $string["enddaydesc"] = "Último día del período de deportes. Asistencias regi
 $string["situation"] = "Situación";
 $string["pending"] = "Pendiente";
 $string["failed"] = "Reprobado";
+$string["rules"] = "Reglas";
+$string["recommended"] = "Recomendado";
+$string["help"] = "Información del gráfico";
 
-$string["jan"] = "Enero";
-$string["feb"] = "Febrero";
-$string["mar"] = "Marzo";
-$string["apr"] = "Abril";
-$string["may"] = "Mayo";
-$string["jun"] = "Junio";
-$string["jul"] = "Julio";
-$string["aug"] = "Agosto";
-$string["sep"] = "Septiembre";
-$string["oct"] = "Octubre";
-$string["nov"] = "Noviembre";
-$string["dec"] = "Diciembre";
+$string["Jan"] = "Enero";
+$string["Feb"] = "Febrero";
+$string["Mar"] = "Marzo";
+$string["Apr"] = "Abril";
+$string["May"] = "Mayo";
+$string["Jun"] = "Junio";
+$string["Jul"] = "Julio";
+$string["Aug"] = "Agosto";
+$string["Sep"] = "Septiembre";
+$string["Oct"] = "Octubre";
+$string["Nov"] = "Noviembre";
+$string["Dec"] = "Diciembre";
 
 
 $string["month"] = "Mes";
