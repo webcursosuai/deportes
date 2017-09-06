@@ -23,21 +23,17 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once ($CFG->dirroot . "/local/deportes/forms/sports_filepicker.php");
 require_once(dirname(__FILE__) . "/locallib.php");
 global $PAGE, $CFG, $OUTPUT, $DB, $USER;
-
 $action = optional_param("action", "addfile", PARAM_TEXT);
 $status = optional_param("status", null, PARAM_TEXT);
 $edition = optional_param("edition", null, PARAM_INT);
-
 require_login();
 $userid = $USER->id;
-
 $url = new moodle_url('/local/deportes/addsports.php');
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title('Add sports form'); //change with lang
-
 $urlschedule = new moodle_url('/local/deportes/schedule.php');
 if ($action == "addfile"){
 	$addform = new deportes_filepicker();
@@ -63,7 +59,7 @@ if ($action == "addfile"){
 			if(!file_exists($path . "/fitness/")) {
 				mkdir($path . "/fitness/", 0777, true);
 			}
-		}		
+		}
 		$filename = $addform->get_new_filename("userfile");
 		$explodename = explode(".",$filename);
 		$countnamefile= count($explodename);
@@ -130,15 +126,15 @@ if ($action == "addfile"){
 			}
 			var_dump($uploadfile);
 			$fileinfo = $fs->create_file_from_pathname($file_record, $uploadfile);
-			
+				
 			$newfile->editiondate = $file_record["timemodified"];
 			$newfile->uploaddate = $file_record["timecreated"];
 			$newfile->path = $file_record["filepath"]."deportes/".explode(".", $file_record["filename"])[0]."/".$file_record["filename"];
 			$newfile->iduser = $file_record["userid"];
 			$DB->insert_record('sports_files', $newfile);
-			
+				
 			redirect($urlschedule);
-			
+				
 		}
 	}
 }
