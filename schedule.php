@@ -40,27 +40,27 @@ if (isguestuser()) {
 
 $context = context_system::instance();
 
-$url = new moodle_url("/local/deportes/schedule.php");
-$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
-$PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
-$PAGE->set_context($context);
-$PAGE->set_url($url);
-$PAGE->set_pagelayout("standard");
-$PAGE->set_title(get_string("page_title", "local_deportes"));
-$PAGE->set_heading(get_string("page_heading", "local_deportes"));
-$PAGE->requires->jquery();
-$PAGE->requires->jquery_plugin ( 'ui' );
-$PAGE->requires->jquery_plugin ( 'ui-css' );
+if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
+	$url = new moodle_url("/local/deportes/schedule.php");
+	$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
+	$PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
+	$PAGE->set_context($context);
+	$PAGE->set_url($url);
+	$PAGE->set_pagelayout("standard");
+	$PAGE->set_title(get_string("page_title", "local_deportes"));
+	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading("DeportesUAI");
-echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
+	echo $OUTPUT->header();
+	echo $OUTPUT->heading("DeportesUAI");
+	echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 
-echo "<img src='img/fitness.jpg'>";
-echo "<img src='img/outdoors.jpg'>";
+	echo "<img src='img/fitness.jpg'>";
+	echo "<img src='img/outdoors.jpg'>";
 
-echo $OUTPUT->footer();
-
+	echo $OUTPUT->footer();
+} else {
+	print_error(get_string("notallowed", "local_deportes"));
+}
 
 /* Code for the pdf schedule, for a future update
  $fs = get_file_storage();
