@@ -57,7 +57,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	
 	$modal = deportes_modal_rules();
 	$helpmodal = deportes_modal_help();
-	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info"));
+	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;"));
 	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info"));
 	
 	//pdf reader
@@ -274,11 +274,11 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 	}
 	echo $OUTPUT->header();
-	echo $OUTPUT->heading("DeportesUAI");
 	
 	echo html_writer::div($modal, "modaldiv");
 	echo html_writer::div($helpmodal, "modaldiv");
 	
+	echo $OUTPUT->heading("DeportesUAI");
 	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 	
 	echo html_writer::div($button, "topbarmenu");
@@ -288,7 +288,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:20vh;'));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:24vh;'));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
 		echo html_writer::table($monthlytable);
