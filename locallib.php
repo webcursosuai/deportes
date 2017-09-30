@@ -53,32 +53,13 @@ function deportes_modal_rules() {
 				    <div class="modal-content">
       					<div class="modal-header">
         					<button type="button" class="close" data-dismiss="modal">&times;</button>
-        					<h4 class="modal-title">Reglamento de Deportes</h4>
+        					<h4 class="modal-title">'.get_string("rules_title", "local_deportes").'</h4>
       					</div>
       					<div class="modal-body">
-        					<p>
-							Estimados Alumnos/as <br>
-							Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
-							     * N° de asistencias: <b>26</b><br>
-							     * Inicio semestre: <b>01 de Agosto</b><br>
-							     * Termino semestre: <b>25 de Noviembre</b><br>
-							Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
-							     * <b>Será válido 1 asistencia por día</b><br>
-							     * Máximo <b>8</b> asistencias validas por <b>mes</b><br>
-							     * 26 asistencias validas por semestre<br>
-							     * Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara
-							     por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del
-							     25 de noviembre con un tope máximo de 8 asistencias validas por mes<br>
-							     * Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
-							     * Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5
-							     asistencia<br>
-							     * Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por
-							     semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad
-							     física.
-							</p>
+        					<p>'.get_string("rules_content", "local_deportes").'</p>
       					</div>
       					<div class="modal-footer">
-	        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        				<button type="button" class="btn btn-default" data-dismiss="modal">'.get_string("close", "local_deportes").'</button>
     	  				</div>
     				</div>
   				</div>
@@ -91,15 +72,13 @@ function deportes_modal_help() {
 				    <div class="modal-content">
       					<div class="modal-header">
         					<button type="button" class="close" data-dismiss="modal">&times;</button>
-        					<h4 class="modal-title">Información de gráfico</h4>
+        					<h4 class="modal-title">'.get_string("graphinfo", "local_deportes").'</h4>
       					</div>
       					<div class="modal-body">
-        					<p>
-							Hola
-							</p>
+        					<p>'.get_string("graphinfo_content", "local_deportes").'</p>
       					</div>
       					<div class="modal-footer">
-	        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        				<button type="button" class="btn btn-default" data-dismiss="modal">'.get_string("close", "local_deportes").'</button>
     	  				</div>
     				</div>
   				</div>

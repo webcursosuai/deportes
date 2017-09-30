@@ -264,7 +264,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$recommended = ceil($total / ($lastmonth - $month + 1));
 			$total -= $recommended;
 			
-			$monthlycolor = ($monthlyattendance[$month] > $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
+			$monthlycolor = ($monthlyattendance[$month] >= $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
 			$monthlycolor = ($month > $actualmonth) ? "orange" : $monthlycolor ;
 			
 			$monthlytablearray[] = html_writer::tag('h3', get_string(date('M', mktime(0, 0, 0, $month, 10)), "local_deportes").": ".$monthlyattendance[$month], array('style' => 'color:'.$monthlycolor)).
@@ -343,27 +343,28 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		var sportsData = <?php echo json_encode($sportschart); ?>
 		
       	var data = new google.visualization.DataTable();
-      	data.addColumn('string', 'Deporte');
-      	data.addColumn('number', 'Asistencias');
+      	data.addColumn('string', "<?php echo get_string('sport', 'local_deportes'); ?>");
+      	data.addColumn('number', "<?php echo get_string('attendance', 'local_deportes'); ?>");
 
 		data.addRows(sportsData);
 		
 		var options = {
+				height: '300',
 				backgroundColor: 'transparent',
 		        chart: {
-		          title: 'Deportes realizados',
-		          subtitle: 'Asistencias validas'
+		          title: "<?php echo get_string('sportschart_title', 'local_deportes'); ?>",
+		          subtitle: "<?php echo get_string('sportschart_subtitle', 'local_deportes'); ?>"
 		        },
 		        bar: {groupWidth: '20'},
 		        hAxis: {
-	          		title: 'Deporte',
+	          		title: "<?php echo get_string('sport', 'local_deportes'); ?>",
 	          		viewWindow: {
 	            		min: [7, 30, 0],
 	            		max: [17, 30, 0]
 	          		}
 	        	},
 	        	vAxis: {
-	          		title: 'Asistencias'
+	          		title: "<?php echo get_string('attendance', 'local_deportes'); ?>"
 	        	}
 		      };
 
