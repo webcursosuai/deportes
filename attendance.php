@@ -273,13 +273,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$monthlytable->data[] = $monthlytablearray;
 		
 	}
-	
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
-	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 	
 	echo html_writer::div($modal, "modaldiv");
 	echo html_writer::div($helpmodal, "modaldiv");
+	
+	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
+	
 	echo html_writer::div($button, "topbarmenu");
 	
 	if(!(count($result->asistencias->asistencias)>0)){
