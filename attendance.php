@@ -274,11 +274,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 	}
 	echo $OUTPUT->header();
-	
-	echo html_writer::div($modal, "modaldiv");
-	echo html_writer::div($helpmodal, "modaldiv");
-	
 	echo $OUTPUT->heading("DeportesUAI");
+	
 	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 	
 	echo html_writer::div($button, "topbarmenu");
@@ -298,6 +295,9 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::table($table);
 	}
 	echo $OUTPUT->footer();
+	
+	echo html_writer::div($modal, "modaldiv");
+	echo html_writer::div($helpmodal, "modaldiv");
 	?>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
@@ -378,10 +378,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		jQuery('.modal').modal('hide');
 	});
 	$( document ).on( "click", "#button", function() {
-		jQuery('#myModal').modal('show');
+		jQuery('#myModal').css('margin-top', '0px').modal('show');
 	});
 	$(document).on("click", "#helpButton", function() {
-		jQuery("#helpModal").modal("show");
+		jQuery("#helpModal").css('margin-top', '0px').modal("show");
 	});
 	</script>
 	

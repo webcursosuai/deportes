@@ -48,7 +48,7 @@ function deportes_tabs() {
 }
 
 function deportes_modal_rules() {
-	return '<div id="myModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%;">
+	return '<div id="myModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%; margin-top: 5000px;">
   				<div class="modal-dialog">
 				    <div class="modal-content">
       					<div class="modal-header">
@@ -67,7 +67,7 @@ function deportes_modal_rules() {
 }
 
 function deportes_modal_help() {
-	return '<div id="helpModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%;">
+	return '<div id="helpModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%; margin-top: 5000px;">
   				<div class="modal-dialog">
 				    <div class="modal-content">
       					<div class="modal-header">
