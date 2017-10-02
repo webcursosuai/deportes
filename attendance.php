@@ -378,10 +378,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		jQuery('.modal').modal('hide');
 	});
 	$( document ).on( "click", "#button", function() {
-		jQuery('#myModal').css('margin-top', '0px').modal('show');
+		jQuery('#myModal').css('z-index', '').modal('show');
 	});
 	$(document).on("click", "#helpButton", function() {
-		jQuery("#helpModal").css('margin-top', '0px').modal("show");
+		jQuery("#helpModal").css('z-index', '').modal("show");
 	});
 	</script>
 	
