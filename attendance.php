@@ -30,7 +30,7 @@ require_once($CFG->dirroot."/local/deportes/locallib.php");
 require_once($CFG->libdir . "/tablelib.php");
 global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
-$PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
+//$PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
 
 // User must be logged in.
 require_login();
@@ -57,8 +57,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	
 	$modal = deportes_modal_rules();
 	$helpmodal = deportes_modal_help();
-	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;"));
-	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info"));
+	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;", "data-toggle" => "modal", "data-target" => "#myModal"));
+	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info", "data-toggle" => "modal", "data-target" => "#helpModal"));
 	
 	//pdf reader
 	$fs = get_file_storage();
