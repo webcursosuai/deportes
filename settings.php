@@ -63,18 +63,18 @@ if ($hassiteconfig) {
 					));
 	
 	$months = array(
-			1 => get_string("jan", "local_deportes"),
-			2 => get_string("feb", "local_deportes"),
-			3 => get_string("mar", "local_deportes"),
-			4 => get_string("apr", "local_deportes"),
-			5 => get_string("may", "local_deportes"),
-			6 => get_string("jun", "local_deportes"),
-			7 => get_string("jul", "local_deportes"),
-			8 => get_string("aug", "local_deportes"),
-			9 => get_string("sep", "local_deportes"),
-			10 => get_string("oct", "local_deportes"),
-			11 => get_string("nov", "local_deportes"),
-			12 => get_string("dec", "local_deportes")
+			1 => get_string("Jan", "local_deportes"),
+			2 => get_string("Feb", "local_deportes"),
+			3 => get_string("Mar", "local_deportes"),
+			4 => get_string("Apr", "local_deportes"),
+			5 => get_string("May", "local_deportes"),
+			6 => get_string("Jun", "local_deportes"),
+			7 => get_string("Jul", "local_deportes"),
+			8 => get_string("Aug", "local_deportes"),
+			9 => get_string("Sep", "local_deportes"),
+			10 => get_string("Oct", "local_deportes"),
+			11 => get_string("Nov", "local_deportes"),
+			12 => get_string("Dec", "local_deportes")
 	);
 	
 	$settings->add(

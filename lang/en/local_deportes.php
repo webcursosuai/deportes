@@ -40,6 +40,8 @@ $string["failed"] = "Failed";
 $string["rules"] = "Rules";
 $string["recommended"] = "Recommended";
 $string["help"] = "Chart information";
+$string["emailextension"] = "Email extension";
+$string["emailextensiondesc"] = "Email extension used in the Omega platform";
 
 $string["Jan"] = "January";
 $string["Feb"] = "February";
@@ -69,6 +71,8 @@ $string["number"] = "#";
 $string["totalattendance"] = "Total attendance";
 $string["minimumattendance"] = "Required minimum";
 $string["monthattendance"] = "This month";
+$string["sportschart_title"] = "Sport classes";
+$string["sportschart_subtitle"] = "Total attendances";
 
 $string[""] = "";
 //module_form langs
@@ -81,3 +85,38 @@ $string["module_endhour"] = "Module end hour";
 $string["module_endhour_help"] = "Enter the end hour for the module with format: 16:00, 08:00, 23:30, 10:15";
 $string["module_type"] = "Module type";
 $string["module_type_help"] = "Select if the module is for fitness clases or outdoor clases";
+
+$string["close"] = "Close";
+$string["rules_title"] = "Sports rules";
+$string["graphinfo"] = "Graph information";
+$string["rules_content"] = "Dear Student <br>
+	To approve your sports credits you must do the following:<br>
+	* Number of attendances: <b>26</b><br>
+	* Semester starts: <b>August 1st</b><br>
+	* Semester ends: <b>November 25th</b><br>
+	You may do as many attendances as you like in a day, month or semester, but:<br>
+	* <b>Only 1 attendance will be valid each day.</b><br>
+	* A maximum of <b>8</b> attendances are valid per <b>month</b>.<br>
+	* 26 valid attendances in the semester.<br>
+	* It is the student's exclusive responsibility the amount of attendances each month.
+	Keep in mind that you must have a total of 26 attendances by the end of the semester
+	with a maximum of 8 <b>VALID</b> attendances each month.<br>
+	* Reserving a class and not attending it will substract 1 attendance.<br>
+	* Cancelling a class 90 minutes before it starts will substract half (0.5) an attendance.<br>
+	* You can attend to sports as much as you like, yet we recommend you to attend 2 times each
+	week to get the fisiologic benefits of continuous physical activity.";
+$string["graphinfo_content"] = '<img src="img/row.png"><br>
+	Each row represents a day of the week.
+	As the image shows, the highlighted row corresponds to every wednesday of the year.<br>
+	<img src="img/col.png"><br>
+	Each column is a week, starting with sunday at the top and ending with saturday at the bottom.
+	Every column has 7 spaces down, for the 7 days of the week.<br>
+	<img src="img/punishment.png"><br>
+	One cell corresponds to one day. When there are no attendances that day, it will have no color (grey background).
+	One valid attendance (+1) in that day will display a blue colored cell, while one punishment (-1) will display an orange colored cell.
+	Half an attendance (+0.5) has a light blue color, and half a punishment (-0.5) has a light orange color.<br>
+	<img src="img/blank.png"><br>
+	A null attendance (0) has a white color, as the image shows. They are slightly different from the grey, empty ones.<br>
+	<b>Note</b> that the graph displays <b>valid</b> attendances. If you attend once (+1) but also get half a punishment (-0.5) that day,
+	the graph will display the corresponding half attendance (+0.5).<br>
+	Hovering the cursor over a cell will show the date and attendance value detail on that day.';

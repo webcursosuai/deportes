@@ -30,7 +30,7 @@ require_once($CFG->dirroot."/local/deportes/locallib.php");
 require_once($CFG->libdir . "/tablelib.php");
 global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
-$PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
+//$PAGE->requires->js( new moodle_url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') );
 
 // User must be logged in.
 require_login();
@@ -57,8 +57,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	
 	$modal = deportes_modal_rules();
 	$helpmodal = deportes_modal_help();
-	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-primary"));
-	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info"));
+	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;", "data-toggle" => "modal", "data-target" => "#myModal"));
+	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info", "data-toggle" => "modal", "data-target" => "#helpModal"));
 	
 	//pdf reader
 	$fs = get_file_storage();
@@ -264,7 +264,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$recommended = ceil($total / ($lastmonth - $month + 1));
 			$total -= $recommended;
 			
-			$monthlycolor = ($monthlyattendance[$month] > $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
+			$monthlycolor = ($monthlyattendance[$month] >= $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
 			$monthlycolor = ($month > $actualmonth) ? "orange" : $monthlycolor ;
 			
 			$monthlytablearray[] = html_writer::tag('h3', get_string(date('M', mktime(0, 0, 0, $month, 10)), "local_deportes").": ".$monthlyattendance[$month], array('style' => 'color:'.$monthlycolor)).
@@ -273,13 +273,11 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$monthlytable->data[] = $monthlytablearray;
 		
 	}
-	
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
+	
 	echo $OUTPUT->tabtree(deportes_tabs(), "attendance");
 	
-	echo html_writer::div($modal, "modaldiv");
-	echo html_writer::div($helpmodal, "modaldiv");
 	echo html_writer::div($button, "topbarmenu");
 	
 	if(!(count($result->asistencias->asistencias)>0)){
@@ -287,7 +285,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:20vh;'));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:24vh;'));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
 		echo html_writer::table($monthlytable);
@@ -297,6 +295,9 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::table($table);
 	}
 	echo $OUTPUT->footer();
+	
+	echo html_writer::div($modal, "modaldiv");
+	echo html_writer::div($helpmodal, "modaldiv");
 	?>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
@@ -343,27 +344,28 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		var sportsData = <?php echo json_encode($sportschart); ?>
 		
       	var data = new google.visualization.DataTable();
-      	data.addColumn('string', 'Deporte');
-      	data.addColumn('number', 'Asistencias');
+      	data.addColumn('string', "<?php echo get_string('sport', 'local_deportes'); ?>");
+      	data.addColumn('number', "<?php echo get_string('attendance', 'local_deportes'); ?>");
 
 		data.addRows(sportsData);
 		
 		var options = {
+				height: '300',
 				backgroundColor: 'transparent',
 		        chart: {
-		          title: 'Deportes realizados',
-		          subtitle: 'Asistencias validas'
+		          title: "<?php echo get_string('sportschart_title', 'local_deportes'); ?>",
+		          subtitle: "<?php echo get_string('sportschart_subtitle', 'local_deportes'); ?>"
 		        },
 		        bar: {groupWidth: '20'},
 		        hAxis: {
-	          		title: 'Deporte',
+	          		title: "<?php echo get_string('sport', 'local_deportes'); ?>",
 	          		viewWindow: {
 	            		min: [7, 30, 0],
 	            		max: [17, 30, 0]
 	          		}
 	        	},
 	        	vAxis: {
-	          		title: 'Asistencias'
+	          		title: "<?php echo get_string('attendance', 'local_deportes'); ?>"
 	        	}
 		      };
 
@@ -376,10 +378,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		jQuery('.modal').modal('hide');
 	});
 	$( document ).on( "click", "#button", function() {
-		jQuery('#myModal').modal('show');
+		jQuery('#myModal').css('z-index', '').modal('show');
 	});
 	$(document).on("click", "#helpButton", function() {
-		jQuery("#helpModal").modal("show");
+		jQuery("#helpModal").css('z-index', '').modal("show");
 	});
 	</script>
 	
