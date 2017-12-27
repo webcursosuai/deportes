@@ -42,6 +42,8 @@ $string["recommended"] = "Recommended";
 $string["help"] = "Chart information";
 $string["emailextension"] = "Email extension";
 $string["emailextensiondesc"] = "Email extension used in the Omega platform";
+$string["courseid"] = "General course ID";
+$string["courseiddesc"] = "General information course ID used to link it on the UAI block";
 
 $string["Jan"] = "January";
 $string["Feb"] = "February";
