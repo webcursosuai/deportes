@@ -43,7 +43,7 @@ $string["help"] = "Información del gráfico";
 $string["emailextension"] = "Extensión de email";
 $string["emailextensiondesc"] = "Extensión de email utilizado en la plataforma de Omega";
 $string["courseid"] = "ID de curso general";
-$string["courseiddesc"] = "ID del curso general de informaciones usado para vincularlo en el bloque UAI";
+$string["courseiddesc"] = "ID del curso general de informaciones usado para vincularlo en el bloque UAI. El vínculo no se mostrará si esto vale 0";
 
 $string["Jan"] = "Enero";
 $string["Feb"] = "Febrero";
