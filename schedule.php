@@ -32,6 +32,11 @@ require_once ($CFG->libdir . '/tablelib.php');
 require_once($CFG->libdir . "/formslib.php");
 global $CFG, $DB, $OUTPUT, $PAGE;
 
+require_once ($CFG->libdir . '/pdflib.php');
+require_once ($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/fpdi.php');
+require_once ($CFG->dirroot . "/mod/assign/feedback/editpdf/fpdi/fpdi_bridge.php");
+require_once ($CFG->dirroot . "/mod/assign/feedback/editpdf/fpdi/fpdi.php");
+
 // User must be logged in.
 require_login();
 if (isguestuser()) {
@@ -39,6 +44,7 @@ if (isguestuser()) {
 }
 
 $context = context_system::instance();
+var_dump($context);
 
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
 	$url = new moodle_url("/local/deportes/schedule.php");
@@ -53,9 +59,45 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
 	echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
-
-	echo "<img src='img/fitness.jpg'>";
-	echo "<img src='img/outdoors.jpg'>";
+	$fs = get_file_storage();
+	
+	if($fitnessresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness.%"))) {
+		var_dump($fitnessresult);
+		$fitnessname = $fitnessresult->contenthash;
+		$path1 = substr($fitnessname, 0, 2);
+		$path2 = substr($fitnessname, 2, 2);
+		$fitnesspath = $path1."/".$path2."/".$fitnessname;
+		
+		$fitnessfile = $CFG->dataroot."/filedir/".$fitnesspath;
+	}
+	
+	if($outdoorsresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors.%"))) {
+		var_dump($outdoorsresult);
+		$outdoorsname = $outdoorsresult->contenthash;
+		$path1 = substr($outdoorsname, 0, 2);
+		$path2 = substr($outdoorsname, 2, 2);
+		$outdoorspath = $path1."/".$path2."/".$outdoorsname;
+		
+		$outdoorsfile = $CFG->dataroot."/filedir/".$outdoorspath;
+	}
+	
+	if(!file_exists($fitnessfile.".jpg")) {
+		//rename($fitnessfile, replace_extension($fitnessfile, "jpg"));
+	}
+	
+	if(!file_exists($outdoorsfile.".jpg")) {
+		//rename($outdoorsfile, replace_extension($outdoorsfile, "jpg"));
+	}
+	
+	//$fileoutdoors = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.jpg");
+	//$filefitness = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", $fitnessname);
+	var_dump($fileoutdoors);
+	//$imgurlfitness = moodle_url::make_pluginfile_url($filefitness->get_contextid(), $filefitness->get_component(), $filefitness->get_filearea(), $filefitness->get_itemid(), $filefitness->get_filepath(), $filefitness->get_filename());
+	//$imgurloutdoors = moodle_url::make_pluginfile_url($fileoutdoors->get_contextid(), $fileoutdoors->get_component(), $fileoutdoors->get_filearea(), $fileoutdoors->get_itemid(), $fileoutdoors->get_filepath(), $fileoutdoors->get_filename());
+	
+	
+	echo html_writer::img("img/fitness.jpg", "Fitness");
+	echo html_writer::img("img/outdoors.jpg", "Outdoors");
 
 	echo $OUTPUT->footer();
 } else {

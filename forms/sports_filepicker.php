@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /*
- * @package    local
+* @package    local
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,7 +30,7 @@ class deportes_filepicker extends moodleform{
 		global $DB, $CFG;
 		$mform = $this->_form;
 		$arraysportstype = array(
-				0 => "Seleccione un tipo de deporte",
+				0 => get_string("selectsport", "local_deportes"),
 				1 => "Outdoors",
 				2 => "Fitness"
 		);
