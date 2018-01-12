@@ -84,7 +84,7 @@ if ($action == "addfile"){
 					unlink($file);
 				}
 				
-				$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors%"));
+				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors%"));
 			}
 		}
 		else if($newfile->type == 2){
@@ -109,7 +109,7 @@ if ($action == "addfile"){
 					unlink($file);
 				}
 				
-				$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness%"));
+				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness%"));
 			}
 		}
 		if ($newfile->type == 1){
