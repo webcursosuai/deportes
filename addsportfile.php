@@ -78,7 +78,7 @@ if ($action == "addfile"){
 			);
 			if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "outdoors.".$extension)) {
 				$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.".$extension);
-				$previousfile->delete();
+				//$previousfile->delete();
 				foreach(glob("$path/outdoors.*") as $file)
 				{
 					unlink($file);
@@ -103,7 +103,7 @@ if ($action == "addfile"){
 			);
 			if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.".$extension)) {
 				$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "fitness.".$extension);
-				$previousfile->delete();
+				//$previousfile->delete();
 				foreach(glob("$path/fitness.*") as $file)
 				{
 					unlink($file);
