@@ -120,8 +120,8 @@ if ($action == "addfile"){
 			$file = $addform->save_file("userfile", $path."/fitness.".$extension,false);
 			$uploadfile = $path . "/".$file_record["filename"];
 		}
-		var_dump($uploadfile);
-		$fileinfo = $fs->create_file_from_pathname($file_record, $uploadfile);
+		//var_dump($uploadfile);
+		//$fileinfo = $fs->create_file_from_pathname($file_record, $uploadfile);
 			
 		$newfile->editiondate = $file_record["timemodified"];
 		$newfile->uploaddate = $file_record["timecreated"];
