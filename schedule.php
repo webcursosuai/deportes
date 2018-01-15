@@ -32,11 +32,6 @@ require_once ($CFG->libdir . '/tablelib.php');
 require_once($CFG->libdir . "/formslib.php");
 global $CFG, $DB, $OUTPUT, $PAGE;
 
-require_once ($CFG->libdir . '/pdflib.php');
-require_once ($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/fpdi.php');
-require_once ($CFG->dirroot . "/mod/assign/feedback/editpdf/fpdi/fpdi_bridge.php");
-require_once ($CFG->dirroot . "/mod/assign/feedback/editpdf/fpdi/fpdi.php");
-
 // User must be logged in.
 require_login();
 if (isguestuser()) {

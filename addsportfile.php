@@ -38,7 +38,13 @@ $PAGE->set_context($context);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string("sportsform", "local_deportes"));
+$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
+$PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
+$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 $urlschedule = new moodle_url('/local/deportes/schedule.php');
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading("DeportesUAI");
 
 if ($action == "addfile"){
 	$addform = new deportes_filepicker();
