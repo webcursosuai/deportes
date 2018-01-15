@@ -34,13 +34,14 @@ require_login();
 $userid = $USER->id;
 $url = new moodle_url('/local/deportes/addsportfile.php');
 $context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->set_url($url);
-$PAGE->set_pagelayout('standard');
-$PAGE->set_title(get_string("sportsform", "local_deportes"));
 $PAGE->navbar->add(get_string("nav_title", "local_deportes"));
 $PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
+$PAGE->set_context($context);
+$PAGE->set_url($url);
+$PAGE->set_pagelayout("standard");
+//$PAGE->set_title(get_string("page_title", "local_deportes"));
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
+
 $urlschedule = new moodle_url('/local/deportes/schedule.php');
 
 echo $OUTPUT->header();
@@ -141,8 +142,6 @@ if ($action == "addfile"){
 		
 	}
 }
-
-echo $OUTPUT->header();
 
 if ($action == "addfile") {
 	$addform->display();

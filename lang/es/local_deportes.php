@@ -53,6 +53,7 @@ $string["sport_type"] = "Tipo de deporte";
 $string["sport_type_help"] = "Seleccione el tipo de deporte al que corresponderá la imagen subida. Debe subir de un tipo de deporte a la vez.";
 $string["uploadfile"] = "Subir imagen";
 $string["sportsform"] = "Add a sports schedule file";
+$string["selectfile"] = "Seleccionar archivo";
 
 $string["Jan"] = "Enero";
 $string["Feb"] = "Febrero";
