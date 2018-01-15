@@ -28,7 +28,9 @@ global $PAGE, $CFG, $OUTPUT, $DB, $USER;
 $action = optional_param("action", "addfile", PARAM_TEXT);
 $status = optional_param("status", null, PARAM_TEXT);
 $edition = optional_param("edition", null, PARAM_INT);
+
 require_login();
+
 $userid = $USER->id;
 $url = new moodle_url('/local/deportes/addsports.php');
 $context = context_system::instance();

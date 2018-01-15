@@ -41,7 +41,6 @@ class deportes_filepicker extends moodleform{
 		/*$mform->get_new_filename("userfile");
 		$mform->setType("filename", PARAM_TEXT);
 		*/
-		$mform->addHelpButton( "type", "sport_fileupload", "local_deportes");
 		
 		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
 		$mform->setType("type", PARAM_INT);
