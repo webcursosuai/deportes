@@ -49,7 +49,7 @@ class deportes_filepicker extends moodleform{
 		
 		$mform->addElement("hidden", "action", "addfile");
 		$mform->setType("action", PARAM_TEXT);
-		$this->add_action_buttons(true, ("uploadfile, local_deportes"));//crear lang
+		$this->add_action_buttons(true, get_string("uploadfile", "local_deportes"));//crear lang
 	}
 	public function validation($data, $files){
 		$errors = array();
