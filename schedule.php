@@ -95,9 +95,28 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	//$imgurlfitness = moodle_url::make_pluginfile_url($filefitness->get_contextid(), $filefitness->get_component(), $filefitness->get_filearea(), $filefitness->get_itemid(), $filefitness->get_filepath(), $filefitness->get_filename());
 	//$imgurloutdoors = moodle_url::make_pluginfile_url($fileoutdoors->get_contextid(), $fileoutdoors->get_component(), $fileoutdoors->get_filearea(), $fileoutdoors->get_itemid(), $fileoutdoors->get_filepath(), $fileoutdoors->get_filename());
 	
+	if(file_exists("img/fitness.jpg")) {
+		$fitnessimg = html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.JPG")) {
+		$fitnessimg = html_writer::img("img/fitness.JPG", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.png")) {
+		$fitnessimg = html_writer::img("img/fitness.png", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.PNG")) {
+		$fitnessimg = html_writer::img("img/fitness.PNG", "Fitness", array("style" => "width: 80%;"));
+	}
 	
-	echo html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
-	echo html_writer::img("img/outdoors.jpg", "Outdoors", array("style" => "width: 80%;"));
+	if(file_exists("img/outdoors.jpg")) {
+		$outdoorsimg = html_writer::img("img/outdoors.jpg", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.JPG")) {
+		$outdoorsimg = html_writer::img("img/outdoors.JPG", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.png")) {
+		$outdoorsimg = html_writer::img("img/outdoors.png", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.PNG")) {
+		$outdoorsimg = html_writer::img("img/outdoors.PNG", "Outdoors", array("style" => "width: 80%;"));
+	}
+	
+	echo $fitnessimg;
+	echo $outdoorsimg;
 
 	echo $OUTPUT->footer();
 } else {
