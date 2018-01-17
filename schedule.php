@@ -63,6 +63,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
 	$fs = get_file_storage();
 	
+	/*
 	if($fitnessresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness.%"))) {
 		$fitnessname = $fitnessresult->contenthash;
 		$path1 = substr($fitnessname, 0, 2);
@@ -88,15 +89,15 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	if(!file_exists($outdoorsfile.".jpg")) {
 		//rename($outdoorsfile, replace_extension($outdoorsfile, "jpg"));
 	}
-	
+	*/
 	//$fileoutdoors = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.jpg");
 	//$filefitness = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", $fitnessname);
 	//$imgurlfitness = moodle_url::make_pluginfile_url($filefitness->get_contextid(), $filefitness->get_component(), $filefitness->get_filearea(), $filefitness->get_itemid(), $filefitness->get_filepath(), $filefitness->get_filename());
 	//$imgurloutdoors = moodle_url::make_pluginfile_url($fileoutdoors->get_contextid(), $fileoutdoors->get_component(), $fileoutdoors->get_filearea(), $fileoutdoors->get_itemid(), $fileoutdoors->get_filepath(), $fileoutdoors->get_filename());
 	
 	
-	echo html_writer::img("img/fitness.jpg", "Fitness");
-	echo html_writer::img("img/outdoors.jpg", "Outdoors");
+	echo html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
+	echo html_writer::img("img/outdoors.jpg", "Outdoors", array("style" => "width: 80%;"));
 
 	echo $OUTPUT->footer();
 } else {

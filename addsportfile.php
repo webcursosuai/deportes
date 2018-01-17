@@ -31,6 +31,13 @@ $edition = optional_param("edition", null, PARAM_INT);
 
 require_login();
 
+// Headers that prevent the page to save cache files (schedule images)
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 $userid = $USER->id;
 $url = new moodle_url('/local/deportes/addsportfile.php');
 $context = context_system::instance();
@@ -43,9 +50,6 @@ $PAGE->set_pagelayout("standard");
 $PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
 $urlschedule = new moodle_url('/local/deportes/schedule.php');
-
-echo $OUTPUT->header();
-echo $OUTPUT->heading("DeportesUAI");
 
 if ($action == "addfile"){
 	$addform = new deportes_filepicker();
@@ -122,11 +126,11 @@ if ($action == "addfile"){
 			}
 		}
 		if ($newfile->type == 1){
-			$file = $addform->save_file("userfile", $path."/outdoors.".$extension,false);
+			$file = $addform->save_file("userfile", $path."/outdoors.".$extension, true);
 			$uploadfile = $path . "/".$file_record["filename"];
 		}
 		else if ($newfile->type == 2){
-			$file = $addform->save_file("userfile", $path."/fitness.".$extension,false);
+			$file = $addform->save_file("userfile", $path."/fitness.".$extension, true);
 			$uploadfile = $path . "/".$file_record["filename"];
 		}
 		//var_dump($uploadfile);
@@ -142,6 +146,9 @@ if ($action == "addfile"){
 		
 	}
 }
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading("DeportesUAI");
 
 if ($action == "addfile") {
 	$addform->display();
