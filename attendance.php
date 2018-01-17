@@ -151,7 +151,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		for($monthnumber = $firstmonth; $monthnumber <= $lastmonth; $monthnumber++) {
 			$months[] = $monthnumber;
 		}
-		var_dump($months);
 		
 		$data[] = (object) array(
 				"IsCastigo" => false,
@@ -166,8 +165,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		);
 		
 		foreach($data as $attendance) {
-			var_dump($attendance);
-			echo "<br>";
 			//$attendancechartinfo = array();
 			if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date && $attendance->Asistencia == 1 && $lastattendance > 0){
 					$repeated = 1;
@@ -229,8 +226,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$monthsremaining = ($lastmonth - $firstmonth + 1) - $elapsedmonths;
 		$minimumpermonth = array();
 		$total = $CFG->deportes_totalattendance;
-		var_dump($months);
-		echo "<br>";
+		
 		// Fills the minimumpermonth array with the attendance already done
 		$completedmonth = 0;
 		$elapsedmonths = ($elapsedmonths < 0) ? $elapsedmonths + 12 : $elapsedmonths;
@@ -239,8 +235,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$elapsedmonths--;
 			$completedmonth++;
 		}
-		var_dump($minimumpermonth);
-		echo "<br>";
+		
 		// Fills the remaining spaces in the array and checks if the student failed sports by lack of attendance
 		$counter = 0;
 		$failed = false;
@@ -248,10 +243,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$failed = true;
 		}
 		while(array_sum($minimumpermonth) < $total || ($monthsremaining) >= $counter) {
-			echo $monthsremaining;
-			echo "<br>";
-			var_dump($minimumpermonth);
-			echo "<br>";
 			if($totalattendance >= $total) {
 				break;
 			}
@@ -263,7 +254,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 				
 			$counter++;
 		}
-		var_dump($minimumpermonth);
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
 		$monthlycolor = ($monthlyattendance[$actualmonth] > $minimumrequired) ? "#00cc00" : "#e62e00";
