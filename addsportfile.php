@@ -89,15 +89,10 @@ if ($action == "addfile"){
 					"author" => $USER->firstname." ".$USER->lastname,
 					"license" => "allrightsreserved"
 			);
-			if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "outdoors.".$extension)) {
-				$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.".$extension);
-				//$previousfile->delete();
-				foreach(glob("$path/outdoors.*") as $file)
-				{
-					unlink(realpath($file));
-				}
-				
-				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors%"));
+			
+			// Delete the previous outdoors file
+			foreach(glob("$path/outdoors.*") as $file) {
+				unlink(realpath($file));
 			}
 		}
 		else if($newfile->type == 2){
@@ -114,15 +109,10 @@ if ($action == "addfile"){
 					"author" => $USER->firstname." ".$USER->lastname,
 					"license" => "allrightsreserved"
 			);
-			if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.".$extension)) {
-				$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "fitness.".$extension);
-				//$previousfile->delete();
-				foreach(glob("$path/fitness.*") as $file)
-				{
-					unlink(realpath($file));
-				}
-				
-				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness%"));
+			
+			// Delete the previous fitness file
+			foreach(glob("$path/fitness.*") as $file) {
+				unlink(realpath($file));
 			}
 		}
 		if ($newfile->type == 1){
