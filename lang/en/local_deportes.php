@@ -54,6 +54,7 @@ $string["sport_type_help"] = "Select the type of sports the image represents. On
 $string["uploadfile"] = "Upload file";
 $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Select file";
+$string["must_uploadfile"] = "No file was uploaded. Please try again.";
 
 $string["Jan"] = "January";
 $string["Feb"] = "February";
@@ -86,7 +87,6 @@ $string["monthattendance"] = "This month";
 $string["sportschart_title"] = "Sport classes";
 $string["sportschart_subtitle"] = "Total attendances";
 
-$string[""] = "";
 //module_form langs
 $string["module_form"] = "Modules From";
 $string["module_name"] = "Module name";

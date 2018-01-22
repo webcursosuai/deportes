@@ -41,14 +41,14 @@ class deportes_filepicker extends moodleform{
 		$mform->setType("filename", PARAM_TEXT);
 		*/
 		
-		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
+		$mform->addElement("select", "type", get_string("sport_type", "local_deportes"), $arraysportstype);
 		$mform->setType("type", PARAM_INT);
-		$mform->addHelpButton( "type", "sport_type", "local_deportes");
+		$mform->addHelpButton("type", "sport_type", "local_deportes");
 		
 		
 		$mform->addElement("hidden", "action", "addfile");
 		$mform->setType("action", PARAM_TEXT);
-		$this->add_action_buttons(true, get_string("uploadfile", "local_deportes"));//crear lang
+		$this->add_action_buttons(true, get_string("uploadfile", "local_deportes"));
 	}
 	public function validation($data, $files){
 		$errors = array();
@@ -58,7 +58,7 @@ class deportes_filepicker extends moodleform{
 		//$filename = $data["filename"];
 		
 		if (empty($userfile)){
-			$errors["userfile"] = get_string("mustuploadfile", "local_deportes"); //lang
+			$errors["userfile"] = get_string("must_uploadfile", "local_deportes");
 		}
 		/*
 		$explodename = explode(".",$filename);
@@ -67,7 +67,7 @@ class deportes_filepicker extends moodleform{
 		*/
 		
 		if($type != 1 && $type != 2){
-			$errors["type"] = "Qué tipo de deporte es?";//lang
+			$errors["type"] = get_string("must_selecttype");
 		}
 		return $errors;
 	}

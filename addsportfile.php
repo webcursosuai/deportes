@@ -94,7 +94,7 @@ if ($action == "addfile"){
 				//$previousfile->delete();
 				foreach(glob("$path/outdoors.*") as $file)
 				{
-					unlink($file);
+					unlink(realpath($file));
 				}
 				
 				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors%"));
@@ -119,7 +119,7 @@ if ($action == "addfile"){
 				//$previousfile->delete();
 				foreach(glob("$path/fitness.*") as $file)
 				{
-					unlink($file);
+					unlink(realpath($file));
 				}
 				
 				//$DB->execute("DELETE FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness%"));

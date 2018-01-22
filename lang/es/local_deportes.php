@@ -54,6 +54,7 @@ $string["sport_type_help"] = "Seleccione el tipo de deporte al que corresponder�
 $string["uploadfile"] = "Subir imagen";
 $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Seleccionar archivo";
+$string["must_uploadfile"] = "No se subió archivo. Por favor inténtelo de nuevo.";
 
 $string["Jan"] = "Enero";
 $string["Feb"] = "Febrero";
