@@ -61,7 +61,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
 	echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
-	$fs = get_file_storage();
 	
 	/*
 	if($fitnessresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness.%"))) {
@@ -95,6 +94,15 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	//$imgurlfitness = moodle_url::make_pluginfile_url($filefitness->get_contextid(), $filefitness->get_component(), $filefitness->get_filearea(), $filefitness->get_itemid(), $filefitness->get_filepath(), $filefitness->get_filename());
 	//$imgurloutdoors = moodle_url::make_pluginfile_url($fileoutdoors->get_contextid(), $fileoutdoors->get_component(), $fileoutdoors->get_filearea(), $fileoutdoors->get_itemid(), $fileoutdoors->get_filepath(), $fileoutdoors->get_filename());
 	
+	$latestfitness = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("2"));
+	$fitnessfile = $DB->get_record("deportes_files", array("uploaddate" => $latestfitness->latest, "type" => "2"));
+	
+	$latestoutdoors = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("1"));
+	$outdoorsfile = $DB->get_record("deportes_files", array("uploaddate" => $latestoutdoors->latest, "type" => "1"));
+	
+	$fitnessimg = html_writer::img("img/".$fitnessfile->name, "Fitness", array("style" => "width: 80%;"));
+	$outdoorsimg = html_writer::img("img/".$outdoorsfile->name, "Outdoors", array("style" => "width: 80%;"));
+	/*
 	if(file_exists("img/fitness.jpg")) {
 		$fitnessimg = html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
 	} else if(file_exists("img/fitness.JPG")) {
@@ -114,7 +122,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	} else if(file_exists("img/outdoors.PNG")) {
 		$outdoorsimg = html_writer::img("img/outdoors.PNG", "Outdoors", array("style" => "width: 80%;"));
 	}
-	
+	*/
 	echo $fitnessimg;
 	echo $outdoorsimg;
 
