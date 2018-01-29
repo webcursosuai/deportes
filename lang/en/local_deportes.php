@@ -35,6 +35,7 @@ $string["startdaydesc"] = "First day of the sports period. Students can start at
 $string["endday"] = "Last day";
 $string["enddaydesc"] = "Last day of the sports period. Any attendance beyond this day won't be counted towards the period's total";
 $string["situation"] = "Situation";
+$string["passed"] = "Passed";
 $string["pending"] = "Pending";
 $string["failed"] = "Failed";
 $string["rules"] = "Rules";
@@ -42,6 +43,18 @@ $string["recommended"] = "Recommended";
 $string["help"] = "Chart information";
 $string["emailextension"] = "Email extension";
 $string["emailextensiondesc"] = "Email extension used in the Omega platform";
+$string["courseid"] = "General course ID";
+$string["courseiddesc"] = "General information course ID used to link it on the UAI block. The link won't show if this value is 0";
+$string["totalattendance"] = "Total attendances";
+$string["totalattendancedesc"] = "Number of times the student must attend to sport classes during the semester to pass";
+$string["nosportsleft"] = "There are no sports left for reservations";
+$string["selectsport"] = "Select the sports type";
+$string["sport_type"] = "Sports type";
+$string["sport_type_help"] = "Select the type of sports the image represents. One image per sports type must be uploaded at a time.";
+$string["uploadfile"] = "Upload file";
+$string["sportsform"] = "Add a sports schedule file";
+$string["selectfile"] = "Select file";
+$string["must_uploadfile"] = "No file was uploaded. Please try again.";
 
 $string["Jan"] = "January";
 $string["Feb"] = "February";
@@ -74,7 +87,6 @@ $string["monthattendance"] = "This month";
 $string["sportschart_title"] = "Sport classes";
 $string["sportschart_subtitle"] = "Total attendances";
 
-$string[""] = "";
 //module_form langs
 $string["module_form"] = "Modules From";
 $string["module_name"] = "Module name";
@@ -89,11 +101,13 @@ $string["module_type_help"] = "Select if the module is for fitness clases or out
 $string["close"] = "Close";
 $string["rules_title"] = "Sports rules";
 $string["graphinfo"] = "Graph information";
-$string["rules_content"] = "Dear Student <br>
+$string["rules_content1"] = "Dear Student <br>
 	To approve your sports credits you must do the following:<br>
 	* Number of attendances: <b>26</b><br>
-	* Semester starts: <b>August 1st</b><br>
-	* Semester ends: <b>November 25th</b><br>
+	* Semester starts: <b>";
+$string["rules_content2"]= "</b><br>
+	* Semester ends: <b>";
+$string["rules_content3"] = "</b><br>
 	You may do as many attendances as you like in a day, month or semester, but:<br>
 	* <b>Only 1 attendance will be valid each day.</b><br>
 	* A maximum of <b>8</b> attendances are valid per <b>month</b>.<br>

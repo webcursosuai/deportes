@@ -14,132 +14,99 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /*
- * @package    local
+* @package    local
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
+* @copyright  2018 Mark Michaelsen (mmichaelsen678@gmail.com)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once ($CFG->dirroot . "/local/deportes/forms/sports_filepicker.php");
 require_once(dirname(__FILE__) . "/locallib.php");
 global $PAGE, $CFG, $OUTPUT, $DB, $USER;
+
 $action = optional_param("action", "addfile", PARAM_TEXT);
 $status = optional_param("status", null, PARAM_TEXT);
 $edition = optional_param("edition", null, PARAM_INT);
+
 require_login();
+
+// Headers that prevent the page to save cache files (schedule images)
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 $userid = $USER->id;
-$url = new moodle_url('/local/deportes/addsports.php');
+$url = new moodle_url('/local/deportes/addsportfile.php');
 $context = context_system::instance();
+$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
+$PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
 $PAGE->set_context($context);
 $PAGE->set_url($url);
-$PAGE->set_pagelayout('standard');
-$PAGE->set_title('Add sports form'); //change with lang
+$PAGE->set_pagelayout("standard");
+$PAGE->set_title(get_string("page_title", "local_deportes"));
+$PAGE->set_heading(get_string("page_heading", "local_deportes"));
+
 $urlschedule = new moodle_url('/local/deportes/schedule.php');
+
 if ($action == "addfile"){
 	$addform = new deportes_filepicker();
 	if ($addform->is_cancelled()) {
 		$action = "view";
 		redirect($url);
 	}
-	if ($addform->get_data()) {
-		$fromform = $addform->get_data();
+	
+	if ($fromform = $addform->get_data()) {
+		$timecreated = time();
+		
 		//Takes the data from the form
 		$newfile = new stdClass();
-		$path = $CFG->dataroot. "/temp/local/deportes";
-		if ($fromform->type == 1){
-			$newfile->name = "outdoors";
-			$newfile->type = 1;
-			if(!file_exists($path . "/outdoors/")) {
-				mkdir($path . "/outdoors/", 0777, true);
-			}
-		}
-		elseif ($fromform->type == 2){
-			$newfile->name = "fitness";
-			$newfile->type = 2;
-			if(!file_exists($path . "/fitness/")) {
-				mkdir($path . "/fitness/", 0777, true);
-			}
-		}
+		$path = $CFG->dirroot. "/local/deportes/img";
+		
 		$filename = $addform->get_new_filename("userfile");
 		$explodename = explode(".",$filename);
 		$countnamefile= count($explodename);
 		$extension = $explodename[$countnamefile-1];
-		if ($extension != "pdf"){
-			print_r("ERROR: Tipo de archivo no aceptado");
-			redirect($url);
+		
+		if ($fromform->type == 1){
+			$newfile->name = "outdoors".$timecreated.".".$extension;
+			$newfile->type = 1;
 		}
-		else{
-			$fs = get_file_storage();
-			if($newfile->type == 1){
-				$file_record = array(
-						"contextid" => $context->id,
-						"component" => "local_deportes",
-						"filearea" => "draft",
-						"itemid" => 0,
-						"filepath" => "/",
-						"filename" => "outdoors.".$extension,
-						"timecreated" => time(),
-						"timemodified" => time(),
-						"userid" => $USER->id,
-						"author" => $USER->firstname." ".$USER->lastname,
-						"license" => "allrightsreserved"
-				);
-				if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "outdoors.".$extension)) {
-					$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.".$extension);
-					$previousfile->delete();
-					foreach(glob("{$path}/outdoors/*") as $file)
-					{
-						unlink($file);
-					}
-				}
-			}
-			else if($newfile->type == 2){
-				$file_record = array(
-						"contextid" => $context->id,
-						"component" => "local_deportes",
-						"filearea" => "draft",
-						"itemid" => 0,
-						"filepath" => "/",
-						"filename" => "fitness.".$extension,
-						"timecreated" => time(),
-						"timemodified" => time(),
-						"userid" => $USER->id,
-						"author" => $USER->firstname." ".$USER->lastname,
-						"license" => "allrightsreserved"
-				);
-				if ($fs->file_exists($context->id,"local_deportes", "draft", 0, "/", "fitness.".$extension)) {
-					$previousfile = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "fitness.".$extension);
-					$previousfile->delete();
-					foreach(glob("{$path}/fitness/*") as $file)
-					{
-						unlink($file);
-					}
-				}
-			}
-			if ($newfile->type == 1){
-				$file = $addform->save_file("userfile", $path."/outdoors/outdoors.".$extension,false);
-				$uploadfile = $path . "/outdoors/".$file_record["filename"];
-			}
-			else if ($newfile->type == 2){
-				$file = $addform->save_file("userfile", $path."/fitness/fitness.".$extension,false);
-				$uploadfile = $path . "/fitness/".$file_record["filename"];
-			}
-			var_dump($uploadfile);
-			$fileinfo = $fs->create_file_from_pathname($file_record, $uploadfile);
-				
-			$newfile->editiondate = $file_record["timemodified"];
-			$newfile->uploaddate = $file_record["timecreated"];
-			$newfile->path = $file_record["filepath"]."deportes/".explode(".", $file_record["filename"])[0]."/".$file_record["filename"];
-			$newfile->iduser = $file_record["userid"];
-			$DB->insert_record('sports_files', $newfile);
-				
-			redirect($urlschedule);
-				
+		elseif ($fromform->type == 2){
+			$newfile->name = "fitness".$timecreated.".".$extension;
+			$newfile->type = 2;
 		}
+		
+		if($newfile->type == 1){
+			// Delete the previous outdoors file
+			foreach(glob("$path/outdoors*") as $file) {
+				unlink(realpath($file));
+			}
+		}
+		else if($newfile->type == 2){
+			// Delete the previous fitness file
+			foreach(glob("$path/fitness*") as $file) {
+				unlink(realpath($file));
+			}
+		}
+		
+		$file = $addform->save_file("userfile", $path."/".$newfile->name, true);
+		
+		$newfile->uploaddate = $timecreated;
+		$newfile->iduser = $userid;
+		$DB->insert_record('deportes_files', $newfile);
+			
+		redirect($urlschedule);
 	}
 }
+
 echo $OUTPUT->header();
+echo $OUTPUT->heading("DeportesUAI");
+
 if ($action == "addfile") {
 	$addform->display();
 }
+
 echo $OUTPUT->footer();

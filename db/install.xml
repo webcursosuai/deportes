@@ -1,56 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/deportes/db" VERSION="20170725" COMMENT="XMLDB file for Moodle local/deportes"
+<XMLDB PATH="local/deportes/db" VERSION="20180123" COMMENT="XMLDB file for Moodle local/deportes"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="sports_classes" COMMENT="Table with data of each sport for UAI">
+    <TABLE NAME="deportes_files" COMMENT="files for the sports schedule">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="lastmodified" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="0 for outdoors 1 for fitness"/>
-        <FIELD NAME="backgroundcolor" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="background color for each sport"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="sports_modules" COMMENT="this time, it won't kill moodle">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="name" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Name of the module"/>
-        <FIELD NAME="starttime" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Time at which the module starts"/>
-        <FIELD NAME="endtime" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Time at which the module ends"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="0 for outdoors 1 for fitness"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="sports_schedule" COMMENT="Table at which sports_classes and sports_modules join to get a schedule of sports">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="idsports" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of sport"/>
-        <FIELD NAME="idmodules" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of the module at which the sport is played"/>
-        <FIELD NAME="day" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="idsports" TYPE="foreign" FIELDS="idsports" REFTABLE="sports_classes" REFFIELDS="id"/>
-        <KEY NAME="idmodules" TYPE="foreign" FIELDS="idmodules" REFTABLE="sports_modules" REFFIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="sports_files" COMMENT="files for the sports schedule">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="filename"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="150" NOTNULL="false" SEQUENCE="false" COMMENT="filename"/>
         <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="type of sport"/>
-        <FIELD NAME="editiondate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="date"/>
         <FIELD NAME="uploaddate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date of when it was uploaded"/>
-        <FIELD NAME="path" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="path to where it's stored"/>
         <FIELD NAME="iduser" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Who made this file"/>
       </FIELDS>
       <KEYS>

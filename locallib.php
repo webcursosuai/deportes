@@ -48,6 +48,7 @@ function deportes_tabs() {
 }
 
 function deportes_modal_rules() {
+	global $CFG;
 	return '<div id="myModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%; z-index: -10;">
   				<div class="modal-dialog">
 				    <div class="modal-content">
@@ -56,7 +57,9 @@ function deportes_modal_rules() {
         					<h4 class="modal-title">'.get_string("rules_title", "local_deportes").'</h4>
       					</div>
       					<div class="modal-body">
-        					<p>'.get_string("rules_content", "local_deportes").'</p>
+        					<p>'.get_string("rules_content1", "local_deportes").get_string(date('M', mktime(0, 0, 0, $CFG->deportes_startmonth, 10)), "local_deportes").' '.$CFG->deportes_startday.
+        					get_string("rules_content2", "local_deportes").get_string(date('M', mktime(0, 0, 0, $CFG->deportes_endmonth, 10)), "local_deportes").' '.$CFG->deportes_endday.
+        					get_string("rules_content3", "local_deportes").'</p>
       					</div>
       					<div class="modal-footer">
 	        				<button type="button" class="btn btn-default" data-dismiss="modal">'.get_string("close", "local_deportes").'</button>
@@ -83,6 +86,11 @@ function deportes_modal_help() {
     				</div>
   				</div>
 			</div>';
+}
+
+function replace_extension($filename, $new_extension) {
+	$info = pathinfo($filename);
+	return $info['filename'] . '.' . $new_extension;
 }
 /*
 function deportes_get_schedule($orderby, $type){

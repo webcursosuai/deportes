@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /*
- * @package    local
+* @package    local
 * @subpackage deportes
 * @copyright  2017 Javier Gonzalez <javiergonzalez@alumnos.uai.cl>
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,27 +30,25 @@ class deportes_filepicker extends moodleform{
 		global $DB, $CFG;
 		$mform = $this->_form;
 		$arraysportstype = array(
-				0 => "Seleccione un tipo de deporte",
+				0 => get_string("selectsport", "local_deportes"),
 				1 => "Outdoors",
 				2 => "Fitness"
 		);
-		$mform->addElement("filepicker", "userfile", "Subir", null,
-				array("maxbytes" => 5000000, "accepted_types" => array("*.pdf")));
+		$mform->addElement("filepicker", "userfile", get_string("selectfile", "local_deportes"), null, array("maxbytes" => 5000000));
 		$mform->setType("userfile", PARAM_FILE);
 		
 		/*$mform->get_new_filename("userfile");
 		$mform->setType("filename", PARAM_TEXT);
 		*/
-		$mform->addHelpButton( "type", "sport_fileupload", "local_deportes");
 		
-		$mform->addElement("select", "type", "Type of Sport", $arraysportstype);
+		$mform->addElement("select", "type", get_string("sport_type", "local_deportes"), $arraysportstype);
 		$mform->setType("type", PARAM_INT);
-		$mform->addHelpButton( "type", "sport_type", "local_deportes");
+		$mform->addHelpButton("type", "sport_type", "local_deportes");
 		
 		
 		$mform->addElement("hidden", "action", "addfile");
 		$mform->setType("action", PARAM_TEXT);
-		$this->add_action_buttons(true, ("uploadfile, local_deportes"));//crear lang
+		$this->add_action_buttons(true, get_string("uploadfile", "local_deportes"));
 	}
 	public function validation($data, $files){
 		$errors = array();
@@ -60,7 +58,7 @@ class deportes_filepicker extends moodleform{
 		//$filename = $data["filename"];
 		
 		if (empty($userfile)){
-			$errors["userfile"] = get_string("mustuploadfile", "local_deportes"); //lang
+			$errors["userfile"] = get_string("must_uploadfile", "local_deportes");
 		}
 		/*
 		$explodename = explode(".",$filename);
@@ -69,7 +67,7 @@ class deportes_filepicker extends moodleform{
 		*/
 		
 		if($type != 1 && $type != 2){
-			$errors["type"] = "Qué tipo de deporte es?";//lang
+			$errors["type"] = get_string("must_selecttype");
 		}
 		return $errors;
 	}

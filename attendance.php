@@ -132,18 +132,45 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 				9 => 0,
 				10 => 0,
 				11 => 0,
-				12 => 0
+				12 => 0,
+				13 => 0
 		);
+		
+		$height = "24vh";
+		$calendarheight = 200;
+		
+		$firstmonth = $CFG->deportes_startmonth;
+		$lastmonth = ($CFG->deportes_endmonth >= $firstmonth) ? $CFG->deportes_endmonth : $CFG->deportes_endmonth + 12;
+		
 		$today = date("m", time());
 		$counter = $page * $perpage + 1;
 		$date = 0;
 		$lastattendance = 0;
+		
+		$months = array();
+		for($monthnumber = $firstmonth; $monthnumber <= $lastmonth; $monthnumber++) {
+			$months[] = $monthnumber;
+		}
+		
+		$data[] = (object) array(
+				"IsCastigo" => false,
+				"Rut" => 18541232,
+				"Deporte" => "Máquinas",
+				"Mes" => 1,
+				"Semana" => 1,
+				"Dia" => 1,
+				"Asistencia" => 1,
+				"HoraInicio" => "2018-01-01T13:00:00",
+				"HoraTermino" => "2018-01-01T14:01:00"
+		);
+		
 		foreach($data as $attendance) {
+			//$attendancechartinfo = array();
 			if(date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day')) == $date && $attendance->Asistencia == 1 && $lastattendance > 0){
 					$repeated = 1;
 			}
 			
-			if($repeated != 1){
+			if($repeated != 1 && (in_array($attendance->Mes, $months)) || in_array($attendance->Mes + 12, $months)){
 				$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
 				$lastattendance = $attendance->Asistencia;
 				$attendancechartinfo = array(
@@ -152,6 +179,12 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 				);
 				
 				$month = date("m",strtotime($attendance->HoraInicio));
+				if($month == 1) {
+					$month += 12;
+					$height = "45vh";
+					$calendarheight = 380;
+				}
+				$month = ($month == 1) ? $month + 12 : $month;
 				$monthlyattendance[(int)$month] += $attendance->Asistencia;
 			}
 			
@@ -187,39 +220,39 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$totalattendance += $monthlyattendance[$month];
 		}
 		
-		$firstmonth = $CFG->deportes_startmonth;
-		$lastmonth = $CFG->deportes_endmonth;
 		$actualmonth = (int)$today;
+		$actualmonth = ($actualmonth == 1) ? $actualmonth + 12 : $actualmonth;
 		$elapsedmonths = $actualmonth - $firstmonth;
 		$monthsremaining = ($lastmonth - $firstmonth + 1) - $elapsedmonths;
 		$minimumpermonth = array();
-		$total = 26;
+		$total = $CFG->deportes_totalattendance;
 		
+		// Fills the minimumpermonth array with the attendance already done
 		$completedmonth = 0;
-		while($elapsedmonths > 0) {
+		$elapsedmonths = ($elapsedmonths < 0) ? $elapsedmonths + 12 : $elapsedmonths;
+		while($elapsedmonths > 0 && $firstmonth + $completedmonth <= $lastmonth) {
 			$minimumpermonth[$firstmonth + $completedmonth] = $monthlyattendance[$firstmonth + $completedmonth];
 			$elapsedmonths--;
 			$completedmonth++;
 		}
 		
+		// Fills the remaining spaces in the array and checks if the student failed sports by lack of attendance
 		$counter = 0;
 		$failed = false;
-		while(array_sum($minimumpermonth) < $total) {
-			if(array_sum($monthlyattendance) >= $total) {
+		if(!in_array($actualmonth, $months) && $totalattendance < $total) {
+			$failed = true;
+		}
+		while(array_sum($minimumpermonth) < $total || ($monthsremaining) >= $counter) {
+			if($totalattendance >= $total) {
 				break;
 			}
 			
-			if(count($minimumpermonth) > 4 || ($monthsremaining - 1) < $counter) {
-				$failed = true;
-				break;
-			} else {
-				if(!isset($minimumpermonth[$lastmonth - $counter])) {
-					$difference = max($total - array_sum($minimumpermonth), 0);
-					$minimumpermonth[$lastmonth - $counter] = ($difference > 8) ? 8 : $difference;
-				}
-				
-				$counter++;
+			if((!isset($minimumpermonth[$lastmonth - $counter]) || array_sum($minimumpermonth) < $total)) {
+				$difference = max($total - array_sum($minimumpermonth), 0) + $minimumpermonth[$lastmonth - $counter];
+				$minimumpermonth[$lastmonth - $counter] = ($difference > 8) ? 8 : $difference;
 			}
+				
+			$counter++;
 		}
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
@@ -232,18 +265,12 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			);
 		}
 		
-		$situation = ($failed) ? get_string("failed", "local_deportes") : get_string("pending", "local_deportes");
+		$situation = ($totalattendance >= $total) ? get_string("passed", "local_deportes") : ($failed ? get_string("failed", "local_deportes") : get_string("pending", "local_deportes"));
 		$color = ($failed) ? "red" : "orange";
 		
 		$headingtable = new html_table("p");
-		$headingtable->size = array(
-				"25%",
-				"25%",
-				"25%",
-				"25%"
-		);
 		$headingtable->data[] = array(
-				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance),
+				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance."/".$CFG->deportes_totalattendance),
 				html_writer::tag('h3', get_string('situation','local_deportes').": ".$situation, array('style' => 'color:'.$color)),
 				html_writer::tag('h3', get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth], array('style' => 'color:'.$monthlycolor)),
 				html_writer::tag('h3', get_string('minimumattendance','local_deportes').": ".$minimumrequired)
@@ -251,21 +278,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		);
 		
 		$monthlytable = new html_table("p");
-		$monthlytable->size = array(
-				"25%",
-				"25%",
-				"25%",
-				"25%"
-		);
 		$monthlytablearray = array();
-		
 		
 		for($month = $firstmonth; $month <= $lastmonth; $month++) {
 			$recommended = ceil($total / ($lastmonth - $month + 1));
 			$total -= $recommended;
 			
 			$monthlycolor = ($monthlyattendance[$month] >= $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
-			$monthlycolor = ($month > $actualmonth) ? "orange" : $monthlycolor ;
+			$monthlycolor = ($month >= $actualmonth && $actualmonth >= $firstmonth) ? "orange" : $monthlycolor ;
 			
 			$monthlytablearray[] = html_writer::tag('h3', get_string(date('M', mktime(0, 0, 0, $month, 10)), "local_deportes").": ".$monthlyattendance[$month], array('style' => 'color:'.$monthlycolor)).
 					html_writer::tag('b', get_string("recommended", "local_deportes").": ".$recommended);
@@ -285,7 +305,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => 'overflow-x: auto; height:24vh;'));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: auto; height:$height;"));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
 		echo html_writer::table($monthlytable);
@@ -326,7 +346,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		var options = {
 			title: "<?php echo get_string('attendance','local_deportes')?>",
 			width: '920',
-			height: '200',
+			height: "<?php echo $calendarheight; ?>",
 			colorAxis:{
 				minValue:-1,
 				maxValue:1

@@ -38,7 +38,15 @@ if (isguestuser()) {
 	die();
 }
 
+// Headers that prevent the page to save cache files (schedule images)
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 $context = context_system::instance();
+$email = $USER->email;
 
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
 	$url = new moodle_url("/local/deportes/schedule.php");
@@ -53,9 +61,70 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	echo $OUTPUT->header();
 	echo $OUTPUT->heading("DeportesUAI");
 	echo $OUTPUT->tabtree(deportes_tabs(), "schedule");
-
-	echo "<img src='img/fitness.jpg'>";
-	echo "<img src='img/outdoors.jpg'>";
+	
+	/*
+	if($fitnessresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "fitness.%"))) {
+		$fitnessname = $fitnessresult->contenthash;
+		$path1 = substr($fitnessname, 0, 2);
+		$path2 = substr($fitnessname, 2, 2);
+		$fitnesspath = $path1."/".$path2."/".$fitnessname;
+		
+		$fitnessfile = $CFG->dataroot."/filedir/".$fitnesspath;
+	}
+	
+	if($outdoorsresult = $DB->get_record_sql("SELECT contenthash FROM {files} WHERE ".$DB->sql_like("filename", ":img"), array("img" => "outdoors.%"))) {
+		$outdoorsname = $outdoorsresult->contenthash;
+		$path1 = substr($outdoorsname, 0, 2);
+		$path2 = substr($outdoorsname, 2, 2);
+		$outdoorspath = $path1."/".$path2."/".$outdoorsname;
+		
+		$outdoorsfile = $CFG->dataroot."/filedir/".$outdoorspath;
+	}
+	
+	if(!file_exists($fitnessfile.".jpg")) {
+		//rename($fitnessfile, replace_extension($fitnessfile, "jpg"));
+	}
+	
+	if(!file_exists($outdoorsfile.".jpg")) {
+		//rename($outdoorsfile, replace_extension($outdoorsfile, "jpg"));
+	}
+	*/
+	//$fileoutdoors = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", "outdoors.jpg");
+	//$filefitness = $fs->get_file($context->id, "local_deportes", "draft", 0, "/", $fitnessname);
+	//$imgurlfitness = moodle_url::make_pluginfile_url($filefitness->get_contextid(), $filefitness->get_component(), $filefitness->get_filearea(), $filefitness->get_itemid(), $filefitness->get_filepath(), $filefitness->get_filename());
+	//$imgurloutdoors = moodle_url::make_pluginfile_url($fileoutdoors->get_contextid(), $fileoutdoors->get_component(), $fileoutdoors->get_filearea(), $fileoutdoors->get_itemid(), $fileoutdoors->get_filepath(), $fileoutdoors->get_filename());
+	
+	$latestfitness = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("2"));
+	$fitnessfile = $DB->get_record("deportes_files", array("uploaddate" => $latestfitness->latest, "type" => "2"));
+	
+	$latestoutdoors = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("1"));
+	$outdoorsfile = $DB->get_record("deportes_files", array("uploaddate" => $latestoutdoors->latest, "type" => "1"));
+	
+	$fitnessimg = html_writer::img("img/".$fitnessfile->name, "Fitness", array("style" => "width: 80%;"));
+	$outdoorsimg = html_writer::img("img/".$outdoorsfile->name, "Outdoors", array("style" => "width: 80%;"));
+	/*
+	if(file_exists("img/fitness.jpg")) {
+		$fitnessimg = html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.JPG")) {
+		$fitnessimg = html_writer::img("img/fitness.JPG", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.png")) {
+		$fitnessimg = html_writer::img("img/fitness.png", "Fitness", array("style" => "width: 80%;"));
+	} else if(file_exists("img/fitness.PNG")) {
+		$fitnessimg = html_writer::img("img/fitness.PNG", "Fitness", array("style" => "width: 80%;"));
+	}
+	
+	if(file_exists("img/outdoors.jpg")) {
+		$outdoorsimg = html_writer::img("img/outdoors.jpg", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.JPG")) {
+		$outdoorsimg = html_writer::img("img/outdoors.JPG", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.png")) {
+		$outdoorsimg = html_writer::img("img/outdoors.png", "Outdoors", array("style" => "width: 80%;"));
+	} else if(file_exists("img/outdoors.PNG")) {
+		$outdoorsimg = html_writer::img("img/outdoors.PNG", "Outdoors", array("style" => "width: 80%;"));
+	}
+	*/
+	echo $fitnessimg;
+	echo $outdoorsimg;
 
 	echo $OUTPUT->footer();
 } else {

@@ -35,6 +35,7 @@ $string["startdaydesc"] = "Primer día del peíodo de deportes. Los alumnos podr
 $string["endday"] = "Día final";
 $string["enddaydesc"] = "Último día del período de deportes. Asistencias registradas después de este día no serán contadas hacia el total del período";
 $string["situation"] = "Situación";
+$string["passed"] = "Aprobado";
 $string["pending"] = "Pendiente";
 $string["failed"] = "Reprobado";
 $string["rules"] = "Reglas";
@@ -42,6 +43,18 @@ $string["recommended"] = "Recomendado";
 $string["help"] = "Información del gráfico";
 $string["emailextension"] = "Extensión de email";
 $string["emailextensiondesc"] = "Extensión de email utilizado en la plataforma de Omega";
+$string["courseid"] = "ID de curso general";
+$string["courseiddesc"] = "ID del curso general de informaciones usado para vincularlo en el bloque UAI. El vínculo no se mostrará si esto vale 0";
+$string["totalattendance"] = "Asistencias totales";
+$string["totalattendancedesc"] = "Cantidad de veces que el estudiante debe asistir a clases de deporte durante el semestre para aprobar";
+$string["nosportsleft"] = "No hay deportes disponibles para reservar";
+$string["selectsport"] = "Seleccione el tipo de deporte";
+$string["sport_type"] = "Tipo de deporte";
+$string["sport_type_help"] = "Seleccione el tipo de deporte al que corresponderá la imagen subida. Debe subir de un tipo de deporte a la vez.";
+$string["uploadfile"] = "Subir imagen";
+$string["sportsform"] = "Add a sports schedule file";
+$string["selectfile"] = "Seleccionar archivo";
+$string["must_uploadfile"] = "No se subió archivo. Por favor inténtelo de nuevo.";
 
 $string["Jan"] = "Enero";
 $string["Feb"] = "Febrero";
@@ -88,11 +101,13 @@ $string["module_type_help"] = "Seleccione si el modulo corresponde a Fitness o O
 $string["close"] = "Cerrar";
 $string["rules_title"] = "Reglamento de deportes";
 $string["graphinfo"] = "Información del gráfico";
-$string["rules_content"] = "Estimado Alumno/a <br>
+$string["rules_content1"] = "Estimado Alumno/a <br>
 	Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
 	* N° de asistencias: <b>26</b><br>
-	* Inicio semestre: <b>01 de Agosto</b><br>
-	* Termino semestre: <b>25 de Noviembre</b><br>
+	* Inicio semestre: <b>";
+$string["rules_content2"] = "</b><br>
+	* Termino semestre: <b>";
+$string["rules_content3"] = "</b><br>
 	Puedes realizar la cantidad de asistencias por día, mes y semestre que gustes, pero solo:<br>
 	* <b>Será válido 1 asistencia por día</b><br>
 	* Máximo <b>8</b> asistencias validas por <b>mes</b><br>

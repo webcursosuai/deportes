@@ -115,4 +115,20 @@ if ($hassiteconfig) {
 					30,
 					$days
 					));
+	$settings->add(
+			new admin_setting_configtext(
+					"deportes_totalattendance",
+					get_string("totalattendance", "local_deportes"),
+					get_string("totalattendancedesc", "local_deportes"),
+					26,
+					PARAM_INT
+					));	
+	$settings->add(
+			new admin_setting_configtext(
+					"deportes_courseid",
+					get_string("courseid", "local_deportes"),
+					get_string("courseiddesc", "local_deportes"),
+					0,
+					PARAM_INT
+					));	
 }
