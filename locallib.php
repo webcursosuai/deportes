@@ -47,7 +47,7 @@ function deportes_tabs() {
 	return $tabs;
 }
 
-function deportes_modal_rules() {
+function deportes_modal_rules($startmonth, $startday, $endmonth, $endday, $totalattendance) {
 	global $CFG;
 	return '<div id="myModal" class="modal fade" role="dialog" style="width: 70%; margin-left: -35%; z-index: -10;">
   				<div class="modal-dialog">
@@ -57,8 +57,8 @@ function deportes_modal_rules() {
         					<h4 class="modal-title">'.get_string("rules_title", "local_deportes").'</h4>
       					</div>
       					<div class="modal-body">
-        					<p>'.get_string("rules_content1", "local_deportes").get_string(date('M', mktime(0, 0, 0, $CFG->deportes_startmonth, 10)), "local_deportes").' '.$CFG->deportes_startday.
-        					get_string("rules_content2", "local_deportes").get_string(date('M', mktime(0, 0, 0, $CFG->deportes_endmonth, 10)), "local_deportes").' '.$CFG->deportes_endday.
+        					<p>'.get_string("rules_content1", "local_deportes").$totalattendance.get_string("rules_b", "local_deportes").get_string(date('M', mktime(0, 0, 0, $startmonth, 10)), "local_deportes").' '.$startday.
+        					get_string("rules_content2", "local_deportes").get_string(date('M', mktime(0, 0, 0, $endmonth, 10)), "local_deportes").' '.$endday.
         					get_string("rules_content3", "local_deportes").'</p>
       					</div>
       					<div class="modal-footer">

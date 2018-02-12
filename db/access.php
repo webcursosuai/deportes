@@ -47,7 +47,7 @@ $capabilities = array(
 						"student" => CAP_PROHIBIT,
 						"teacher" => CAP_PROHIBIT,
 						"editingteacher" => CAP_PROHIBIT,
-						"manager" => CAP_PROHIBIT,
+						"manager" => CAP_ALLOW,
 						"deportes" => CAP_ALLOW
 				))
 );
