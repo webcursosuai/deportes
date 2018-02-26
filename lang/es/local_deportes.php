@@ -56,6 +56,12 @@ $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Seleccionar archivo";
 $string["must_uploadfile"] = "No se subió archivo. Por favor inténtelo de nuevo.";
 
+$string["startmonth_help"] = "Primer mes del período de deportes";
+$string["endmonth_help"] = "Último mes del peíodo de deportes";
+$string["startday_help"] = "Primer día del peíodo de deportes. Los alumnos podrán registrar asistencias desde este día";
+$string["endday_help"] = "Último día del período de deportes. Asistencias registradas después de este día no serán contadas hacia el total del período";
+$string["totalattendance_help"] = "Cantidad de veces que el estudiante debe asistir a clases de deporte durante el semestre para aprobar";
+
 $string["Jan"] = "Enero";
 $string["Feb"] = "Febrero";
 $string["Mar"] = "Marzo";
@@ -103,7 +109,8 @@ $string["rules_title"] = "Reglamento de deportes";
 $string["graphinfo"] = "Información del gráfico";
 $string["rules_content1"] = "Estimado Alumno/a <br>
 	Para aprobar tu crédito de deportes debes realizar lo siguiente:<br>
-	* N° de asistencias: <b>26</b><br>
+	* N° de asistencias: <b>";
+$string["rules_b"] = "</b><br>
 	* Inicio semestre: <b>";
 $string["rules_content2"] = "</b><br>
 	* Termino semestre: <b>";

@@ -61,68 +61,6 @@ if ($hassiteconfig) {
 					"alumnos.uai.cl",
 					PARAM_TEXT
 					));
-	
-	$months = array(
-			1 => get_string("Jan", "local_deportes"),
-			2 => get_string("Feb", "local_deportes"),
-			3 => get_string("Mar", "local_deportes"),
-			4 => get_string("Apr", "local_deportes"),
-			5 => get_string("May", "local_deportes"),
-			6 => get_string("Jun", "local_deportes"),
-			7 => get_string("Jul", "local_deportes"),
-			8 => get_string("Aug", "local_deportes"),
-			9 => get_string("Sep", "local_deportes"),
-			10 => get_string("Oct", "local_deportes"),
-			11 => get_string("Nov", "local_deportes"),
-			12 => get_string("Dec", "local_deportes")
-	);
-	
-	$settings->add(
-			new admin_setting_configselect(
-					"deportes_startmonth",
-					get_string("startmonth", "local_deportes"),
-					get_string("startmonthdesc", "local_deportes"),
-					3,
-					$months
-					));
-	$settings->add(
-			new admin_setting_configselect(
-					"deportes_endmonth",
-					get_string("endmonth", "local_deportes"),
-					get_string("endmonthdesc", "local_deportes"),
-					6,
-					$months
-					));
-	
-	$days = array();
-	for($day = 0; $day < 32; $day++){
-		$days[$day] = $day;
-	}
-	
-	$settings->add(
-			new admin_setting_configselect(
-					"deportes_startday",
-					get_string("startday", "local_deportes"),
-					get_string("startdaydesc", "local_deportes"),
-					1,
-					$days
-					));
-	$settings->add(
-			new admin_setting_configselect(
-					"deportes_endday",
-					get_string("endday", "local_deportes"),
-					get_string("enddaydesc", "local_deportes"),
-					30,
-					$days
-					));
-	$settings->add(
-			new admin_setting_configtext(
-					"deportes_totalattendance",
-					get_string("totalattendance", "local_deportes"),
-					get_string("totalattendancedesc", "local_deportes"),
-					26,
-					PARAM_INT
-					));	
 	$settings->add(
 			new admin_setting_configtext(
 					"deportes_courseid",

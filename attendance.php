@@ -55,7 +55,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_title(get_string("page_title", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 	
-	$modal = deportes_modal_rules();
+	$configresult = $DB->get_records("deportes_config", array());
+	$settings = array();
+	
+	foreach($configresult as $config) {
+		$settings[$config->name] = $config->value;
+	}
+	
+	$modal = deportes_modal_rules($settings["month_start"], $settings["day_start"], $settings["month_end"], $settings["day_end"], $settings["totalattendance"]);
 	$helpmodal = deportes_modal_help();
 	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;", "data-toggle" => "modal", "data-target" => "#myModal"));
 	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info", "data-toggle" => "modal", "data-target" => "#helpModal"));
@@ -139,8 +146,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$height = "24vh";
 		$calendarheight = 200;
 		
-		$firstmonth = $CFG->deportes_startmonth;
-		$lastmonth = ($CFG->deportes_endmonth >= $firstmonth) ? $CFG->deportes_endmonth : $CFG->deportes_endmonth + 12;
+		$firstmonth = $settings["month_start"];
+		$lastmonth = ($settings["month_end"] >= $firstmonth) ? $settings["month_end"]: $settings["month_end"]+ 12;
 		
 		$today = date("m", time());
 		$counter = $page * $perpage + 1;
@@ -225,7 +232,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$elapsedmonths = $actualmonth - $firstmonth;
 		$monthsremaining = ($lastmonth - $firstmonth + 1) - $elapsedmonths;
 		$minimumpermonth = array();
-		$total = $CFG->deportes_totalattendance;
+		$total = $settings["totalattendance"];
 		
 		// Fills the minimumpermonth array with the attendance already done
 		$completedmonth = 0;
@@ -267,10 +274,11 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 		$situation = ($totalattendance >= $total) ? get_string("passed", "local_deportes") : ($failed ? get_string("failed", "local_deportes") : get_string("pending", "local_deportes"));
 		$color = ($failed) ? "red" : "orange";
+		$color = ($totalattendance >= $total) ? "#00cc00" : $color;
 		
 		$headingtable = new html_table("p");
 		$headingtable->data[] = array(
-				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance."/".$CFG->deportes_totalattendance),
+				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance."/".$settings["totalattendance"]),
 				html_writer::tag('h3', get_string('situation','local_deportes').": ".$situation, array('style' => 'color:'.$color)),
 				html_writer::tag('h3', get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth], array('style' => 'color:'.$monthlycolor)),
 				html_writer::tag('h3', get_string('minimumattendance','local_deportes').": ".$minimumrequired)

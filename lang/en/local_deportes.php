@@ -56,6 +56,12 @@ $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Select file";
 $string["must_uploadfile"] = "No file was uploaded. Please try again.";
 
+$string["startmonth_help"] = "First month of the sports period";
+$string["endmonth_help"] = "Last month of the sports period";
+$string["startday_help"] = "First day of the sports period. Students can start attending to sport classes from this day";
+$string["endday_help"] = "Last day of the sports period. Any attendance beyond this day won't be counted towards the period's total";
+$string["totalattendance_help"] = "Number of times the student must attend to sport classes during the semester to pass";
+
 $string["Jan"] = "January";
 $string["Feb"] = "February";
 $string["Mar"] = "March";
@@ -103,7 +109,8 @@ $string["rules_title"] = "Sports rules";
 $string["graphinfo"] = "Graph information";
 $string["rules_content1"] = "Dear Student <br>
 	To approve your sports credits you must do the following:<br>
-	* Number of attendances: <b>26</b><br>
+	* Number of attendances: <b>";
+$string["rules_b"] = "</b><br>
 	* Semester starts: <b>";
 $string["rules_content2"]= "</b><br>
 	* Semester ends: <b>";
