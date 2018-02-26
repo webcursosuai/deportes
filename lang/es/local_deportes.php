@@ -131,7 +131,7 @@ $string["rules_content3"] = "</b><br>
 $string["graphinfo_content"] = '<img src="img/row.png"><br>
 	Cada fila del gráfico representa un día de la semana.
 	Como muestra la imagen, la fila resaltada corresponde a todos los miércoles del año.<br>
-	<img src="img/colpng"><br>
+	<img src="img/col.png"><br>
 	Cada columna es una semana, partiendo con domingo desde lo más alto y terminando con sábado al último.
 	Cada columna tiene 7 espacios hacia abajo, por los 7 días de la semana.<br>
 	<img src="img/punishment.png"><br>
