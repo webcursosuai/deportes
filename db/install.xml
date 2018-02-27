@@ -1,27 +1,21 @@
-<XMLDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PATH="local/deportes/db" VERSION="20180124" COMMENT="XMLDB file for Moodle local/deportes" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
-<TABLES>
-<TABLE NAME="deportes_files" COMMENT="files for the sports schedule">
-<FIELDS>
-<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-<FIELD NAME="name" TYPE="char" LENGTH="150" NOTNULL="false" SEQUENCE="false" COMMENT="filename"/>
-<FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="type of sport"/>
-<FIELD NAME="uploaddate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date of when it was uploaded"/>
-<FIELD NAME="iduser" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Who made this file"/>
-</FIELDS>
-<KEYS>
-<KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-<KEY NAME="iduser" TYPE="foreign" FIELDS="iduser" REFTABLE="user" REFFIELDS="id"/>
-</KEYS>
-</TABLE>
-<TABLE NAME="deportes_config" COMMENT="Custom settings config for deportes plugin">
-<FIELDS>
-<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-<FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Config name"/>
-<FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Config value"/>
-</FIELDS>
-<KEYS>
-<KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-</KEYS>
-</TABLE>
-</TABLES>
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/deportes/db" VERSION="20180227" COMMENT="XMLDB file for Moodle local/deportes"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="deportes_files" COMMENT="files for the sports schedule">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="150" NOTNULL="false" SEQUENCE="false" COMMENT="filename"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="type of sport"/>
+        <FIELD NAME="uploaddate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date of when it was uploaded"/>
+        <FIELD NAME="iduser" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Who made this file"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="iduser" TYPE="foreign" FIELDS="iduser" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
 </XMLDB>
