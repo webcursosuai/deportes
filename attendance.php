@@ -41,7 +41,7 @@ if (isguestuser()) {
 
 $page = optional_param('page', 0, PARAM_INT);
 $perpage = 15;
-$email = $USER->email;
+$email = explode('@',$USER->email);
 $context = context_system::instance();
 
 if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
@@ -86,7 +86,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->deportes_token;
 	$fields = array(
 			"token" => $token,
-			"email" => 'bibanez@alumnos.uai.cl'
+			"email" => $USER->email;
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);

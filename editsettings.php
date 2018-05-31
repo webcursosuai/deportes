@@ -110,6 +110,7 @@ if($editform->is_cancelled()) {
 		
 		$insertdata[] = $attendancedata;
 	}
+	$DB->insert_record
 	
 	$redirecturl = new moodle_url("/local/deportes/attendance.php");
 	redirect($redirecturl);
