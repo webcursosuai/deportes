@@ -163,7 +163,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			//$attendancechartinfo = array();
 			
 			
-			if($repeated != 1 && (in_array($attendance->Mes, $months)) || in_array($attendance->Mes + 12, $months)){
 				$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
 				$lastattendance = $attendance->Asistencia;
 				$attendancechartinfo = array(
@@ -180,7 +179,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 				$month = ($month == 1) ? $month + 12 : $month;
 				$monthlyattendance[(int)$month] += $attendance->Asistencia;
 				$attendancechart[] = $attendancechartinfo;
-			}
 			
 			
 			$repeated = 0;
