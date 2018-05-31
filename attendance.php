@@ -86,7 +86,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$token = $CFG->deportes_token;
 	$fields = array(
 			"token" => $token,
-			"email" => $USER->email;
+			"email" => 'bibanez@alumnos.uai.cl'
 	);
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
