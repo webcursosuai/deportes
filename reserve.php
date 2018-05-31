@@ -36,7 +36,6 @@ if (isguestuser()) {
 $email = $USER->email;
 $context = context_system::instance();
 
-if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capability("local/deportes:edit", $context)){
 	$url = new moodle_url("/local/deportes/reserve.php");
 	$PAGE->navbar->add(get_string("nav_title", "local_deportes"));
 	$PAGE->navbar->add(get_string("reserve", "local_deportes"), $url);
@@ -111,6 +110,3 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		echo html_writer::table($table);
 	}
 	echo $OUTPUT->footer();
-}else{
-	print_error(get_string("notallowed", "local_deportes"));
-}
