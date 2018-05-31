@@ -77,9 +77,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			"style" => "height:75vh; width:60vw"
 	));
 	
-	if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-		echo html_writer::div(get_string("notvalidemail","local_deportes"),"alert alert-info", array("role"=>"alert"));
-	}
+	
 	
 	$curl = curl_init();
 	$url = $CFG->deportes_urlasistenciasalumno;
@@ -159,17 +157,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$months[] = $monthnumber;
 		}
 		
-		$data[] = (object) array(
-				"IsCastigo" => false,
-				"Rut" => 18541232,
-				"Deporte" => "Máquinas",
-				"Mes" => 1,
-				"Semana" => 1,
-				"Dia" => 1,
-				"Asistencia" => 1,
-				"HoraInicio" => "2018-01-01T13:00:00",
-				"HoraTermino" => "2018-01-01T14:01:00"
-		);
+
 		
 		foreach($data as $attendance) {
 			//$attendancechartinfo = array();
