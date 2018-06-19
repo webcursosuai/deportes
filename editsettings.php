@@ -57,45 +57,45 @@ if($editform->is_cancelled()) {
 	$insertdata = array();
 	
 	if($startmonthdata = $DB->get_record("deportes_config", array("name" => "month_start"))) {
-		$startmonthdata->value = $formdata->month_start;
+		$startmonthdata->value = date('F', $formdata->startdate);
 		$DB->update_record("deportes_config", $startmonthdata);
 	} else {
 		$startmonthdata = new stdClass();
 		$startmonthdata->name = "month_start";
-		$startmonthdata->value = $formdata->month_start;
+		$startmonthdata->value = date('F', $formdata->startdate);
 		
 		$insertdata[] = $startmonthdata;
 	}
 	
 	if($startdaydata = $DB->get_record("deportes_config", array("name" => "day_start"))) {
-		$startdaydata->value = $formdata->day_start;
+		$startdaydata->value = date('d', $formdata->startdate);
 		$DB->update_record("deportes_config", $startdaydata);
 	} else {
 		$startdaydata = new stdClass();
 		$startdaydata->name = "day_start";
-		$startdaydata->value = $formdata->day_start;
+		$startdaydata->value = date('d', $formdata->startdate);
 		
 		$insertdata[] = $startdaydata;
 	}
 	
 	if($endmonthdata = $DB->get_record("deportes_config", array("name" => "month_end"))) {
-		$endmonthdata->value = $formdata->month_end;
+		$endmonthdata->value = date('F', $formdata->enddate);
 		$DB->update_record("deportes_config", $endmonthdata);
 	} else {
 		$endmonthdata = new stdClass();
 		$endmonthdata->name = "month_end";
-		$endmonthdata->value = $formdata->month_end;
+		$endmonthdata->value = date('F', $formdata->enddate);
 		
 		$insertdata[] = $endmonthdata;
 	}
 	
 	if($enddaydata = $DB->get_record("deportes_config", array("name" => "day_end"))) {
-		$enddaydata->value = $formdata->day_end;
+		$enddaydata->value = date('d', $formdata->enddate);
 		$DB->update_record("deportes_config", $enddaydata);
 	} else {
 		$enddaydata = new stdClass();
 		$enddaydata->name = "day_end";
-		$enddaydata->value = $formdata->day_end;
+		$enddaydata->value = date('d', $formdata->enddate);
 		
 		$insertdata[] = $enddaydata;
 	}
@@ -110,7 +110,7 @@ if($editform->is_cancelled()) {
 		
 		$insertdata[] = $attendancedata;
 	}
-	$DB->insert_record("deportes_config", $insertdata);
+	$DB->insert_records("deportes_config", $insertdata);
 	
 	$redirecturl = new moodle_url("/local/deportes/attendance.php");
 	redirect($redirecturl);

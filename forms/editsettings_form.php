@@ -59,22 +59,12 @@ class deportes_form extends moodleform {
 			$days[$day] = $day;
 		}
 		
-		$startmonthselect = $mform->addElement("select", "month_start", get_string("startmonth", "local_deportes"), $months);
-		$startmonthselect->setSelected($settings["month_start"]);
-		$mform->addHelpButton("month_start", "startmonth", "local_deportes");
+		$startdateselect = $mform->addElement("date_selector", "startdate", "Start Date");
+		$mform->setType("startdate", PARAM_INT);
 		
-		$startdayselect = $mform->addElement("select", "day_start", get_string("startday", "local_deportes"), $days);
-		$startdayselect->setSelected($settings["day_start"]);
-		$mform->addHelpButton("day_start", "startday", "local_deportes");
-		
-		$endmonthselect = $mform->addElement("select", "month_end", get_string("endmonth", "local_deportes"), $months);
-		$endmonthselect->setSelected($settings["month_end"]);
-		$mform->addHelpButton("month_end", "endmonth", "local_deportes");
-		
-		$enddayselect = $mform->addElement("select", "day_end", get_string("endday", "local_deportes"), $days);
-		$enddayselect->setSelected($settings["day_end"]);
-		$mform->addHelpButton("day_end", "endday", "local_deportes");
-		
+		$enddateselect = $mform->addElement("date_selector", "enddate", "End Date");
+		$mform->setType("enddate", PARAM_INT);
+
 		$mform->addElement("text", "totalattendance", get_string("totalattendance", "local_deportes"));
 		$mform->setDefault("totalattendance", $settings["totalattendance"]);
 		$mform->addHelpButton("totalattendance", "totalattendance", "local_deportes");

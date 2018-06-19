@@ -58,8 +58,6 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$configresult = $DB->get_records("deportes_config", array());
 	$settings = array();
 	
-	var_dump($configresult);
-	
 	foreach($configresult as $config) {
 		$settings[$config->name] = $config->value;
 	}
