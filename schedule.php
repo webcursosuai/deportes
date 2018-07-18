@@ -96,12 +96,20 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	
 	$latestfitness = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("2"));
 	$fitnessfile = $DB->get_record("deportes_files", array("uploaddate" => $latestfitness->latest, "type" => "2"));
-	
+
 	$latestoutdoors = $DB->get_record_sql("SELECT MAX(uploaddate) AS latest FROM {deportes_files} WHERE type = ?", array("1"));
 	$outdoorsfile = $DB->get_record("deportes_files", array("uploaddate" => $latestoutdoors->latest, "type" => "1"));
+	if($fitnessfile ){
+		$fitnessimg = html_writer::img("img/".$fitnessfile->name, "Fitness", array("style" => "width: 80%;"));
+	}else{
+		$fitnessimg = html_writer::div("Please upload fitness schedule");
+	}
 	
-	$fitnessimg = html_writer::img("img/".$fitnessfile->name, "Fitness", array("style" => "width: 80%;"));
+	if($outdoorsfile){
 	$outdoorsimg = html_writer::img("img/".$outdoorsfile->name, "Outdoors", array("style" => "width: 80%;"));
+	}else{
+		$outdoorsimg = html_writer::div("Please upload outdoors schedule");
+	}
 	/*
 	if(file_exists("img/fitness.jpg")) {
 		$fitnessimg = html_writer::img("img/fitness.jpg", "Fitness", array("style" => "width: 80%;"));
