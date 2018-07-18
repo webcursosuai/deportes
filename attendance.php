@@ -22,6 +22,7 @@
 * @subpackage deportes
 * @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)
 * @copyright  2017	Mihail Pozarski (mpozarski944@gmail.com)
+* @copyright  2018	Javier Gonzalez (jgonzalez.vargas@gmail.com)
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
@@ -55,14 +56,30 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_title(get_string("page_title", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 	
-	$configresult = $DB->get_records("deportes_config", array());
-	$settings = array();
+	$curl = curl_init();
+	$url = $CFG->deportes_urlasistenciasalumno;
+	$token = $CFG->deportes_token;
+	$fields = array(
+			"token" => $token,
+			"email" => $USER->email
+	);
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_POST, TRUE);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+	$result = json_decode(curl_exec($curl));
+	curl_close($curl);
+
+	$startdate = strtotime($result->asistencias->fechaInicio);
+	$lastdate = strtotime($result->asistencias->fechaTermino);
+	$startday = date('j', $startdate);
+	$endday = date('j', $lastdate);
+	$firstmonth = date('n', $startdate);
+	$lastmonth = date('n', $lastdate);
+	$total = $CFG->deportes_tottalattendance;
 	
-	foreach($configresult as $config) {
-		$settings[$config->name] = $config->value;
-	}
-	
-	$modal = deportes_modal_rules($settings["month_start"], $settings["day_start"], $settings["month_end"], $settings["day_end"], $settings["totalattendance"]);
+	$modal = deportes_modal_rules(date('m', $startdate), $startday, date('m', $lastdate), $endday, $total);
 	$helpmodal = deportes_modal_help();
 	$button = html_writer::nonempty_tag("button", html_writer::tag('h4', get_string("rules","local_deportes")), array( "id"=>"button", "class" => "btn-info", "style" => "float: right;", "data-toggle" => "modal", "data-target" => "#myModal"));
 	$helpbutton = html_writer::nonempty_tag("button", get_string("help", "local_deportes"), array("id" => "helpButton", "class" => "btn-info", "data-toggle" => "modal", "data-target" => "#helpModal"));
@@ -79,20 +96,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	
 	
 	
-	$curl = curl_init();
-	$url = $CFG->deportes_urlasistenciasalumno;
-	$token = $CFG->deportes_token;
-	$fields = array(
-			"token" => $token,
-			"email" => $USER->email
-	);
-	curl_setopt($curl, CURLOPT_URL, $url);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($curl, CURLOPT_POST, TRUE);
-	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
-	curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-	$result = json_decode(curl_exec($curl));
-	curl_close($curl);
+	
 	
 	if(count($result->asistencias->asistencias)>0){
 		$table = new html_table("p");
@@ -124,7 +128,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		$sports = array();
 		$sportschart = array();
 		$repeated = 0;
-		$totalattendance = 0;
+		$totalattendance = $result->asistenciasValidas;
 		$monthlyattendance = array(
 				1 => 0,
 				2 => 0,
@@ -142,12 +146,11 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		);
 		
 		$height = "24vh";
-		$calendarheight = 200;
-		
-		$firstmonth = $settings["month_start"];
-		$lastmonth = ($settings["month_end"] >= $firstmonth) ? $settings["month_end"]: $settings["month_end"]+ 12;
+		$calendarheight = 220;
+		$calendarwidth = 950;
 		
 		$today = date("m", time());
+		$todayday = date("j", time());
 		$counter = $page * $perpage + 1;
 		$date = 0;
 		$lastattendance = 0;
@@ -157,11 +160,8 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$months[] = $monthnumber;
 		}
 		
-
-		
 		foreach($data as $attendance) {
 			//$attendancechartinfo = array();
-			
 			
 				$date = date('Y-m-d',strtotime($attendance->HoraInicio . ' +1 day'));
 				$lastattendance = $attendance->Asistencia;
@@ -170,24 +170,25 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 						$attendance->Asistencia
 				);
 				
-				$month = date("m",strtotime($attendance->HoraInicio));
-				if($month == 1) {
-					$month += 12;
-					$height = "45vh";
-					$calendarheight = 380;
-				}
-				$month = ($month == 1) ? $month + 12 : $month;
-				$monthlyattendance[(int)$month] += $attendance->Asistencia;
+				$month = date("n",strtotime($attendance->HoraInicio));
+				$day = date("j",strtotime($attendance->HoraInicio));
+
+				if((($month > $firstmonth) || ($month == $firstmonth && $day >= $startday))
+						&&(($month < $lastmonth) || ($month == $lastmonth && $day <= $endday))){
+					$monthlyattendance[(int)$month] += $attendance->Asistencia;}
+				
+
 				$attendancechart[] = $attendancechartinfo;
 			
 			
 			$repeated = 0;
 			
-			if($attendance->Asistencia == 1) {
+			if($attendance->Asistencia > 0) { 
 				if(isset($sports[$attendance->Deporte])) {
-					$sports[$attendance->Deporte] += 1;
-				} else {
-					$sports[$attendance->Deporte] = 1;
+					$sports[$attendance->Deporte] += $attendance->Asistencia;
+				}
+				else {
+					$sports[$attendance->Deporte] = $attendance->Asistencia;
 				}
 			}
 			
@@ -206,19 +207,13 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$table->data[] = $attendanceinfo;		
 		}
 		
-		// Limit monthly attendance to a maximum of 8
-		foreach($monthlyattendance as $month => $monthattendance) {
-			$monthlyattendance[$month] = ($monthattendance > 8) ? 8 : $monthattendance;
-			$totalattendance += $monthlyattendance[$month];
-		}
-		
 		$actualmonth = (int)$today;
 		$actualmonth = ($actualmonth == 1) ? $actualmonth + 12 : $actualmonth;
 		$elapsedmonths = $actualmonth - $firstmonth;
 		$monthsremaining = ($lastmonth - $firstmonth + 1) - $elapsedmonths;
 		$minimumpermonth = array();
-		$total = $settings["totalattendance"];
 		
+		/*
 		// Fills the minimumpermonth array with the attendance already done
 		$completedmonth = 0;
 		$elapsedmonths = ($elapsedmonths < 0) ? $elapsedmonths + 12 : $elapsedmonths;
@@ -227,25 +222,35 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			$elapsedmonths--;
 			$completedmonth++;
 		}
+		 */
+		$minimumpermonth = deportes_minimumpermonth($firstmonth, $lastmonth, $total, $monthlyattendance);
 		
 		// Fills the remaining spaces in the array and checks if the student failed sports by lack of attendance
 		$counter = 0;
 		$failed = false;
-		if(!in_array($actualmonth, $months) && $totalattendance < $total) {
+		if(($today >= $lastmonth && $todayday > $endday) && $totalattendance < $total) {
 			$failed = true;
 		}
+		/*
+		var_dump("jejeje");
 		while(array_sum($minimumpermonth) < $total || ($monthsremaining) >= $counter) {
 			if($totalattendance >= $total) {
 				break;
 			}
-			
+			var_dump("jajjaa");
+			var_dump($minimumpermonth);
 			if((!isset($minimumpermonth[$lastmonth - $counter]) || array_sum($minimumpermonth) < $total)) {
+				var_dump(!isset($minimumpermonth[$lastmonth - $counter]));
+				
+				var_dump($lastmonth);
+				var_dump($counter);
 				$difference = max($total - array_sum($minimumpermonth), 0) + $minimumpermonth[$lastmonth - $counter];
 				$minimumpermonth[$lastmonth - $counter] = ($difference > 8) ? 8 : $difference;
 			}
 				
 			$counter++;
 		}
+		*/
 		
 		$minimumrequired = (isset($minimumpermonth[$actualmonth])) ? $minimumpermonth[$actualmonth] : 0;
 		$monthlycolor = ($monthlyattendance[$actualmonth] > $minimumrequired) ? "#00cc00" : "#e62e00";
@@ -263,7 +268,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 		
 		$headingtable = new html_table("p");
 		$headingtable->data[] = array(
-				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance."/".$settings["totalattendance"]),
+				html_writer::tag('h3', get_string('totalattendance','local_deportes').": ".$totalattendance."/".$total),
 				html_writer::tag('h3', get_string('situation','local_deportes').": ".$situation, array('style' => 'color:'.$color)),
 				html_writer::tag('h3', get_string('monthattendance','local_deportes').": ".$monthlyattendance[$actualmonth], array('style' => 'color:'.$monthlycolor)),
 				html_writer::tag('h3', get_string('minimumattendance','local_deportes').": ".$minimumrequired)
@@ -279,7 +284,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 			
 			$monthlycolor = ($monthlyattendance[$month] >= $minimumpermonth[$month]) ? "#00cc00" : "#e62e00";
 			$monthlycolor = ($month >= $actualmonth && $actualmonth >= $firstmonth) ? "orange" : $monthlycolor ;
-			
+				
 			$monthlytablearray[] = html_writer::tag('h3', get_string(date('M', mktime(0, 0, 0, $month, 10)), "local_deportes").": ".$monthlyattendance[$month], array('style' => 'color:'.$monthlycolor)).
 					html_writer::tag('b', get_string("recommended", "local_deportes").": ".$recommended);
 		}
@@ -298,10 +303,10 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: auto; height:$height;"));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: auto; overflow-y: hidden; height:$calendarheight; width: $calendarwidth"));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
-		echo html_writer::table($monthlytable);
+		echo html_writer::table($monthlytable);// attr position fix o overflow(x,y) hidden
 		
 		echo html_writer::tag('div','', array('id' => 'sports_chart'));
 		
