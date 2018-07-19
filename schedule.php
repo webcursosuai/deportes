@@ -55,7 +55,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_context($context);
 	$PAGE->set_url($url);
 	$PAGE->set_pagelayout("standard");
-	$PAGE->set_title(get_string("page_title", "local_deportes"));
+	$PAGE->set_title(get_string("schedule", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 
 	echo $OUTPUT->header();
