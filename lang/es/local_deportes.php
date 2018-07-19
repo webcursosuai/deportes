@@ -55,6 +55,7 @@ $string["uploadfile"] = "Subir imagen";
 $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Seleccionar archivo";
 $string["must_uploadfile"] = "No se subió archivo. Por favor inténtelo de nuevo.";
+$string["must_selecttype"] = "Por favor seleccione a que tipo de deporte pertenece el horario";
 
 $string["startmonth_help"] = "Primer mes del período de deportes";
 $string["endmonth_help"] = "Último mes del peíodo de deportes";

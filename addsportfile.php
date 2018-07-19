@@ -40,6 +40,7 @@ header("Pragma: no-cache");
 
 $userid = $USER->id;
 $url = new moodle_url('/local/deportes/addsportfile.php');
+$scheduleurl = new moodle_url('/local/deportes/schedule.php');
 $context = context_system::instance();
 $PAGE->navbar->add(get_string("nav_title", "local_deportes"));
 $PAGE->navbar->add(get_string("schedule", "local_deportes"), $url);
@@ -55,7 +56,7 @@ if ($action == "addfile"){
 	$addform = new deportes_filepicker();
 	if ($addform->is_cancelled()) {
 		$action = "view";
-		redirect($url);
+		redirect($scheduleurl);
 	}
 	
 	if ($fromform = $addform->get_data()) {

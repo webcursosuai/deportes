@@ -175,11 +175,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 
 				if((($month > $firstmonth) || ($month == $firstmonth && $day >= $startday))
 						&&(($month < $lastmonth) || ($month == $lastmonth && $day <= $endday))){
-					$monthlyattendance[(int)$month] += $attendance->Asistencia;}
-				
-
-				$attendancechart[] = $attendancechartinfo;
-			
+					$monthlyattendance[(int)$month] += $attendance->Asistencia;
+				}
+				if (end($attendancechart)[0] == $date){
+					end($attendancechart)[1] += $attendance->Asistencia;
+				}
+				else{
+					$attendancechart[] = $attendancechartinfo;
+				}
 			
 			$repeated = 0;
 			

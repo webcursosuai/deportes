@@ -55,6 +55,7 @@ $string["uploadfile"] = "Upload file";
 $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Select file";
 $string["must_uploadfile"] = "No file was uploaded. Please try again.";
+$string["must_selecttype"] = "Please select to what kind of sport the schedule belongs.";
 
 $string["startmonth_help"] = "First month of the sports period";
 $string["endmonth_help"] = "Last month of the sports period";
