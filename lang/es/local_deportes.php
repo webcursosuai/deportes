@@ -50,7 +50,7 @@ $string["totalattendancedesc"] = "Cantidad de veces que el estudiante debe asist
 $string["nosportsleft"] = "No hay deportes disponibles para reservar";
 $string["selectsport"] = "Seleccione el tipo de deporte";
 $string["sport_type"] = "Tipo de deporte";
-$string["sport_type_help"] = "Seleccione el tipo de deporte al que corresponderá la imagen subida. Debe subir de un tipo de deporte a la vez.";
+$string["sport_type_help"] = "Seleccione el tipo de deporte al que corresponderá la imagen subida. Debe subir un tipo de deporte a la vez.";
 $string["uploadfile"] = "Subir imagen";
 $string["sportsform"] = "Add a sports schedule file";
 $string["selectfile"] = "Seleccionar archivo";
@@ -89,7 +89,7 @@ $string["outdoor"] = "Outdoor";
 $string["calendarchartweek"] = "DLMMJVS";
 $string["number"] = "#";
 $string["totalattendance"] = "Asistencias totales";
-$string["minimumattendance"] = "Minimo requerido";
+$string["minimumattendance"] = "Mínimo requerido";
 $string["monthattendance"] = "Este mes";
 $string["sportschart_title"] = "Deportes realizados";
 $string["sportschart_subtitle"] = "Asistencias totales";
@@ -123,8 +123,8 @@ $string["rules_content3"] = "</b><br>
 	* Es de exclusiva responsabilidad de cada alumno el número de asistencias que realizara
 	por mes. Ten presente que la sumatoria de asistencias semestral debe ser 26 a la fecha del
 	25 de noviembre con un tope máximo de 8 asistencias <b>VÁLIDAS</b> por mes<br>
-	* Recuerda que reservar y no asistir a la clase, te restara 1 asistencia<br>
-	* Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restara 0,5
+	* Recuerda que reservar y no asistir a la clase, te restará 1 asistencia<br>
+	* Recuerda que al cancelar una reserva 90 minutos antes del inicio de la clase, se restará 0,5
 	asistencia<br>
 	* Puedes realizar tus asistencias cuando gustes, sin embargo te sugerimos realizar 2 por
 	semana para que obtengas los beneficios fisiológicos que da la continuidad de la actividad
@@ -141,6 +141,6 @@ $string["graphinfo_content"] = '<img src="img/row.png"><br>
 	Media asistencia (+0.5) tiene un color celeste, y medio castigo (-0.5) tiene un color naranjo claro.<br>
 	<img src="img/blank.png"><br>
 	Una asistencia nula (0) tiene el color blanco, como muestra la imagen. Se diferencian levemente de las grises.<br>
-	<b>Nótese</b> que el gráfico muestras las asistencias <b>válidas</b>, es decir, si usted realizó una asistencia (+1) pero cuenta con medio castigo (-0.5)
+	<b>Nótese</b> que el gráfico muestra las asistencias <b>válidas</b>, es decir, si usted realizó una asistencia (+1) pero cuenta con medio castigo (-0.5)
 	ese mismo día, el gráfico mostrará el correspondiente a media asistencia (+0.5).<br>
-	Pasar el cursor sobre una celda mostrará el detalle de la fecha y valor de asistencia en ese día.';
+	Pasar el cursor sobre una celda mostrará el detalle de la fecha y valor de la asistencia en ese día.';
