@@ -306,7 +306,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: auto; overflow-y: hidden; height:$calendarheight; width: $calendarwidth"));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: hidden; overflow-y: hidden; height:$calendarheight; width: $calendarwidth"));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
 		echo html_writer::table($monthlytable);// attr position fix o overflow(x,y) hidden
