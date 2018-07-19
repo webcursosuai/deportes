@@ -19,6 +19,7 @@
  * @package    local
  * @subpackage deportes
  * @copyright  2017	Mark Michaelsen (mmichaelsen678@gmail.com)
+ * @copyright  2018	Javier Gonzalez (jgonzalez.vargas@gmail.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -249,3 +250,25 @@ function deportes_getcolorsarray(){
 				"000000" => "Negro"
 		);
 }*/
+	
+function deportes_minimumpermonth($firstmonth, $lastmonth, $total, $monthlyattendance){
+	$minimumpermonth =  array();
+	$remaining = $total - array_sum($monthlyattendance);
+	$lastm = $lastmonth;
+	while($lastm >= $firstmonth){
+		if ($remaining > 8){
+			$minimumpermonth[$lastm] = 8;
+			$remaining -= 8;
+		}
+		else if($remaining > 0){
+			$minimumpermonth[$lastm] = $remaining;
+			$remaining = 0;
+		}
+		else{
+			$remaining = 0;
+			$minimumpermonth[$lastm] = $remaining;
+		}
+		$lastm--;
+	}
+	return $minimumpermonth; 
+}

@@ -29,6 +29,7 @@ if ($hassiteconfig) {
 	$settings = new admin_settingpage('local_deportes', 'Sports');
 	
 	$ADMIN->add('localplugins', $settings);
+	
 	$settings->add(
 			new admin_setting_configtext(
 					"deportes_token",
@@ -69,4 +70,12 @@ if ($hassiteconfig) {
 					0,
 					PARAM_INT
 					));	
+	$settings->add(
+			new admin_setting_configtext(
+					"deportes_tottalattendance",
+					get_string("totalattendance", "local_deportes"),
+					get_string("totalattendancedesc", "local_deportes"),
+					26,
+					PARAM_INT
+					));
 }

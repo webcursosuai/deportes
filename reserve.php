@@ -52,7 +52,7 @@ $context = context_system::instance();
 	
 	$curl = curl_init();
 	$url = $CFG->deportes_urldeportesalumno;
-	$token = $CFG->sync_token;
+	$token = $CFG->deportes_token;
 	$fields = array(
 			"token" => $token,
 			"email" => $email
