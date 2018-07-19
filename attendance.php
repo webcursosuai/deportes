@@ -178,7 +178,14 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 					$monthlyattendance[(int)$month] += $attendance->Asistencia;
 				}
 				if (end($attendancechart)[0] == $date){
-					$attendancechart[-1][1] = (int)end($attendancechart)[1] + (int)$attendance->Asistencia;
+					if(end($attendancechart)[1] + $attendance->Asistencia > 1){
+						$attendancechart[sizeof($attendancechart)-1][1] = 1;
+					}else if(end($attendancechart)[1] + $attendance->Asistencia < -1){
+						$attendancechart[sizeof($attendancechart)-1][1] = -1;
+					}else{
+						$attendancechart[sizeof($attendancechart)-1][1] = end($attendancechart)[1] + $attendance->Asistencia;
+						
+					}
 				}
 				else{
 					$attendancechart[] = $attendancechartinfo;
@@ -322,7 +329,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	?>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
-	google.charts.load("current", {packages:["calendar", "corechart", "bar"]});
+	google.charts.load("current", {packages:["calendar", "corechart", "bar"], language: "es-cl"});
 	google.charts.setOnLoadCallback(drawChart);
 	google.charts.setOnLoadCallback(drawMaterial);
 	
