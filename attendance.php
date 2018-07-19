@@ -178,7 +178,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 					$monthlyattendance[(int)$month] += $attendance->Asistencia;
 				}
 				if (end($attendancechart)[0] == $date){
-					end($attendancechart)[1] += $attendance->Asistencia;
+					$attendancechart[-1][1] = (int)end($attendancechart)[1] + (int)$attendance->Asistencia;
 				}
 				else{
 					$attendancechart[] = $attendancechartinfo;
