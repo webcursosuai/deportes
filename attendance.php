@@ -53,7 +53,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	$PAGE->set_context($context);
 	$PAGE->set_url($url);
 	$PAGE->set_pagelayout("standard");
-	$PAGE->set_title(get_string("page_title", "local_deportes"));
+	$PAGE->set_title(get_string("attendance", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 	
 	$curl = curl_init();
@@ -175,11 +175,21 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 
 				if((($month > $firstmonth) || ($month == $firstmonth && $day >= $startday))
 						&&(($month < $lastmonth) || ($month == $lastmonth && $day <= $endday))){
-					$monthlyattendance[(int)$month] += $attendance->Asistencia;}
-				
-
-				$attendancechart[] = $attendancechartinfo;
-			
+					$monthlyattendance[(int)$month] += $attendance->Asistencia;
+				}
+				if (end($attendancechart)[0] == $date){
+					if(end($attendancechart)[1] + $attendance->Asistencia > 1){
+						$attendancechart[sizeof($attendancechart)-1][1] = 1;
+					}else if(end($attendancechart)[1] + $attendance->Asistencia < -1){
+						$attendancechart[sizeof($attendancechart)-1][1] = -1;
+					}else{
+						$attendancechart[sizeof($attendancechart)-1][1] = end($attendancechart)[1] + $attendance->Asistencia;
+						
+					}
+				}
+				else{
+					$attendancechart[] = $attendancechartinfo;
+				}
 			
 			$repeated = 0;
 			
@@ -303,7 +313,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	}else{
 		echo html_writer::table($headingtable);
 		
-		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: auto; overflow-y: hidden; height:$calendarheight; width: $calendarwidth"));
+		echo html_writer::tag('div','', array('id' => 'calendar_basic', 'style' => "overflow-x: hidden; overflow-y: hidden; height:$calendarheight; width: $calendarwidth"));
 		echo html_writer::div($helpbutton, "topbarmenu");
 		
 		echo html_writer::table($monthlytable);// attr position fix o overflow(x,y) hidden
@@ -319,7 +329,7 @@ if(($email[1] == $CFG->deportes_emailextension) || is_siteadmin() || has_capabil
 	?>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
-	google.charts.load("current", {packages:["calendar", "corechart", "bar"]});
+	google.charts.load("current", {packages:["calendar", "corechart", "bar"], language: "es-cl"});
 	google.charts.setOnLoadCallback(drawChart);
 	google.charts.setOnLoadCallback(drawMaterial);
 	

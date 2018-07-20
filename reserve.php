@@ -42,7 +42,7 @@ $context = context_system::instance();
 	$PAGE->set_context($context);
 	$PAGE->set_url($url);
 	$PAGE->set_pagelayout("standard");
-	$PAGE->set_title(get_string("page_title", "local_deportes"));
+	$PAGE->set_title(get_string("reserve", "local_deportes"));
 	$PAGE->set_heading(get_string("page_heading", "local_deportes"));
 	
 	$email = $USER->email;
